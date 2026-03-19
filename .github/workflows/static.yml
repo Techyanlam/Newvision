@@ -11,7 +11,7 @@
     <!-- 自定义样式配置 -->
     <script>
         tailwind.config = {
-            theme: {
+
                 extend: {
                     colors: {
                         primary: '#0F3460', // 主色调（深蓝）
