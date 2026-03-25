@@ -30,6 +30,7 @@
         .tama-mode { background-color: #ffa500; } 
         .news-mode { background-color: #ff4500; } 
         .health-mode { background-color: #2e8b57; } 
+        .weather-mode { background-color: #00ced1; } /* 🌟 新增：天氣按鈕顏色 */
         
         .feedback { font-size: 20px; font-weight: bold; margin-top: 20px; min-height: 80px; line-height: 1.4; }
         .result-box { background-color: #fffacd; border: 5px solid #ffa500; border-radius: 20px; padding: 30px; font-size: 24px; font-weight: bold; color: #d2691e; width: 80%; max-width: 400px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 30px; box-sizing: border-box; line-height: 1.6; }
@@ -39,13 +40,21 @@
         
         .wa-btn { background-color: #25D366; font-size: 20px; width: 280px; margin-bottom: 15px; text-decoration: none; display: flex; align-items: center; justify-content: center; line-height: 1.4; color: white; }
         
-        /* 🌟 新增：統一嘅「返回主頁」按鈕樣式 🌟 */
+        /* 統一嘅「返回主頁」按鈕樣式 */
         .home-btn { background-color: #ff7f50; border: none; border-radius: 15px; padding: 12px 20px; font-size: 20px; font-weight: bold; color: white; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2); margin-top: 30px; width: 80%; max-width: 300px; display: flex; justify-content: center; align-items: center; gap: 10px; }
         .home-btn:active { transform: translateY(4px); box-shadow: none; }
 
         .stat-bar { margin: 5px 0; display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .bar-bg { background-color: #ddd; border-radius: 10px; width: 150px; height: 15px; overflow: hidden; }
         .bar-fill { height: 100%; transition: width 0.3s; }
+        
+        /* 天氣預報卡片樣式 */
+        .weather-card { background-color: white; border-radius: 15px; padding: 15px; margin-bottom: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; align-items: center; text-align: left; width: 100%; box-sizing: border-box; border-left: 5px solid #00ced1; }
+        .weather-icon { font-size: 45px; margin-right: 15px; min-width: 60px; text-align: center; }
+        .weather-info { flex: 1; }
+        .weather-date { font-size: 18px; font-weight: bold; color: #333; margin-bottom: 4px; }
+        .weather-temp { font-size: 18px; color: #ff4500; font-weight: bold; margin-bottom: 4px; }
+        .weather-desc { font-size: 15px; color: #666; line-height: 1.3; }
     </style>
 </head>
 <body>
@@ -58,8 +67,9 @@
 
     <div id="modeScreen" style="display: flex; flex-direction: column; align-items: center;">
         <h2 style="color: #555;">你想做咩任務先？</h2>
-        <button class="mode-btn health-mode" onclick="selectMode('health')">🍎 生活健康小知識</button>
+        <button class="mode-btn weather-mode" onclick="selectMode('weather')">🌤️ 未來七天天氣預報</button>
         <button class="mode-btn news-mode" onclick="selectMode('news')">📰 趣味小新聞 (每日放送)</button>
+        <button class="mode-btn health-mode" onclick="selectMode('health')">🍎 生活健康小知識</button>
         <button class="mode-btn tama-mode" onclick="selectMode('tama')">🐣 寵物育成 (照顧小倉鼠)</button>
         <button class="mode-btn math-mode" onclick="selectMode('math')">🧮 數學尋寶</button>
         <button class="mode-btn eng-mode" onclick="selectMode('english')">🔤 英文尋寶</button>
@@ -152,6 +162,16 @@
             <button class="option-btn" style="background-color: #ffb6c1; font-size: 22px; color: white;" onclick="feedTama()">餵食 🍖</button>
             <button class="option-btn" style="background-color: #9370db; font-size: 22px; color: white;" onclick="playTama()">玩耍 🎾</button>
             <button class="option-btn" style="background-color: #20b2aa; font-size: 22px; color: white;" onclick="cleanTama()">沖涼 🛁</button>
+        </div>
+        <button class="home-btn" onclick="resetToModeSelection()">🏠 返回主頁</button>
+    </div>
+
+    <div id="weatherScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
+        <div class="status-bar" style="background-color: #e0ffff;">
+            <span style="color: #008b8b; font-weight: bold; width: 100%; text-align: center;">🌤️ 香港天文台 ‧ 七天天氣</span>
+        </div>
+        <div id="weatherContainer" style="width: 90%; max-width: 400px; margin-top: 10px;">
+            <div class="question-box" style="font-size: 22px;">正在為 Jade 查詢天氣... ⏳</div>
         </div>
         <button class="home-btn" onclick="resetToModeSelection()">🏠 返回主頁</button>
     </div>
@@ -267,7 +287,7 @@
             { emoji: "🦒", title: "長頸鹿條脷", content: "長頸鹿條脷係深藍色㗎！深色可以防止食樹葉時被猛烈嘅太陽曬傷。" },
             { emoji: "🦦", title: "海獺手拖手", content: "海獺喺水面瞓覺會同同伴手拖手，咁就唔怕被水流沖散啦！" },
             { emoji: "🐙", title: "章魚三個心臟", content: "章魚有三個心臟同藍色嘅血，佢哋仲聰明到識得自己扭開玻璃樽蓋！" },
-            { emoji: "🐧", title: "企鵝滑雪", content: "企鵝喺冰面會趴喺度，用個大肚腩當滑板咁滑行，快過行路好多！" },
+            { emoji: "🐧", title: "企 অবলম্ব", content: "企鵝喺冰面會趴喺度，用個大肚腩當滑板咁滑行，快過行路好多！" },
             { emoji: "🐘", title: "大象用鼻沖涼", content: "大象會用長鼻吸水，好似花灑咁噴落自己背脊度沖涼。" },
             { emoji: "🦋", title: "蝴蝶用腳試味", content: "蝴蝶只要將隻腳企喺花上面，就知啲花蜜甜唔甜啦！" },
             { emoji: "🐨", title: "樹熊愛睡覺", content: "樹熊一日可以瞓成 20 個鐘頭！醒嗰陣就係食尤加利樹葉。" },
@@ -343,7 +363,7 @@
         }
 
         function resetToModeSelection() {
-            // 🛑 新增：撳「返回主頁」會自動停止任何發聲
+            // 🛑 撳「返回主頁」會自動停止任何發聲
             try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch(e) {}
             
             document.getElementById('endScreen').style.display = "none";
@@ -354,6 +374,7 @@
             document.getElementById('tamaScreen').style.display = "none"; 
             document.getElementById('newsScreen').style.display = "none"; 
             document.getElementById('healthScreen').style.display = "none"; 
+            document.getElementById('weatherScreen').style.display = "none"; // 隱藏天氣畫面
             document.getElementById('modeScreen').style.display = "flex";
             
             clearInterval(timerId);
@@ -399,7 +420,60 @@
                 document.getElementById('healthScreen').style.display = "flex";
                 currentHealthIndex = Math.floor(Math.random() * healthData.length); 
                 renderHealth();
+            } else if (mode === 'weather') {
+                document.getElementById('weatherScreen').style.display = "flex";
+                loadWeather(); // 🌟 啟動連線攞天氣
             }
+        }
+
+        // 🌟 新增：讀取香港天文台真實天氣資料 🌟
+        function loadWeather() {
+            const container = document.getElementById('weatherContainer');
+            container.innerHTML = '<div class="question-box" style="font-size: 22px;">正在為 Jade 查詢天文台天氣... ⏳</div>';
+            
+            fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=tc')
+                .then(response => response.json())
+                .then(data => {
+                    // 攞頭 7 日嘅天氣
+                    const forecasts = data.weatherForecast.slice(0, 7);
+                    let html = '';
+                    let firstDayText = '';
+                    
+                    forecasts.forEach((day, index) => {
+                        const dateStr = day.forecastDate;
+                        const formattedDate = dateStr.substring(6, 8) + '/' + dateStr.substring(4, 6);
+                        const weekDay = day.week;
+                        const temp = `${day.forecastMintemp.value}°C - ${day.forecastMaxtemp.value}°C`;
+                        const desc = day.forecastWeather;
+                        
+                        // 簡單將天氣文字轉做 Emoji
+                        let icon = '☁️';
+                        if (desc.includes('晴')) icon = '☀️';
+                        if (desc.includes('雨') || desc.includes('驟雨')) icon = '🌧️';
+                        if (desc.includes('雲') || desc.includes('陰')) icon = '☁️';
+                        if (desc.includes('雷')) icon = '⛈️';
+                        
+                        // 準備讀出今日嘅天氣
+                        if(index === 0) {
+                            firstDayText = `Jade你好！今日天氣係${desc}，氣溫大約 ${temp}。`;
+                        }
+                        
+                        html += `
+                        <div class="weather-card">
+                            <div class="weather-icon">${icon}</div>
+                            <div class="weather-info">
+                                <div class="weather-date">${formattedDate} (${weekDay})</div>
+                                <div class="weather-temp">${temp}</div>
+                                <div class="weather-desc">${desc}</div>
+                            </div>
+                        </div>`;
+                    });
+                    container.innerHTML = html;
+                    speakText(firstDayText, 'zh-HK'); // 自動讀出今日天氣
+                })
+                .catch(err => {
+                    container.innerHTML = '<div class="question-box" style="font-size: 22px; color: red;">哎呀！連線失敗，睇唔到天氣呀！📶</div>';
+                });
         }
 
         function renderHealth() {
@@ -407,7 +481,7 @@
             document.getElementById('healthEmoji').innerText = item.emoji;
             document.getElementById('healthTitle').innerText = item.title;
             document.getElementById('healthContent').innerText = item.content;
-            playHealth(); // 自動播放
+            playHealth(); 
         }
         function playHealth() { let item = healthData[currentHealthIndex]; speakText(`健康小知識：${item.title}。${item.content}`, 'zh-HK'); }
         function nextHealth() { currentHealthIndex = Math.floor(Math.random() * healthData.length); renderHealth(); }
@@ -417,7 +491,7 @@
             document.getElementById('newsEmoji').innerText = news.emoji;
             document.getElementById('newsTitle').innerText = news.title;
             document.getElementById('newsContent').innerText = news.content;
-            playNews(); // 自動播放
+            playNews(); 
         }
         function playNews() { let news = kidsNews[currentNewsIndex]; speakText(`今日新聞：${news.title}。${news.content}`, 'zh-HK'); }
         function nextNews() { currentNewsIndex = Math.floor(Math.random() * kidsNews.length); renderNews(); }
@@ -474,7 +548,7 @@
             document.getElementById('planetEmoji').innerText = p.emoji;
             document.getElementById('planetName').innerText = `${p.name} (${p.zhName})`;
             document.getElementById('planetFact').innerText = p.zhFact;
-            playPlanetFact(); // 自動播放
+            playPlanetFact(); 
         }
         function playPlanetFact() { let p = planetsData[currentPlanetIndex]; speakText(`${p.name}. ${p.enFact}`, 'en-US'); }
         function nextPlanet() { currentPlanetIndex = (currentPlanetIndex < planetsData.length - 1) ? currentPlanetIndex + 1 : 0; renderPlanet(); }
@@ -533,9 +607,9 @@
             document.getElementById('speakBtn').style.display = "none";
             isAnswering = true;
             if (currentMode === 'math') generateMathQuestion();
-            else if (currentMode === 'english') { generateEnglishQuestion(); playCurrentHint(); } // 自動播放
-            else if (currentMode === 'chinese') { generateChineseQuestion(); playCurrentHint(); } // 自動播放
-            else if (currentMode === 'logic') { generateLogicQuestion(); playCurrentHint(); } // 自動播放
+            else if (currentMode === 'english') { generateEnglishQuestion(); playCurrentHint(); } 
+            else if (currentMode === 'chinese') { generateChineseQuestion(); playCurrentHint(); } 
+            else if (currentMode === 'logic') { generateLogicQuestion(); playCurrentHint(); } 
             startTimer();
         }
 
@@ -623,7 +697,6 @@
             feedbackEl.innerHTML = `⏰ 哎呀！時間到！<br>答案應該係 <strong>${currentAnswer}</strong> 呀！`;
             feedbackEl.style.color = "red";
             
-            // 🌟 恢復時間到自動發聲 🌟
             if (currentMode === 'english') { speakText(`Time's up! The word is ${currentAnswer}.`, 'en-US'); }
             else if (currentMode === 'chinese' || currentMode === 'logic') { speakText(`時間到！正確答案係 ${currentAnswer}。`, 'zh-HK'); }
             
@@ -638,7 +711,6 @@
             if (selected === currentAnswer) {
                 feedbackEl.innerHTML = "🎉 答啱啦！Jade 好叻呀！加 1 分！"; feedbackEl.style.color = "#32cd32"; score++;
                 
-                // 🌟 恢復答啱自動發聲 🌟
                 if (currentMode === 'english') speakText("Good job Jade!", 'en-US');
                 if (currentMode === 'chinese' || currentMode === 'logic') speakText("好叻女呀！", 'zh-HK');
                 
@@ -654,16 +726,13 @@
                     else explanation = `❌ 答錯咗。<br>諗吓：本來有 ${currentNum1} 個 🍎，食咗 ${currentNum2} 個<br>仲淨低 <strong>${currentAnswer}</strong> 呀！`;
                 } else if (currentMode === 'english') {
                     explanation = `❌ 答錯咗。<br>正確串法係：<strong>${currentAnswer}</strong> 呀！`;
-                    // 🌟 恢復英文錯自動發聲 🌟
                     let spelledOut = currentAnswer.split('').join(' ');
                     speakText(`Oops! The correct word is ${currentAnswer}. Spelled: ${spelledOut}.`, 'en-US');
                 } else if (currentMode === 'chinese') {
                     explanation = `❌ 答錯咗。<br>正確答案係：<strong>${currentAnswer}</strong> 呀！`;
-                    // 🌟 恢復中文錯自動發聲 🌟
                     speakText(`唔係呢個呀。正確答案係：${currentAnswer}。`, 'zh-HK');
                 } else if (currentMode === 'logic') {
                     explanation = `❌ 答錯咗。<br>睇清楚規律，下一個應該係：<strong>${currentAnswer}</strong> 呀！`;
-                    // 🌟 恢復邏輯錯自動發聲 🌟
                     speakText(`唔係呢個呀。正確答案係：${currentAnswer}。`, 'zh-HK');
                 }
                 feedbackEl.innerHTML = explanation; feedbackEl.style.color = "#ff4500";
@@ -698,13 +767,11 @@
 
             endScreen.style.display = "flex";
             if (score === TOTAL_QUESTIONS) {
-                // 🌟 恢復滿分自動發聲 🌟
                 if (currentMode === 'english') speakText("Amazing! You got a perfect score!", 'en-US');
                 else speakText("太犀利啦！滿分！", 'zh-HK');
                 resultBox.innerHTML = `🎊 任務完成！🎊<br>太犀利啦，你攞到滿分 ${score} 分！<br><span class="big-prize">🎁 獲得特別禮物一份！🎁</span><br>快啲叫爸爸/媽媽俾禮物你啦！`;
             } else {
                 let stampsHtml = ""; for(let i=0; i<score; i++){ stampsHtml += "💮 "; } if(score === 0) stampsHtml = "下次再努力！💪";
-                // 🌟 恢復普通分自動發聲 🌟
                 if (currentMode === 'english') speakText(`Great try! You got ${score} points.`, 'en-US');
                 else speakText(`好叻女，你攞到 ${score} 分。`, 'zh-HK');
                 resultBox.innerHTML = `👏 任務完成！👏<br>你今次攞到 ${score} 分！<br>可以換成：<br><span class="stamps">${stampsHtml}</span><br>(${score} 個印仔)<br>繼續加油，下次挑戰滿分攞禮物啦！`;
