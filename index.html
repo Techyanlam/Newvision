@@ -170,437 +170,81 @@
     </div>
 
     <script>
-        // 📚 題庫與資料庫
         const englishWords = [
             { word: "ELEPHANT", wrong: ["ELAPHANT", "ELEFANT"], hint: "A very large gray animal with a long trunk.", emoji: "🐘" },
             { word: "MONKEY", wrong: ["MONKY", "MUNKIE"], hint: "An animal that loves to climb trees and eat bananas.", emoji: "🐒" },
             { word: "RABBIT", wrong: ["RABIT", "RABBET"], hint: "A small animal with long ears that hops.", emoji: "🐇" },
-            { word: "TIGER", wrong: ["TIGAR", "TYGER"], hint: "A big wild cat with orange and black stripes.", emoji: "🐅" }
+            { word: "TIGER", wrong: ["TIGAR", "TYGER"], hint: "A big wild cat with orange and black stripes.", emoji: "🐅" },
+            { word: "APPLE", wrong: ["APLE", "APPEL"], hint: "A round red or green fruit.", emoji: "🍎" },
+            { word: "BANANA", wrong: ["BANANNA", "BANANA"], hint: "A long yellow fruit monkeys love.", emoji: "🍌" },
+            { word: "ORANGE", wrong: ["ORANG", "ORENGE"], hint: "A round fruit with the same name as its color.", emoji: "🍊" },
+            { word: "WATER", wrong: ["WOTER", "WATAR"], hint: "You drink this when you are thirsty.", emoji: "💧" }
         ];
+        
+        // 🌟 50 題 7歲程度 中文兩字詞語 🌟
         const chineseWords = [
-            { word: "蘋果", wrong: ["橙", "香蕉"], hint: "又紅又甜嘅水果。", emoji: "🍎" },
-            { word: "車", wrong: ["船", "飛機"], hint: "喺馬路上行駛嘅交通工具。", emoji: "🚗" },
-            { word: "太陽", wrong: ["月亮", "星星"], hint: "日頭會發光發熱。", emoji: "☀️" },
-            { word: "魚", wrong: ["狗", "貓"], hint: "喺水入面游水嘅動物。", emoji: "🐟" }
+            { word: "學校", wrong: ["公園", "醫院"], hint: "小朋友星期一至五要去學習同見老師嘅地方。", emoji: "🏫" },
+            { word: "老師", wrong: ["醫生", "警察"], hint: "喺課室入面教大家讀書寫字嘅人。", emoji: "👩‍🏫" },
+            { word: "同學", wrong: ["動物", "玩具"], hint: "同你一齊喺課室上堂嘅小朋友。", emoji: "👦👧" },
+            { word: "功課", wrong: ["遊戲", "電視"], hint: "放學返屋企之後，要自己溫習同完成嘅任務。", emoji: "📚" },
+            { word: "朋友", wrong: ["敵人", "壞人"], hint: "會同你一齊玩、一齊分享開心嘢嘅人。", emoji: "🤝" },
+            { word: "快樂", wrong: ["傷心", "生氣"], hint: "收到禮物或者去玩嗰陣，個心會覺得點樣呀？", emoji: "😄" },
+            { word: "幫助", wrong: ["破壞", "打架"], hint: "當人哋有困難，我哋伸出援手，呢個行為叫咩？", emoji: "🤲" },
+            { word: "學習", wrong: ["睡覺", "搗蛋"], hint: "用心聽書，學新知識嘅過程。", emoji: "📖" },
+            { word: "鉛筆", wrong: ["擦膠", "間尺"], hint: "用嚟寫字嘅文具，寫錯咗可以用擦膠擦走。", emoji: "✏️" },
+            { word: "巴士", wrong: ["飛機", "火車"], hint: "喺馬路上行駛，可以載好多人嘅大型交通工具。", emoji: "🚌" },
+            { word: "蘋果", wrong: ["西瓜", "葡萄"], hint: "又紅又甜，可以連皮食嘅水果。", emoji: "🍎" },
+            { word: "醫生", wrong: ["司機", "廚師"], hint: "你病咗唔舒服嗰陣，會幫你睇病嘅人。", emoji: "👨‍⚕️" },
+            { word: "警察", wrong: ["消防", "郵差"], hint: "捉壞人、維持治安嘅英雄。", emoji: "👮" },
+            { word: "眼睛", wrong: ["耳朵", "嘴巴"], hint: "我哋用嚟睇電視同睇書嘅器官。", emoji: "👀" },
+            { word: "耳朵", wrong: ["鼻子", "頭髮"], hint: "我哋用嚟聽音樂同聽人講嘢嘅器官。", emoji: "👂" },
+            { word: "太陽", wrong: ["月亮", "星星"], hint: "日頭喺天上面，會發出好猛烈光芒嘅火球。", emoji: "☀️" },
+            { word: "月亮", wrong: ["白雲", "彩虹"], hint: "夜晚會喺天空出現，有時圓形有時彎彎地。", emoji: "🌙" },
+            { word: "星星", wrong: ["大樹", "石頭"], hint: "夜晚喺天上閃閃發光嘅小光點。", emoji: "⭐" },
+            { word: "天空", wrong: ["地板", "牆壁"], hint: "抬起頭向上望，藍色好大好大嘅地方。", emoji: "☁️" },
+            { word: "森林", wrong: ["沙漠", "城市"], hint: "種滿好多好多大樹，有好多動物住嘅地方。", emoji: "🌲" },
+            { word: "海洋", wrong: ["河流", "池塘"], hint: "好大好大嘅鹹水，有海豚同鯨魚游水。", emoji: "🌊" },
+            { word: "顏色", wrong: ["數字", "形狀"], hint: "紅色、黃色、藍色，呢啲統稱叫咩？", emoji: "🎨" },
+            { word: "畫畫", wrong: ["唱歌", "跳舞"], hint: "用木顏色或者蠟筆喺紙上面創作。", emoji: "🖍️" },
+            { word: "唱歌", wrong: ["跑步", "游水"], hint: "用把口發出好聽嘅音樂旋律。", emoji: "🎤" },
+            { word: "跑步", wrong: ["行路", "坐下"], hint: "用雙腳好快好快咁向前移動。", emoji: "🏃‍♀️" },
+            { word: "早餐", wrong: ["午餐", "晚餐"], hint: "朝早起身第一餐食嘅嘢。", emoji: "🥪" },
+            { word: "牛奶", wrong: ["果汁", "汽水"], hint: "白色嘅飲品，牛牛製造出嚟，飲咗會高啲。", emoji: "🥛" },
+            { word: "蔬菜", wrong: ["糖果", "薯片"], hint: "綠色健康嘅食物，好似菜心、西蘭花。", emoji: "🥦" },
+            { word: "衣服", wrong: ["鞋子", "帽子"], hint: "着喺身體上面，用嚟保暖同遮蔽身體嘅布料。", emoji: "👕" },
+            { word: "睡覺", wrong: ["起床", "洗面"], hint: "夜晚合埋雙眼休息，會發夢嘅活動。", emoji: "🛌" },
+            { word: "洗手", wrong: ["洗頭", "洗腳"], hint: "食飯前要用番梘清潔雙手，趕走細菌。", emoji: "🧼" },
+            { word: "刷牙", wrong: ["梳頭", "剪甲"], hint: "早晚要用牙膏清潔牙齒，防止蛀牙。", emoji: "🪥" },
+            { word: "乾淨", wrong: ["污糟", "凌亂"], hint: "洗完白白之後，身體會變得好咩？", emoji: "✨" },
+            { word: "安靜", wrong: ["吵鬧", "大叫"], hint: "喺圖書館入面唔可以講嘢，要保持點樣？", emoji: "🤫" },
+            { word: "感謝", wrong: ["討厭", "埋怨"], hint: "人哋幫完你，你同人講多謝，呢個行為叫咩？", emoji: "🙏" },
+            { word: "禮貌", wrong: ["粗魯", "野蠻"], hint: "見到人會打招呼，做個有教養嘅好孩子。", emoji: "🙇‍♀️" },
+            { word: "公園", wrong: ["超市", "馬路"], hint: "有滑梯同千秋，可以喺度跑跑跳跳嘅地方。", emoji: "🛝" },
+            { word: "動物", wrong: ["植物", "機器"], hint: "貓、狗、獅子、大象，呢啲全部都係咩？", emoji: "🐾" },
+            { word: "蝴蝶", wrong: ["蜜蜂", "蒼蠅"], hint: "有對好靚嘅翅膀，由毛蟲變出嚟嘅昆蟲。", emoji: "🦋" },
+            { word: "螞蟻", wrong: ["蜘蛛", "蝸牛"], hint: "黑色好細隻，但好勤力一齊搬嘢食嘅昆蟲。", emoji: "🐜" },
+            { word: "時鐘", wrong: ["日曆", "鏡子"], hint: "牆上面滴答滴答響，話俾你聽而家幾點嘅工具。", emoji: "⏰" },
+            { word: "雨傘", wrong: ["毛巾", "外套"], hint: "落雨嗰陣用嚟擔住，唔俾自己淋濕嘅工具。", emoji: "☔" },
+            { word: "閱讀", wrong: ["寫字", "畫畫"], hint: "打開故事書，睇入面嘅字同圖片。", emoji: "📖" },
+            { word: "分享", wrong: ["霸佔", "搶奪"], hint: "將自己嘅玩具或者嘢食，俾一半朋友一齊玩一齊食。", emoji: "🤲" },
+            { word: "排隊", wrong: ["插隊", "推撞"], hint: "買嘢或者玩滑梯嗰陣，要一個跟住一個企好。", emoji: "🚶🚶" },
+            { word: "安全", wrong: ["危險", "受傷"], hint: "過馬路睇綠燈，唔玩利器，咁樣先會點？", emoji: "🛡️" },
+            { word: "誠實", wrong: ["講大話", "欺騙"], hint: "做錯事勇敢認錯，唔講大話嘅好品格。", emoji: "😇" },
+            { word: "勇敢", wrong: ["膽小", "害怕"], hint: "跌倒唔喊，打針唔怕，呢種表現叫咩？", emoji: "🦸‍♀️" },
+            { word: "家庭", wrong: ["學校", "社會"], hint: "爸爸、媽媽同你，一齊組成嘅溫暖地方。", emoji: "👨‍👩‍👧" },
+            { word: "愛心", wrong: ["冷漠", "殘忍"], hint: "愛護小動物，關心身邊嘅人，代表你有咩？", emoji: "❤️" }
         ];
+
         const logicQuestions = [
             { q: "🔴 🔵 🔴 🔵 🔴 ❓", ans: "🔵", wrong: ["🔴", "🟢"] },
             { q: "🐶 🐱 🐭 🐶 🐱 ❓", ans: "🐭", wrong: ["🐶", "🐰"] },
             { q: "🚗 🚗 🚌 🚗 🚗 ❓", ans: "🚌", wrong: ["🚗", "🚓"] },
-            { q: "☀️ 🌙 ☀️ 🌙 ☀️ ❓", ans: "🌙", wrong: ["☀️", "⭐"] }
+            { q: "☀️ 🌙 ☀️ 🌙 ☀️ ❓", ans: "🌙", wrong: ["☀️", "⭐"] },
+            { q: "1️⃣ 2️⃣ 3️⃣ 1️⃣ 2️⃣ ❓", ans: "3️⃣", wrong: ["4️⃣", "1️⃣"] },
+            { q: "🍎 🍌 🍎 🍌 🍎 ❓", ans: "🍌", wrong: ["🍎", "🍇"] }
         ];
+
         const planetsData = [
             { emoji: "☀️", name: "Sun", zhName: "太陽", enFact: "The biggest star that gives us light and warm!", zhFact: "畀好多光同溫暖我哋嘅大恆星，無咗佢唔得㗎！" },
             { emoji: "🌍", name: "Earth", zhName: "地球", enFact: "Our home! It has blue oceans and green land.", zhFact: "我哋嘅屋企！有藍色嘅海水同綠色嘅大自然。" },
-            { emoji: "🌙", name: "Moon", zhName: "月亮", enFact: "It shines at night and orbits the Earth.", zhFact: "夜晚會發光，一直陪住我哋地球轉嘅好朋友！" }
-        ];
-
-        // 🌟 更新：10 則全新趣味動物新聞 🌟
-        const kidsNews = [
-            { emoji: "🦩", title: "紅鶴變色之謎", content: "紅鶴BB出世嗰陣其實係灰色㗎！因為佢哋食咗好多好多蝦同海藻，所以長大之後先會變成靚靚嘅粉紅色！" },
-            { emoji: "🐷", title: "豬仔唔識流汗", content: "你見過豬仔喺泥漿度打滾嗎？原來因為豬仔無汗腺，唔識流汗，所以要靠玩泥沙嚟幫身體降溫㗎！" },
-            { emoji: "🐊", title: "鱷魚嘅眼淚", content: "鱷魚食嘢嗰陣會流眼淚！不過佢哋唔係覺得傷心，而係因為身體鹽分太多，要透過流眼淚排走啲鹽！" },
-            { emoji: "🐌", title: "睡神大蝸牛", content: "蝸牛原來係超級「睡神」！如果天氣太乾燥或者無嘢食，佢哋可以縮入殼入面，連續瞓足 3 年覺！" },
-            { emoji: "🦉", title: "貓頭鷹擰擰頭", content: "貓頭鷹嘅眼珠係固定咗轉唔到㗎！如果佢想望隔籬，就要成個頭擰過去，佢哋個頭仲可以轉到去背脊添！" },
-            { emoji: "🐻‍❄️", title: "北極熊嘅秘密", content: "北極熊睇落白雪雪，但其實佢啲毛係透明㗎！而且剃光啲毛之後，你會發現佢嘅皮膚原來係黑色嘅！" },
-            { emoji: "🦇", title: "蝙蝠識飛天", content: "雖然雀仔識飛，但係蝙蝠先係世界上「唯一真正識飛」嘅哺乳類動物（即係會飲媽媽奶大嘅動物）！" },
-            { emoji: "🦘", title: "袋鼠條尾好重要", content: "袋鼠跳得好高好遠，全靠條大尾巴幫手平衡！如果你將袋鼠條尾抬起離開地面，佢就完全跳唔起啦！" },
-            { emoji: "🐈", title: "貓貓嘅指紋", content: "我哋人類有獨一無二嘅指紋，而貓貓就係睇「鼻紋」！每一隻貓貓鼻上面嘅紋路都係唔同㗎，就好似身份證咁！" },
-            { emoji: "🐢", title: "海龜BB性別", content: "海龜媽媽會喺沙灘掘洞生蛋。原來沙嘅「溫度」會決定BB係男定女！沙熱啲就會出女仔，涼啲就會出男仔！" }
-        ];
-        
-        const healthData = [
-            { emoji: "💧", title: "每日飲多啲水！", content: "水可以幫身體沖走細菌，令皮膚靚靚，仲會無咁容易生病㗎！記住唔好等好口渴先飲呀！" },
-            { emoji: "🧼", title: "洗手洗手洗手！", content: "出街返屋企、去完廁所同食嘢前，都要用番梘洗手最少 20 秒，咁就可以趕走手仔上面嘅細菌啦！" },
-            { emoji: "🥦", title: "食菜菜會變強壯！", content: "蔬菜入面有好多神奇嘅維他命，可以幫 Jade 快啲長高，仲會令到去廁所好暢通添！" },
-            { emoji: "🦷", title: "早晚都要刷牙仔！", content: "食完嘢之後，牙齒上面會有「蛀牙蟲」。早晚勤力刷牙，就可以將佢哋掃走，保持牙齒白雪雪！" },
-            { emoji: "🛌", title: "早啲瞓覺長高高！", content: "瞓覺嗰陣，身體入面會有「長高精靈」出嚟做嘢！早睡早起，身體就會越嚟越健康啦！" },
-            { emoji: "👀", title: "保護精靈大眼睛！", content: "睇電視或者玩平板電腦要保持距離，仲要每睇 20 分鐘就望下遠處嘅綠色植物，俾對眼休息下！" },
-            { emoji: "🏃‍♀️", title: "每日做運動出汗！", content: "跑跑步、跳下繩，出咗一身汗之後，身體嘅抵抗力就會變到好似超級英雄咁勁！" },
-            { emoji: "🤧", title: "打乞嚏要遮住口鼻！", content: "打乞嚏或者咳嗽，記住要用紙巾或者手肘遮住口鼻，咁就唔會將感冒蟲蟲傳染俾人啦！" }
-        ];
-        
-        let currentHealthIndex = 0; let currentPlanetIndex = 0; let currentNewsIndex = 0;
-        let currentMode = ''; let currentAnswer = 0; let score = 0; let currentQuestionNum = 0;
-        const TOTAL_QUESTIONS = 10; let timeLeft = 15; let timerId = null; let isAnswering = false;
-        let currentNum1 = 0, currentNum2 = 0; let isAddition = true; 
-        
-        let availableEnglishWords = []; let availableChineseWords = []; let availableLogicQuestions = [];
-        let currentEnglishWord = null; let currentChineseWord = null; let currentLogicQuestion = null;
-        let wrongWordsList = [];
-        let practiceStartTime = null; let practiceTimerId = null; 
-        const targetWhatsAppNumber = "85292201208";
-
-        let tamaStats = { hunger: 100, happy: 100, clean: 100, lastSeen: Date.now() };
-        let tamaLoopId = null;
-
-        function speakText(text, lang = 'en-US') {
-            try {
-                if ('speechSynthesis' in window) {
-                    window.speechSynthesis.cancel();
-                    let msg = new SpeechSynthesisUtterance(text);
-                    msg.lang = lang; msg.rate = 0.85;
-                    window.speechSynthesis.speak(msg);
-                }
-            } catch(e) {}
-        }
-
-        function resetToModeSelection() {
-            document.getElementById('endScreen').style.display = "none";
-            document.getElementById('startScreen').style.display = "none";
-            document.getElementById('gameScreen').style.display = "none";
-            document.getElementById('violinScreen').style.display = "none";
-            document.getElementById('planetScreen').style.display = "none"; 
-            document.getElementById('tamaScreen').style.display = "none"; 
-            document.getElementById('newsScreen').style.display = "none"; 
-            document.getElementById('healthScreen').style.display = "none"; 
-            document.getElementById('modeScreen').style.display = "flex";
-            
-            clearInterval(timerId);
-            if(practiceTimerId) clearInterval(practiceTimerId);
-            if(tamaLoopId) clearInterval(tamaLoopId); 
-            
-            let vWaBtn = document.getElementById('violinWaBtn');
-            if(vWaBtn) vWaBtn.style.display = "none";
-        }
-
-        // 🌟 徹底拆除容易令 iPhone 死機嘅預先加載語音指令 🌟
-        function selectMode(mode) {
-            currentMode = mode;
-            document.getElementById('modeScreen').style.display = "none";
-
-            if (mode === 'math' || mode === 'english' || mode === 'chinese' || mode === 'logic') {
-                document.getElementById('startScreen').style.display = "flex";
-                if (mode === 'math') document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 條密碼！<br>每題有 15 秒鐘計數！🎁";
-                else if (mode === 'english') document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 個英文密碼！<br>記得㩒 🔊 聽提示呀！🎁";
-                else if (mode === 'chinese') document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 題看圖認字！<br>幫 Jade 認熟啲中文字啦！🎁";
-                else if (mode === 'logic') document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 題邏輯推理！<br>睇清楚圖案規律，搵出問號係咩！🎁";
-            } else if (mode === 'planet') {
-                document.getElementById('planetScreen').style.display = "flex";
-                currentPlanetIndex = 0; renderPlanet();
-            } else if (mode === 'violin') {
-                document.getElementById('violinScreen').style.display = "flex";
-                document.getElementById('violinLiveTimer').innerText = "00:00";
-                document.getElementById('violinLiveTimer').style.color = "#2e8b57";
-                document.getElementById('violinStatusBox').innerText = "準備好開始拉小提琴未呀 Jade？🎻";
-                document.getElementById('startViolinBtn').style.display = "block";
-                document.getElementById('startViolinBtn').innerText = "開始練習";
-                document.getElementById('endViolinBtn').style.display = "none";
-            } else if (mode === 'tama') {
-                document.getElementById('tamaScreen').style.display = "flex";
-                initTama();
-            } else if (mode === 'news') {
-                document.getElementById('newsScreen').style.display = "flex";
-                currentNewsIndex = new Date().getDate() % kidsNews.length; 
-                renderNews();
-            } else if (mode === 'health') {
-                document.getElementById('healthScreen').style.display = "flex";
-                currentHealthIndex = Math.floor(Math.random() * healthData.length); 
-                renderHealth();
-            }
-        }
-
-        // --- 🍎 生活健康小知識邏輯 ---
-        function renderHealth() {
-            let item = healthData[currentHealthIndex];
-            document.getElementById('healthEmoji').innerText = item.emoji;
-            document.getElementById('healthTitle').innerText = item.title;
-            document.getElementById('healthContent').innerText = item.content;
-            playHealth();
-        }
-        function playHealth() { let item = healthData[currentHealthIndex]; speakText(`健康小知識：${item.title}。${item.content}`, 'zh-HK'); }
-        function nextHealth() { currentHealthIndex = Math.floor(Math.random() * healthData.length); renderHealth(); }
-
-        // --- 📰 趣味新聞邏輯 ---
-        function renderNews() {
-            let news = kidsNews[currentNewsIndex];
-            document.getElementById('newsEmoji').innerText = news.emoji;
-            document.getElementById('newsTitle').innerText = news.title;
-            document.getElementById('newsContent').innerText = news.content;
-            playNews();
-        }
-        function playNews() { let news = kidsNews[currentNewsIndex]; speakText(`今日新聞：${news.title}。${news.content}`, 'zh-HK'); }
-        function nextNews() { currentNewsIndex = Math.floor(Math.random() * kidsNews.length); renderNews(); }
-
-        // --- 🐣 寵物育成邏輯 ---
-        function initTama() {
-            let saved = localStorage.getItem('jadeTamaStats');
-            if (saved) {
-                tamaStats = JSON.parse(saved);
-                let minsPassed = Math.floor((Date.now() - tamaStats.lastSeen) / 60000);
-                if (minsPassed > 0) {
-                    tamaStats.hunger = Math.max(0, tamaStats.hunger - minsPassed);
-                    tamaStats.happy = Math.max(0, tamaStats.happy - Math.floor(minsPassed/2));
-                    tamaStats.clean = Math.max(0, tamaStats.clean - Math.floor(minsPassed/3));
-                }
-            }
-            tamaStats.lastSeen = Date.now(); updateTamaUI();
-            tamaLoopId = setInterval(() => {
-                if (tamaStats.hunger > 0) tamaStats.hunger -= 2;
-                if (tamaStats.happy > 0) tamaStats.happy -= 1;
-                tamaStats.lastSeen = Date.now();
-                updateTamaUI(); localStorage.setItem('jadeTamaStats', JSON.stringify(tamaStats));
-            }, 5000);
-        }
-
-        function updateTamaUI() {
-            document.getElementById('barHunger').style.width = tamaStats.hunger + '%';
-            document.getElementById('barHappy').style.width = tamaStats.happy + '%';
-            document.getElementById('barClean').style.width = tamaStats.clean + '%';
-            let emoji = document.getElementById('tamaEmoji'); let msg = document.getElementById('tamaMessage');
-            if (tamaStats.hunger < 30) { emoji.innerText = "😫"; msg.innerText = "Jade, 我好肚餓呀... 🍖"; } 
-            else if (tamaStats.clean < 30) { emoji.innerText = "🤢"; msg.innerText = "好污糟呀，我想沖涼！🛁"; } 
-            else if (tamaStats.happy < 30) { emoji.innerText = "😭"; msg.innerText = "好悶呀，陪我玩啦！🎾"; } 
-            else if (tamaStats.hunger > 80 && tamaStats.happy > 80 && tamaStats.clean > 80) { emoji.innerText = "🥰"; msg.innerText = "我依家超級開心！✨"; } 
-            else { emoji.innerText = "🐹"; msg.innerText = "多謝 Jade 照顧我！"; }
-        }
-
-        function animateTama() {
-            let el = document.getElementById('tamaEmoji');
-            el.style.transform = "scale(1.3) rotate(10deg)";
-            setTimeout(() => { el.style.transform = "scale(1) rotate(0deg)"; }, 300);
-        }
-
-        function feedTama() { tamaStats.hunger = Math.min(100, tamaStats.hunger + 25); tamaStats.clean = Math.max(0, tamaStats.clean - 5); animateTama(); updateTamaUI(); localStorage.setItem('jadeTamaStats', JSON.stringify(tamaStats)); speakText("好味好味！", 'zh-HK'); }
-        function playTama() { tamaStats.happy = Math.min(100, tamaStats.happy + 25); tamaStats.hunger = Math.max(0, tamaStats.hunger - 10); animateTama(); updateTamaUI(); localStorage.setItem('jadeTamaStats', JSON.stringify(tamaStats)); speakText("好好玩呀！", 'zh-HK'); }
-        function cleanTama() { tamaStats.clean = 100; animateTama(); updateTamaUI(); localStorage.setItem('jadeTamaStats', JSON.stringify(tamaStats)); speakText("好乾淨呀！", 'zh-HK'); }
-
-        // --- 🪐 星球邏輯 ---
-        function renderPlanet() {
-            let p = planetsData[currentPlanetIndex];
-            document.getElementById('planetNum').innerText = `第 ${currentPlanetIndex + 1}/${planetsData.length} 個天體`;
-            document.getElementById('planetEmoji').innerText = p.emoji;
-            document.getElementById('planetName').innerText = `${p.name} (${p.zhName})`;
-            document.getElementById('planetFact').innerText = p.zhFact;
-            playPlanetFact();
-        }
-        function playPlanetFact() { let p = planetsData[currentPlanetIndex]; speakText(`${p.name}. ${p.enFact}`, 'en-US'); }
-        function nextPlanet() { currentPlanetIndex = (currentPlanetIndex < planetsData.length - 1) ? currentPlanetIndex + 1 : 0; renderPlanet(); }
-        function prevPlanet() { currentPlanetIndex = (currentPlanetIndex > 0) ? currentPlanetIndex - 1 : planetsData.length - 1; renderPlanet(); }
-
-        // --- 🎻 小提琴邏輯 ---
-        function startViolin() {
-            practiceStartTime = new Date();
-            document.getElementById('violinStatusBox').innerHTML = "練習中... 🎶<br>Jade 俾心機拉呀！";
-            document.getElementById('startViolinBtn').style.display = "none";
-            document.getElementById('endViolinBtn').style.display = "block";
-            document.getElementById('violinLiveTimer').style.color = "#ff4500"; 
-            practiceTimerId = setInterval(() => {
-                let now = new Date();
-                let diffSecs = Math.floor((now - practiceStartTime) / 1000);
-                let mins = String(Math.floor(diffSecs / 60)).padStart(2, '0');
-                let secs = String(diffSecs % 60).padStart(2, '0');
-                document.getElementById('violinLiveTimer').innerText = `${mins}:${secs}`;
-            }, 1000);
-        }
-        function endViolin() {
-            clearInterval(practiceTimerId); let endTime = new Date();
-            let diffSecs = Math.floor((endTime - practiceStartTime) / 1000); let mins = Math.floor(diffSecs / 60); let secs = diffSecs % 60;
-            document.getElementById('violinStatusBox').innerHTML = `🎊 練習完畢！🎊<br>叻女！今日練咗 ${mins} 分鐘 ${secs} 秒 👏`;
-            document.getElementById('endViolinBtn').style.display = "none";
-            document.getElementById('startViolinBtn').style.display = "block";
-            document.getElementById('startViolinBtn').innerText = "重新開始練習";
-            document.getElementById('violinLiveTimer').style.color = "#2e8b57";
-            let startStr = practiceStartTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}); let endStr = endTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            let message = `🎻 *Jade 小提琴練習記錄* 🎻\n開始時間：${startStr}\n完結時間：${endStr}\n總共練習咗：*${mins} 分鐘 ${secs} 秒*\nJade 真係好叻女呀！👏`;
-            let waUrl = `https://wa.me/${targetWhatsAppNumber}?text=${encodeURIComponent(message)}`;
-            let vWaBtn = document.getElementById('violinWaBtn');
-            vWaBtn.href = waUrl; vWaBtn.target = "_top"; vWaBtn.style.display = "flex";
-        }
-
-        // --- 遊戲邏輯 ---
-        function playCurrentHint() {
-            if (currentMode === 'english' && currentEnglishWord) speakText(`Find the word... ${currentEnglishWord.word}. ${currentEnglishWord.hint}`, 'en-US');
-            else if (currentMode === 'chinese' && currentChineseWord) speakText(`搵下邊個字係... ${currentChineseWord.word}。${currentChineseWord.hint}`, 'zh-HK');
-            else if (currentMode === 'logic') speakText(`估吓問號應該填咩圖案呀？`, 'zh-HK');
-        }
-
-        function startGame() {
-            document.getElementById('startScreen').style.display = "none";
-            document.getElementById('gameScreen').style.display = "flex";
-            score = 0; currentQuestionNum = 0; wrongWordsList = []; 
-            if (currentMode === 'english') { availableEnglishWords = [...englishWords, ...englishWords, ...englishWords].sort(() => Math.random() - 0.5); }
-            if (currentMode === 'chinese') { availableChineseWords = [...chineseWords, ...chineseWords, ...chineseWords].sort(() => Math.random() - 0.5); }
-            if (currentMode === 'logic') { availableLogicQuestions = [...logicQuestions, ...logicQuestions, ...logicQuestions].sort(() => Math.random() - 0.5); }
-            nextQuestion();
-        }
-
-        function nextQuestion() {
-            if (currentQuestionNum >= TOTAL_QUESTIONS) { showEndScreen(); return; }
-            currentQuestionNum++;
-            document.getElementById('qNum').innerText = `第 ${currentQuestionNum}/${TOTAL_QUESTIONS} 題`;
-            document.getElementById('feedback').innerHTML = "";
-            document.getElementById('speakBtn').style.display = "none";
-            isAnswering = true;
-            if (currentMode === 'math') generateMathQuestion();
-            else if (currentMode === 'english') generateEnglishQuestion();
-            else if (currentMode === 'chinese') generateChineseQuestion();
-            else if (currentMode === 'logic') generateLogicQuestion();
-            startTimer();
-        }
-
-        function startTimer() {
-            clearInterval(timerId); timeLeft = 15; updateTimerUI();
-            timerId = setInterval(() => {
-                timeLeft--; updateTimerUI();
-                if (timeLeft <= 0) { clearInterval(timerId); timeUp(); }
-            }, 1000);
-        }
-
-        function updateTimerUI() {
-            let timerEl = document.getElementById('timerDisplay');
-            timerEl.innerText = `⏳ ${timeLeft} 秒`;
-            timerEl.className = (timeLeft <= 3) ? "timer-warning" : "";
-        }
-
-        function generateMathQuestion() {
-            isAddition = Math.random() < 0.5;
-            if (isAddition) {
-                currentNum1 = Math.floor(Math.random() * 11); currentNum2 = Math.floor(Math.random() * (21 - currentNum1));
-                currentAnswer = currentNum1 + currentNum2; document.getElementById('questionText').innerText = `${currentNum1} + ${currentNum2} = ?`;
-            } else {
-                currentNum1 = Math.floor(Math.random() * 11) + 10; currentNum2 = Math.floor(Math.random() * (currentNum1 + 1));
-                currentAnswer = currentNum1 - currentNum2; document.getElementById('questionText').innerText = `${currentNum1} - ${currentNum2} = ?`;
-            }
-            let options = [currentAnswer];
-            while (options.length < 3) {
-                let wrongAnswer = currentAnswer + (Math.floor(Math.random() * 7) - 3);
-                if (wrongAnswer >= 0 && wrongAnswer <= 20 && !options.includes(wrongAnswer)) { options.push(wrongAnswer); }
-            }
-            options.sort(() => Math.random() - 0.5); renderOptions(options);
-        }
-
-        function generateEnglishQuestion() {
-            currentEnglishWord = availableEnglishWords.pop(); currentAnswer = currentEnglishWord.word;
-            document.getElementById('questionText').innerText = currentEnglishWord.emoji;
-            document.getElementById('speakBtn').style.display = "inline-block"; playCurrentHint();
-            let options = [currentEnglishWord.word, currentEnglishWord.wrong[0], currentEnglishWord.wrong[1]];
-            options.sort(() => Math.random() - 0.5); renderOptions(options, true);
-        }
-
-        function generateChineseQuestion() {
-            currentChineseWord = availableChineseWords.pop(); currentAnswer = currentChineseWord.word;
-            document.getElementById('questionText').innerText = currentChineseWord.emoji;
-            document.getElementById('speakBtn').style.display = "inline-block"; playCurrentHint();
-            let options = [currentChineseWord.word, currentChineseWord.wrong[0], currentChineseWord.wrong[1]];
-            options.sort(() => Math.random() - 0.5); renderOptions(options, true);
-        }
-
-        function generateLogicQuestion() {
-            currentLogicQuestion = availableLogicQuestions.pop(); currentAnswer = currentLogicQuestion.ans;
-            document.getElementById('questionText').innerText = currentLogicQuestion.q;
-            document.getElementById('speakBtn').style.display = "inline-block"; playCurrentHint();
-            let options = [currentLogicQuestion.ans, currentLogicQuestion.wrong[0], currentLogicQuestion.wrong[1]];
-            options.sort(() => Math.random() - 0.5); renderOptions(options, true);
-        }
-
-        function renderOptions(options, isText = false) {
-            let optionsHtml = "";
-            for (let i = 0; i < options.length; i++) {
-                let val = isText ? `'${options[i]}'` : options[i];
-                optionsHtml += `<button class="option-btn" onclick="checkAnswer(${val})">${options[i]}</button>`;
-            }
-            document.getElementById('options').innerHTML = optionsHtml;
-        }
-
-        function disableAllButtons() {
-            let optionsContainer = document.getElementById('options');
-            if (optionsContainer) {
-                let btns = optionsContainer.getElementsByClassName('option-btn');
-                for (let i = 0; i < btns.length; i++) { btns[i].disabled = true; }
-            }
-        }
-
-        function timeUp() {
-            if (!isAnswering) return;
-            isAnswering = false; disableAllButtons();
-            
-            if (currentMode !== 'math') {
-                let recordWord = currentMode === 'logic' ? currentLogicQuestion.q : currentAnswer;
-                if (!wrongWordsList.includes(recordWord)) { wrongWordsList.push(recordWord); }
-            }
-            let feedbackEl = document.getElementById('feedback');
-            feedbackEl.innerHTML = `⏰ 哎呀！時間到！<br>答案應該係 <strong>${currentAnswer}</strong> 呀！`;
-            feedbackEl.style.color = "red";
-            
-            if (currentMode === 'english') { speakText(`Time's up! The word is ${currentAnswer}.`, 'en-US'); }
-            else if (currentMode === 'chinese' || currentMode === 'logic') { speakText(`時間到！正確答案係 ${currentAnswer}。`, 'zh-HK'); }
-            setTimeout(nextQuestion, 4000);
-        }
-
-        function checkAnswer(selected) {
-            if (!isAnswering) return;
-            isAnswering = false; clearInterval(timerId); disableAllButtons();
-            let feedbackEl = document.getElementById('feedback');
-            
-            if (selected === currentAnswer) {
-                feedbackEl.innerHTML = "🎉 答啱啦！Jade 好叻呀！加 1 分！"; feedbackEl.style.color = "#32cd32"; score++;
-                if (currentMode === 'english') speakText("Good job Jade!", 'en-US');
-                if (currentMode === 'chinese' || currentMode === 'logic') speakText("好叻女呀！", 'zh-HK');
-                setTimeout(nextQuestion, 1500);
-            } else {
-                if (currentMode !== 'math') {
-                    let recordWord = currentMode === 'logic' ? currentLogicQuestion.q : currentAnswer;
-                    if (!wrongWordsList.includes(recordWord)) { wrongWordsList.push(recordWord); }
-                }
-                let explanation = "";
-                if (currentMode === 'math') {
-                    if (isAddition) explanation = `❌ 答錯咗。<br>諗吓：有 ${currentNum1} 個 🍎，加埋 ${currentNum2} 個 🍎<br>總共應該係 <strong>${currentAnswer}</strong> 呀！`;
-                    else explanation = `❌ 答錯咗。<br>諗吓：本來有 ${currentNum1} 個 🍎，食咗 ${currentNum2} 個<br>仲淨低 <strong>${currentAnswer}</strong> 呀！`;
-                } else if (currentMode === 'english') {
-                    explanation = `❌ 答錯咗。<br>正確串法係：<strong>${currentAnswer}</strong> 呀！`;
-                    let spelledOut = currentAnswer.split('').join(' ');
-                    speakText(`Oops! The correct word is ${currentAnswer}. Spelled: ${spelledOut}.`, 'en-US');
-                } else if (currentMode === 'chinese') {
-                    explanation = `❌ 答錯咗。<br>正確答案係：<strong>${currentAnswer}</strong> 呀！`;
-                    speakText(`唔係呢個呀。正確答案係：${currentAnswer}。`, 'zh-HK');
-                } else if (currentMode === 'logic') {
-                    explanation = `❌ 答錯咗。<br>睇清楚規律，下一個應該係：<strong>${currentAnswer}</strong> 呀！`;
-                    speakText(`唔係呢個呀。正確答案係：${currentAnswer}。`, 'zh-HK');
-                }
-                feedbackEl.innerHTML = explanation; feedbackEl.style.color = "#ff4500";
-                setTimeout(nextQuestion, 4500); 
-            }
-        }
-
-        function showEndScreen() {
-            document.getElementById('gameScreen').style.display = "none";
-            let endScreen = document.getElementById('endScreen');
-            let resultBox = document.getElementById('finalResult');
-            
-            let modeName = "尋寶任務";
-            if (currentMode === 'math') modeName = '🧮 數學尋寶';
-            if (currentMode === 'english') modeName = '🔤 英文尋寶';
-            if (currentMode === 'chinese') modeName = '🀄 中文識字';
-            if (currentMode === 'logic') modeName = '🧠 邏輯小神童';
-            
-            let prizeStr = score === TOTAL_QUESTIONS ? '🎁 特別禮物一份！' : `${score} 個印仔 💮`;
-            
-            let message = `🌟 *Jade 嘅尋寶大冒險成績* 🌟\n挑戰任務：${modeName}\n成績：*${score} / ${TOTAL_QUESTIONS} 分*\n獲得獎勵：${prizeStr}\n`;
-            
-            if (currentMode !== 'math') {
-                if (wrongWordsList.length > 0) message += `\n📖 *今次需要多啲練習嘅題目：*\n${wrongWordsList.join(', ')}\n`;
-                else message += `\n📖 *今次全部答啱晒！太犀利啦！*\n`;
-            }
-            message += `\nJade 真係好叻女呀！繼續加油！👏`;
-
-            let waUrl = `https://wa.me/${targetWhatsAppNumber}?text=${encodeURIComponent(message)}`;
-            let waBtn = document.getElementById('waSendBtn');
-            waBtn.href = waUrl; waBtn.target = "_top"; 
-
-            endScreen.style.display = "flex";
-            if (score === TOTAL_QUESTIONS) {
-                if (currentMode === 'english') speakText("Amazing! You got a perfect score!", 'en-US');
-                else speakText("太犀利啦！滿分！", 'zh-HK');
-                resultBox.innerHTML = `🎊 任務完成！🎊<br>太犀利啦，你攞到滿分 ${score} 分！<br><span class="big-prize">🎁 獲得特別禮物一份！🎁</span><br>快啲叫爸爸/媽媽俾禮物你啦！`;
-            } else {
-                let stampsHtml = ""; for(let i=0; i<score; i++){ stampsHtml += "💮 "; } if(score === 0) stampsHtml = "下次再努力！💪";
-                if (currentMode === 'english') speakText(`Great try! You got ${score} points.`, 'en-US');
-                else speakText(`好叻女，你攞到 ${score} 分。`, 'zh-HK');
-                resultBox.innerHTML = `👏 任務完成！👏<br>你今次攞到 ${score} 分！<br>可以換成：<br><span class="stamps">${stampsHtml}</span><br>(${score} 個印仔)<br>繼續加油，下次挑戰滿分攞禮物啦！`;
-            }
-        }
-    </script>
-
-</body>
-</html>
+            { emoji: "🌙", name: "Moon", zhName: "
