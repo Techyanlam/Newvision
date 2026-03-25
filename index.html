@@ -26,6 +26,9 @@
         .big-prize { font-size: 36px; color: #ff1493; margin-top: 15px; display: block; }
         .stamps { font-size: 30px; color: #ff4500; margin-top: 10px; display: block; }
         .live-timer { font-size: 48px; font-weight: bold; color: #2e8b57; margin-bottom: 20px; font-family: 'Courier New', Courier, monospace; }
+        /* 新增 WhatsApp 按鈕專用顏色 */
+        .wa-btn { background-color: #25D366; font-size: 24px; width: 250px; margin-bottom: 15px; }
+        .done-btn { background-color: #87ceeb; font-size: 24px; width: 250px; }
     </style>
 </head>
 <body>
@@ -64,7 +67,10 @@
 
     <div id="endScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
         <div class="result-box" id="finalResult"></div>
-        <button class="option-btn" onclick="resetToModeSelection()" style="background-color: #32cd32; width: 200px; margin-top: 10px;">完成</button>
+        
+        <button class="option-btn wa-btn" onclick="sendScoreWhatsApp()">📲 發送成績畀爸爸媽媽</button>
+        
+        <button class="option-btn done-btn" onclick="resetToModeSelection()">返回主目錄</button>
     </div>
 
     <div id="violinScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
@@ -185,6 +191,21 @@
             let endStr = endTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
             
             let message = `🎻 *Jade 小提琴練習記錄* 🎻\n開始時間：${startStr}\n完結時間：${endStr}\n總共練習咗：*${mins} 分鐘 ${secs} 秒*\nJade 真係好叻女呀！👏`;
+
+            let waUrl = `https://wa.me/${targetWhatsAppNumber}?text=${encodeURIComponent(message)}`;
+            window.location.href = waUrl;
+        }
+
+        // --- 新增：發送遊戲成績 WhatsApp 邏輯 ---
+        function sendScoreWhatsApp() {
+            let modeName = currentMode === 'math' ? '🧮 數學尋寶' : '🔤 英文尋寶';
+            let prizeStr = score === TOTAL_QUESTIONS ? '🎁 特別禮物一份！' : `${score} 個印仔 💮`;
+            
+            let message = `🌟 *Jade 嘅尋寶大冒險成績* 🌟\n` +
+                          `挑戰任務：${modeName}\n` +
+                          `成績：*${score} / ${TOTAL_QUESTIONS} 分*\n` +
+                          `獲得獎勵：${prizeStr}\n` +
+                          `Jade 真係好叻女呀！繼續加油！👏`;
 
             let waUrl = `https://wa.me/${targetWhatsAppNumber}?text=${encodeURIComponent(message)}`;
             window.location.href = waUrl;
@@ -311,7 +332,7 @@
             endScreen.style.display = "flex";
             if (score === TOTAL_QUESTIONS) {
                 if (currentMode === 'english') speakText("Amazing! You got a perfect score!");
-                resultBox.innerHTML = `🎊 任務完成！🎊<br>太犀利啦，你攞到滿分 ${score} 分！<br><span class="big-prize">🎁 獲得特別禮物一份！🎁</span><br>快啲叫爸爸/媽媽俾禮物你啦！`;
+                resultBox.innerHTML = `🎊 任務完成！🎊<br>太犀利啦，你攞到滿分 ${score} 分！<br><span class="big-prize">🎁 獲得特別禮物一份！🎁</span><br>快啲叫爸爸/媽媽畀禮物你啦！`;
             } else {
                 let stampsHtml = ""; for(let i=0; i<score; i++){ stampsHtml += "💮 "; } if(score === 0) stampsHtml = "下次再努力！💪";
                 if (currentMode === 'english') speakText(`Great try! You got ${score} points.`);
