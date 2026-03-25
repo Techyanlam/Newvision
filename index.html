@@ -16,23 +16,7 @@
         .speaker-btn { background-color: #ffeb3b; border: 2px solid #fbc02d; border-radius: 50%; width: 50px; height: 50px; font-size: 24px; cursor: pointer; margin-top: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
         .options-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; width: 100%; max-width: 400px; }
         
-        .option-btn { 
-            background-color: #87ceeb; 
-            border: none; 
-            border-radius: 15px; 
-            padding: 12px 15px; 
-            font-size: 22px; 
-            font-weight: bold; 
-            color: #333; 
-            cursor: pointer; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2); 
-            transition: transform 0.1s; 
-            flex: 1; 
-            min-width: 80px; 
-            box-sizing: border-box; 
-            word-wrap: break-word; 
-            line-height: 1.2;
-        }
+        .option-btn { background-color: #87ceeb; border: none; border-radius: 15px; padding: 12px 15px; font-size: 22px; font-weight: bold; color: #333; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2); transition: transform 0.1s; flex: 1; min-width: 80px; box-sizing: border-box; word-wrap: break-word; line-height: 1.2; }
         .option-btn:active { transform: translateY(4px); box-shadow: 0 0px 0px rgba(0,0,0,0.2); }
         .option-btn:disabled { background-color: #ccc; cursor: not-allowed; box-shadow: none; transform: none; }
         
@@ -40,9 +24,10 @@
         .math-mode { background-color: #ff7f50; }
         .eng-mode { background-color: #9370db; }
         .zh-mode { background-color: #ff69b4; } 
-        .logic-mode { background-color: #20b2aa; } /* 邏輯模式專用顏色：海洋綠 */
+        .logic-mode { background-color: #20b2aa; } 
         .planet-mode { background-color: #4169e1; }
         .violin-mode { background-color: #3cb371; }
+        .tama-mode { background-color: #ffa500; } /* 寵物模式專用顏色：橙色 */
         
         .feedback { font-size: 20px; font-weight: bold; margin-top: 20px; min-height: 80px; line-height: 1.4; }
         .result-box { background-color: #fffacd; border: 5px solid #ffa500; border-radius: 20px; padding: 30px; font-size: 24px; font-weight: bold; color: #d2691e; width: 80%; max-width: 400px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 30px; box-sizing: border-box; line-height: 1.6; }
@@ -52,6 +37,11 @@
         
         .wa-btn { background-color: #25D366; font-size: 20px; width: 280px; margin-bottom: 15px; text-decoration: none; display: flex; align-items: center; justify-content: center; line-height: 1.4; color: white; }
         .done-btn { background-color: #87ceeb; font-size: 20px; width: 280px; text-decoration: none; display: flex; align-items: center; justify-content: center; line-height: 1.4; color: white;}
+
+        /* 他媽哥池進度條專用 */
+        .stat-bar { margin: 5px 0; display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .bar-bg { background-color: #ddd; border-radius: 10px; width: 150px; height: 15px; overflow: hidden; }
+        .bar-fill { height: 100%; transition: width 0.3s; }
     </style>
 </head>
 <body>
@@ -64,10 +54,11 @@
 
     <div id="modeScreen" style="display: flex; flex-direction: column; align-items: center;">
         <h2 style="color: #555;">你想做咩任務先？</h2>
+        <button class="mode-btn tama-mode" onclick="selectMode('tama')">🐣 寵物育成 (照顧小倉鼠)</button>
         <button class="mode-btn math-mode" onclick="selectMode('math')">🧮 數學尋寶</button>
         <button class="mode-btn eng-mode" onclick="selectMode('english')">🔤 英文尋寶</button>
         <button class="mode-btn zh-mode" onclick="selectMode('chinese')">🀄 中文識字</button>
-        <button class="mode-btn logic-mode" onclick="selectMode('logic')">🧠 邏輯小神童 (找規律)</button>
+        <button class="mode-btn logic-mode" onclick="selectMode('logic')">🧠 邏輯小神童</button>
         <button class="mode-btn planet-mode" onclick="selectMode('planet')">🪐 星球小知識</button>
         <button class="mode-btn violin-mode" onclick="selectMode('violin')">🎻 小提琴練習</button>
     </div>
@@ -108,6 +99,36 @@
         <button class="option-btn" onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer; box-shadow:none;">返回揀其他關卡</button>
     </div>
 
+    <div id="tamaScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
+        <div class="question-box" style="margin-bottom: 20px;">
+            <div id="tamaEmoji" style="font-size: 100px; margin-bottom: 10px; transition: transform 0.2s;">🐹</div>
+            <div id="tamaMessage" style="font-size: 22px; color: #555;">多謝 Jade 照顧我！</div>
+        </div>
+        
+        <div style="width: 80%; max-width: 300px; font-size: 18px; font-weight: bold; color: #555; margin-bottom: 25px;">
+            <div class="stat-bar">
+                <span>🍖 飽食度</span>
+                <div class="bar-bg"><div id="barHunger" class="bar-fill" style="background-color: #ff7f50;"></div></div>
+            </div>
+            <div class="stat-bar">
+                <span>🎾 開心度</span>
+                <div class="bar-bg"><div id="barHappy" class="bar-fill" style="background-color: #3cb371;"></div></div>
+            </div>
+            <div class="stat-bar">
+                <span>🛁 清潔度</span>
+                <div class="bar-bg"><div id="barClean" class="bar-fill" style="background-color: #87ceeb;"></div></div>
+            </div>
+        </div>
+
+        <div class="options-container">
+            <button class="option-btn" style="background-color: #ffb6c1; font-size: 22px; color: white;" onclick="feedTama()">餵食 🍖</button>
+            <button class="option-btn" style="background-color: #9370db; font-size: 22px; color: white;" onclick="playTama()">玩耍 🎾</button>
+            <button class="option-btn" style="background-color: #20b2aa; font-size: 22px; color: white;" onclick="cleanTama()">沖涼 🛁</button>
+        </div>
+        
+        <button class="option-btn" onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer; box-shadow:none;">返回揀其他關卡</button>
+    </div>
+
     <div id="endScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
         <div class="result-box" id="finalResult"></div>
         <a id="waSendBtn" class="option-btn wa-btn" href="#">📲 發送成績畀爸爸媽媽</a>
@@ -126,71 +147,45 @@
     </div>
 
     <script>
-        // 📚 英文深造字庫
+        // 📚 各大題庫
         const englishWords = [
             { word: "ELEPHANT", wrong: ["ELAPHANT", "ELEFANT"], hint: "A very large gray animal with a long trunk.", emoji: "🐘" },
             { word: "MONKEY", wrong: ["MONKY", "MUNKIE"], hint: "An animal that loves to climb trees and eat bananas.", emoji: "🐒" },
             { word: "RABBIT", wrong: ["RABIT", "RABBET"], hint: "A small animal with long ears that hops.", emoji: "🐇" },
-            { word: "TIGER", wrong: ["TIGAR", "TYGER"], hint: "A big wild cat with orange and black stripes.", emoji: "🐅" },
-            { word: "PENGUIN", wrong: ["PENGIN", "PENGUAN"], hint: "A black and white bird that swims and lives in the cold.", emoji: "🐧" },
-            { word: "ORANGE", wrong: ["ORANJE", "ORANG"], hint: "A round, sweet and juicy citrus fruit.", emoji: "🍊" },
-            { word: "BANANA", wrong: ["BANNANA", "BANANNA"], hint: "A long curved fruit with a yellow skin.", emoji: "🍌" },
-            { word: "CASTLE", wrong: ["CASLE", "CASTEL"], hint: "A large old building where kings and queens live.", emoji: "🏰" },
-            { word: "ROCKET", wrong: ["ROKET", "ROCKIT"], hint: "A vehicle that flies up into space.", emoji: "🚀" },
-            { word: "CAMERA", wrong: ["CAMRA", "KAMERA"], hint: "You use this to take photos.", emoji: "📷" },
-            { word: "PIZZA", wrong: ["PIZA", "PEEZA"], hint: "A round flat bread with cheese and tomato sauce.", emoji: "🍕" },
-            { word: "FLOWER", wrong: ["FLOWAR", "FLOUR"], hint: "A beautiful plant with colorful petals.", emoji: "🌸" }
+            { word: "TIGER", wrong: ["TIGAR", "TYGER"], hint: "A big wild cat with orange and black stripes.", emoji: "🐅" }
         ];
-
-        // 🀄 中文識字庫
         const chineseWords = [
             { word: "蘋果", wrong: ["橙", "香蕉"], hint: "又紅又甜嘅水果。", emoji: "🍎" },
             { word: "車", wrong: ["船", "飛機"], hint: "喺馬路上行駛嘅交通工具。", emoji: "🚗" },
             { word: "太陽", wrong: ["月亮", "星星"], hint: "日頭會發光發熱。", emoji: "☀️" },
-            { word: "魚", wrong: ["狗", "貓"], hint: "喺水入面游水嘅動物。", emoji: "🐟" },
-            { word: "樹", wrong: ["花", "草"], hint: "有綠色樹葉同樹幹嘅植物。", emoji: "🌳" },
-            { word: "屋", wrong: ["門", "窗"], hint: "我哋住嘅地方。", emoji: "🏠" },
-            { word: "雨", wrong: ["雲", "風"], hint: "天上面跌落嚟嘅水滴。", emoji: "🌧️" },
-            { word: "飯", wrong: ["麵", "湯"], hint: "我哋日日食嘅白色主食。", emoji: "🍚" }
+            { word: "魚", wrong: ["狗", "貓"], hint: "喺水入面游水嘅動物。", emoji: "🐟" }
         ];
-
-        // 🧠 邏輯找規律庫 (新增)
         const logicQuestions = [
             { q: "🔴 🔵 🔴 🔵 🔴 ❓", ans: "🔵", wrong: ["🔴", "🟢"] },
             { q: "🐶 🐱 🐭 🐶 🐱 ❓", ans: "🐭", wrong: ["🐶", "🐰"] },
             { q: "🚗 🚗 🚌 🚗 🚗 ❓", ans: "🚌", wrong: ["🚗", "🚓"] },
-            { q: "☀️ 🌙 ☀️ 🌙 ☀️ ❓", ans: "🌙", wrong: ["☀️", "⭐"] },
-            { q: "🍎 🍏 🍏 🍎 🍏 ❓", ans: "🍏", wrong: ["🍎", "🍊"] },
-            { q: "🔼 🔽 🔼 🔽 🔼 ❓", ans: "🔽", wrong: ["🔼", "▶️"] },
-            { q: "🌸 🌼 🌺 🌸 🌼 ❓", ans: "🌺", wrong: ["🌸", "🌹"] },
-            { q: "🦋 🐛 🦋 🐛 🦋 ❓", ans: "🐛", wrong: ["🦋", "🐝"] },
-            { q: "🍔 🍟 🍔 🍟 🍔 ❓", ans: "🍟", wrong: ["🍔", "🌭"] },
-            { q: "⭐ 🌟 ✨ ⭐ 🌟 ❓", ans: "✨", wrong: ["⭐", "🌙"] }
+            { q: "☀️ 🌙 ☀️ 🌙 ☀️ ❓", ans: "🌙", wrong: ["☀️", "⭐"] }
         ];
-
-        // 🪐 星球知識庫
         const planetsData = [
             { emoji: "☀️", name: "Sun", zhName: "太陽", enFact: "The biggest star that gives us light and warm!", zhFact: "畀好多光同溫暖我哋嘅大恆星，無咗佢唔得㗎！" },
             { emoji: "🌍", name: "Earth", zhName: "地球", enFact: "Our home! It has blue oceans and green land.", zhFact: "我哋嘅屋企！有藍色嘅海水同綠色嘅大自然。" },
             { emoji: "🌙", name: "Moon", zhName: "月亮", enFact: "It shines at night and orbits the Earth.", zhFact: "夜晚會發光，一直陪住我哋地球轉嘅好朋友！" }
         ];
-        let currentPlanetIndex = 0;
         
         let currentMode = ''; let currentAnswer = 0; let score = 0; let currentQuestionNum = 0;
         const TOTAL_QUESTIONS = 10; let timeLeft = 15; let timerId = null; let isAnswering = false;
         let currentNum1 = 0, currentNum2 = 0; let isAddition = true; 
         
-        let availableEnglishWords = [];
-        let availableChineseWords = [];
-        let availableLogicQuestions = [];
-        
-        let currentEnglishWord = null; 
-        let currentChineseWord = null; 
-        let currentLogicQuestion = null;
-        
+        let availableEnglishWords = []; let availableChineseWords = []; let availableLogicQuestions = [];
+        let currentEnglishWord = null; let currentChineseWord = null; let currentLogicQuestion = null;
         let wrongWordsList = [];
         let practiceStartTime = null; let practiceTimerId = null; 
         const targetWhatsAppNumber = "85292201208";
+        let currentPlanetIndex = 0;
+
+        // 🐹 他媽哥池變數
+        let tamaStats = { hunger: 100, happy: 100, clean: 100, lastSeen: Date.now() };
+        let tamaLoopId = null;
 
         function speakText(text, lang = 'en-US') {
             try {
@@ -210,9 +205,13 @@
             document.getElementById('gameScreen').style.display = "none";
             document.getElementById('violinScreen').style.display = "none";
             document.getElementById('planetScreen').style.display = "none"; 
+            document.getElementById('tamaScreen').style.display = "none"; 
             document.getElementById('modeScreen').style.display = "flex";
+            
             clearInterval(timerId);
             if(practiceTimerId) clearInterval(practiceTimerId);
+            if(tamaLoopId) clearInterval(tamaLoopId); // 離開寵物畫面停止扣減
+            
             let vWaBtn = document.getElementById('violinWaBtn');
             if(vWaBtn) vWaBtn.style.display = "none";
         }
@@ -230,19 +229,13 @@
 
             if (mode === 'math' || mode === 'english' || mode === 'chinese' || mode === 'logic') {
                 document.getElementById('startScreen').style.display = "flex";
-                if (mode === 'math') {
-                    document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 條密碼！<br>每題有 15 秒鐘計數，滿分有特別禮物㗎！🎁";
-                } else if (mode === 'english') {
-                    document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 個英文密碼！<br>記得㩒 🔊 聽提示呀！🎁";
-                } else if (mode === 'chinese') {
-                    document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 題看圖認字！<br>幫 Jade 認熟啲中文字啦！🎁";
-                } else if (mode === 'logic') {
-                    document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 題邏輯推理！<br>睇清楚圖案規律，搵出問號係咩！🎁";
-                }
+                if (mode === 'math') document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 條密碼！<br>每題有 15 秒鐘計數！🎁";
+                else if (mode === 'english') document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 個英文密碼！<br>記得㩒 🔊 聽提示呀！🎁";
+                else if (mode === 'chinese') document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 題看圖認字！<br>幫 Jade 認熟啲中文字啦！🎁";
+                else if (mode === 'logic') document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 題邏輯推理！<br>睇清楚圖案規律，搵出問號係咩！🎁";
             } else if (mode === 'planet') {
                 document.getElementById('planetScreen').style.display = "flex";
-                currentPlanetIndex = 0;
-                renderPlanet();
+                currentPlanetIndex = 0; renderPlanet();
             } else if (mode === 'violin') {
                 document.getElementById('violinScreen').style.display = "flex";
                 document.getElementById('violinLiveTimer').innerText = "00:00";
@@ -251,9 +244,89 @@
                 document.getElementById('startViolinBtn').style.display = "block";
                 document.getElementById('startViolinBtn').innerText = "開始練習";
                 document.getElementById('endViolinBtn').style.display = "none";
+            } else if (mode === 'tama') {
+                document.getElementById('tamaScreen').style.display = "flex";
+                initTama();
             }
         }
 
+        // --- 🐣 寵物育成 (他媽哥池) 邏輯 ---
+        function initTama() {
+            let saved = localStorage.getItem('jadeTamaStats');
+            if (saved) {
+                tamaStats = JSON.parse(saved);
+                // 計算離開咗幾耐 (每分鐘扣 1 點)
+                let minsPassed = Math.floor((Date.now() - tamaStats.lastSeen) / 60000);
+                if (minsPassed > 0) {
+                    tamaStats.hunger = Math.max(0, tamaStats.hunger - minsPassed);
+                    tamaStats.happy = Math.max(0, tamaStats.happy - Math.floor(minsPassed/2));
+                    tamaStats.clean = Math.max(0, tamaStats.clean - Math.floor(minsPassed/3));
+                }
+            }
+            tamaStats.lastSeen = Date.now();
+            updateTamaUI();
+            
+            // 開啟畫面後，每 5 秒扣少少，營造真實感
+            tamaLoopId = setInterval(() => {
+                if (tamaStats.hunger > 0) tamaStats.hunger -= 2;
+                if (tamaStats.happy > 0) tamaStats.happy -= 1;
+                tamaStats.lastSeen = Date.now();
+                updateTamaUI();
+                localStorage.setItem('jadeTamaStats', JSON.stringify(tamaStats));
+            }, 5000);
+        }
+
+        function updateTamaUI() {
+            document.getElementById('barHunger').style.width = tamaStats.hunger + '%';
+            document.getElementById('barHappy').style.width = tamaStats.happy + '%';
+            document.getElementById('barClean').style.width = tamaStats.clean + '%';
+
+            let emoji = document.getElementById('tamaEmoji');
+            let msg = document.getElementById('tamaMessage');
+
+            if (tamaStats.hunger < 30) {
+                emoji.innerText = "😫"; msg.innerText = "Jade, 我好肚餓呀... 🍖";
+            } else if (tamaStats.clean < 30) {
+                emoji.innerText = "🤢"; msg.innerText = "好污糟呀，我想沖涼！🛁";
+            } else if (tamaStats.happy < 30) {
+                emoji.innerText = "😭"; msg.innerText = "好悶呀，陪我玩啦！🎾";
+            } else if (tamaStats.hunger > 80 && tamaStats.happy > 80 && tamaStats.clean > 80) {
+                emoji.innerText = "🥰"; msg.innerText = "我依家超級開心！✨";
+            } else {
+                emoji.innerText = "🐹"; msg.innerText = "多謝 Jade 照顧我！";
+            }
+        }
+
+        function animateTama() {
+            let el = document.getElementById('tamaEmoji');
+            el.style.transform = "scale(1.3) rotate(10deg)";
+            setTimeout(() => { el.style.transform = "scale(1) rotate(0deg)"; }, 300);
+        }
+
+        function feedTama() {
+            tamaStats.hunger = Math.min(100, tamaStats.hunger + 25);
+            tamaStats.clean = Math.max(0, tamaStats.clean - 5); // 食嘢會整污糟
+            animateTama(); updateTamaUI();
+            localStorage.setItem('jadeTamaStats', JSON.stringify(tamaStats));
+            speakText("好味好味！", 'zh-HK');
+        }
+
+        function playTama() {
+            tamaStats.happy = Math.min(100, tamaStats.happy + 25);
+            tamaStats.hunger = Math.max(0, tamaStats.hunger - 10); // 玩會肚餓
+            animateTama(); updateTamaUI();
+            localStorage.setItem('jadeTamaStats', JSON.stringify(tamaStats));
+            speakText("好好玩呀！", 'zh-HK');
+        }
+
+        function cleanTama() {
+            tamaStats.clean = 100;
+            animateTama(); updateTamaUI();
+            localStorage.setItem('jadeTamaStats', JSON.stringify(tamaStats));
+            speakText("好乾淨呀！", 'zh-HK');
+        }
+
+        // --- 🪐 星球 ---
         function renderPlanet() {
             let p = planetsData[currentPlanetIndex];
             document.getElementById('planetNum').innerText = `第 ${currentPlanetIndex + 1}/${planetsData.length} 個天體`;
@@ -266,6 +339,7 @@
         function nextPlanet() { currentPlanetIndex = (currentPlanetIndex < planetsData.length - 1) ? currentPlanetIndex + 1 : 0; renderPlanet(); }
         function prevPlanet() { currentPlanetIndex = (currentPlanetIndex > 0) ? currentPlanetIndex - 1 : planetsData.length - 1; renderPlanet(); }
 
+        // --- 🎻 小提琴 ---
         function startViolin() {
             practiceStartTime = new Date();
             document.getElementById('violinStatusBox').innerHTML = "練習中... 🎶<br>Jade 俾心機拉呀！";
@@ -298,26 +372,20 @@
             vWaBtn.href = waUrl; vWaBtn.target = "_top"; vWaBtn.style.display = "flex";
         }
 
+        // --- 尋寶遊戲邏輯 ---
         function playCurrentHint() {
-            if (currentMode === 'english' && currentEnglishWord) {
-                speakText(`Find the word... ${currentEnglishWord.word}. ${currentEnglishWord.hint}`, 'en-US');
-            } else if (currentMode === 'chinese' && currentChineseWord) {
-                speakText(`搵下邊個字係... ${currentChineseWord.word}。${currentChineseWord.hint}`, 'zh-HK');
-            } else if (currentMode === 'logic') {
-                speakText(`估吓問號應該填咩圖案呀？`, 'zh-HK');
-            }
+            if (currentMode === 'english' && currentEnglishWord) speakText(`Find the word... ${currentEnglishWord.word}. ${currentEnglishWord.hint}`, 'en-US');
+            else if (currentMode === 'chinese' && currentChineseWord) speakText(`搵下邊個字係... ${currentChineseWord.word}。${currentChineseWord.hint}`, 'zh-HK');
+            else if (currentMode === 'logic') speakText(`估吓問號應該填咩圖案呀？`, 'zh-HK');
         }
 
         function startGame() {
             document.getElementById('startScreen').style.display = "none";
             document.getElementById('gameScreen').style.display = "flex";
-            score = 0; currentQuestionNum = 0;
-            wrongWordsList = []; 
-            
-            if (currentMode === 'english') { availableEnglishWords = [...englishWords].sort(() => Math.random() - 0.5); }
-            if (currentMode === 'chinese') { availableChineseWords = [...chineseWords].sort(() => Math.random() - 0.5); }
-            if (currentMode === 'logic') { availableLogicQuestions = [...logicQuestions].sort(() => Math.random() - 0.5); }
-            
+            score = 0; currentQuestionNum = 0; wrongWordsList = []; 
+            if (currentMode === 'english') { availableEnglishWords = [...englishWords, ...englishWords, ...englishWords].sort(() => Math.random() - 0.5); }
+            if (currentMode === 'chinese') { availableChineseWords = [...chineseWords, ...chineseWords, ...chineseWords].sort(() => Math.random() - 0.5); }
+            if (currentMode === 'logic') { availableLogicQuestions = [...logicQuestions, ...logicQuestions, ...logicQuestions].sort(() => Math.random() - 0.5); }
             nextQuestion();
         }
 
@@ -329,10 +397,10 @@
             document.getElementById('speakBtn').style.display = "none";
             isAnswering = true;
             
-            if (currentMode === 'math') { generateMathQuestion(); } 
-            else if (currentMode === 'english') { generateEnglishQuestion(); }
-            else if (currentMode === 'chinese') { generateChineseQuestion(); }
-            else if (currentMode === 'logic') { generateLogicQuestion(); }
+            if (currentMode === 'math') generateMathQuestion();
+            else if (currentMode === 'english') generateEnglishQuestion();
+            else if (currentMode === 'chinese') generateChineseQuestion();
+            else if (currentMode === 'logic') generateLogicQuestion();
             
             startTimer();
         }
@@ -386,14 +454,8 @@
             options.sort(() => Math.random() - 0.5); renderOptions(options, true);
         }
 
-        // 新增：邏輯推理題目生成
         function generateLogicQuestion() {
-            // 如果題庫唔夠，重新洗牌
-            if (availableLogicQuestions.length === 0) {
-                 availableLogicQuestions = [...logicQuestions].sort(() => Math.random() - 0.5);
-            }
-            currentLogicQuestion = availableLogicQuestions.pop(); 
-            currentAnswer = currentLogicQuestion.ans;
+            currentLogicQuestion = availableLogicQuestions.pop(); currentAnswer = currentLogicQuestion.ans;
             document.getElementById('questionText').innerText = currentLogicQuestion.q;
             document.getElementById('speakBtn').style.display = "inline-block";
             playCurrentHint();
@@ -432,7 +494,7 @@
             feedbackEl.style.color = "red";
             
             if (currentMode === 'english') { speakText(`Time's up! The word is ${currentAnswer}.`, 'en-US'); }
-            if (currentMode === 'chinese' || currentMode === 'logic') { speakText(`時間到！正確答案係 ${currentAnswer}。`, 'zh-HK'); }
+            else if (currentMode === 'chinese' || currentMode === 'logic') { speakText(`時間到！正確答案係 ${currentAnswer}。`, 'zh-HK'); }
             
             setTimeout(nextQuestion, 4000);
         }
@@ -486,24 +548,17 @@
             
             let prizeStr = score === TOTAL_QUESTIONS ? '🎁 特別禮物一份！' : `${score} 個印仔 💮`;
             
-            let message = `🌟 *Jade 嘅尋寶大冒險成績* 🌟\n` +
-                          `挑戰任務：${modeName}\n` +
-                          `成績：*${score} / ${TOTAL_QUESTIONS} 分*\n` +
-                          `獲得獎勵：${prizeStr}\n`;
+            let message = `🌟 *Jade 嘅尋寶大冒險成績* 🌟\n挑戰任務：${modeName}\n成績：*${score} / ${TOTAL_QUESTIONS} 分*\n獲得獎勵：${prizeStr}\n`;
             
             if (currentMode !== 'math') {
-                if (wrongWordsList.length > 0) {
-                    message += `\n📖 *今次需要多啲練習嘅題目：*\n${wrongWordsList.join(', ')}\n`;
-                } else {
-                    message += `\n📖 *今次全部答啱晒！太犀利啦！*\n`;
-                }
+                if (wrongWordsList.length > 0) message += `\n📖 *今次需要多啲練習嘅題目：*\n${wrongWordsList.join(', ')}\n`;
+                else message += `\n📖 *今次全部答啱晒！太犀利啦！*\n`;
             }
             message += `\nJade 真係好叻女呀！繼續加油！👏`;
 
             let waUrl = `https://wa.me/${targetWhatsAppNumber}?text=${encodeURIComponent(message)}`;
             let waBtn = document.getElementById('waSendBtn');
-            waBtn.href = waUrl;
-            waBtn.target = "_top"; 
+            waBtn.href = waUrl; waBtn.target = "_top"; 
 
             endScreen.style.display = "flex";
             if (score === TOTAL_QUESTIONS) {
