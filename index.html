@@ -28,13 +28,254 @@
         .planet-mode { background-color: #4169e1; }
         .violin-mode { background-color: #3cb371; }
         .tama-mode { background-color: #ffa500; } 
-        .news-mode { background-color: #ff4500; } /* 新聞模式專用顏色：火紅色 */
+        .news-mode { background-color: #ff4500; } 
+        .health-mode { background-color: #2e8b57; } /* 健康模式專用顏色：海綠色 */
         
         .feedback { font-size: 20px; font-weight: bold; margin-top: 20px; min-height: 80px; line-height: 1.4; }
         .result-box { background-color: #fffacd; border: 5px solid #ffa500; border-radius: 20px; padding: 30px; font-size: 24px; font-weight: bold; color: #d2691e; width: 80%; max-width: 400px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 30px; box-sizing: border-box; line-height: 1.6; }
         .big-prize { font-size: 32px; color: #ff1493; margin-top: 15px; display: block; }
         .stamps { font-size: 30px; color: #ff4500; margin-top: 10px; display: block; }
         .live-timer { font-size: 48px; font-weight: bold; color: #2e8b57; margin-bottom: 20px; font-family: 'Courier New', Courier, monospace; }
+        
+        .wa-btn { background-color: #25D366; font-size: 20px; width: 280px; margin-bottom: 15px; text-decoration: none; display: flex; align-items: center; justify-content: center; line-height: 1.4; color: white; }
+        .done-btn { background-color: #87ceeb; font-size: 20px; width: 280px; text-decoration: none; display: flex; align-items: center; justify-content: center; line-height: 1.4; color: white;}
+
+        .stat-bar { margin: 5px 0; display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .bar-bg { background-color: #ddd; border-radius: 10px; width: 150px; height: 15px; overflow: hidden; }
+        .bar-fill { height: 100%; transition: width 0.3s; }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <h1>🌟 Jade 嘅小天地 🌟</h1>
+    </div>
+    
+    <div class="characters">🐹 ✨ 🐟</div>
+
+    <div id="modeScreen" style="display: flex; flex-direction: column; align-items: center;">
+        <h2 style="color: #555;">你想做咩任務先？</h2>
+        <button class="mode-btn health-mode" onclick="selectMode('health')">🍎 生活健康小知識</button>
+        <button class="mode-btn news-mode" onclick="selectMode('news')">📰 趣味小新聞 (每日放送)</button>
+        <button class="mode-btn tama-mode" onclick="selectMode('tama')">🐣 寵物育成 (照顧小倉鼠)</button>
+        <button class="mode-btn math-mode" onclick="selectMode('math')">🧮 數學尋寶</button>
+        <button class="mode-btn eng-mode" onclick="selectMode('english')">🔤 英文尋寶</button>
+        <button class="mode-btn zh-mode" onclick="selectMode('chinese')">🀄 中文識字</button>
+        <button class="mode-btn logic-mode" onclick="selectMode('logic')">🧠 邏輯小神童</button>
+        <button class="mode-btn planet-mode" onclick="selectMode('planet')">🪐 星球小知識</button>
+        <button class="mode-btn violin-mode" onclick="selectMode('violin')">🎻 小提琴練習</button>
+    </div>
+
+    <div id="startScreen" style="display: none; flex-direction: column; align-items: center;">
+        <p id="modeIntro" style="font-size: 20px; color: #666; font-weight: bold;"></p>
+        <button class="option-btn" onclick="startGame()" style="background-color: #ff69b4; width: 200px; margin-top: 20px; color: white;">開始遊戲</button>
+        <button class="option-btn" onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer; box-shadow:none;">返回揀其他關卡</button>
+    </div>
+
+    <div id="gameScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
+        <div class="status-bar" id="statusBar">
+            <span id="qNum">第 1/10 題</span>
+            <span id="timerDisplay">⏳ 15 秒</span>
+        </div>
+        <div class="question-box" id="questionBox">
+            <div id="questionText" style="letter-spacing: 2px;">準備好未？</div>
+            <button id="speakBtn" class="speaker-btn" style="display: none;" onclick="playCurrentHint()">🔊</button>
+        </div>
+        <div class="options-container" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+    </div>
+
+    <div id="healthScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
+        <div class="status-bar">
+            <span style="color: #2e8b57; font-weight: bold;">🍎 今日健康貼士</span>
+        </div>
+        <div class="question-box" style="font-size: 24px;">
+            <div id="healthEmoji" style="font-size: 80px; margin-bottom: 10px;">💧</div>
+            <div id="healthTitle" style="color: #2e8b57; font-size: 28px; margin-bottom: 10px; font-weight: 900;">標題</div>
+            <div id="healthContent" style="color: #555; font-size: 22px; line-height: 1.5; margin-top: 10px; text-align: left;">內容</div>
+            <button class="speaker-btn" onclick="playHealth()">🔊</button>
+        </div>
+        <div class="options-container">
+            <button class="option-btn" style="background-color: #87ceeb; color: white;" onclick="nextHealth()">睇下一個 ➡️</button>
+        </div>
+        <button class="option-btn" onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer; box-shadow:none;">返回揀其他關卡</button>
+    </div>
+
+    <div id="newsScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
+        <div class="status-bar">
+            <span id="newsDate" style="color: #ff4500;">📅 今日焦點新聞</span>
+        </div>
+        <div class="question-box" style="font-size: 24px;">
+            <div id="newsEmoji" style="font-size: 80px; margin-bottom: 10px;">🦒</div>
+            <div id="newsTitle" style="color: #ff4500; font-size: 28px; margin-bottom: 10px; font-weight: 900;">標題</div>
+            <div id="newsContent" style="color: #555; font-size: 22px; line-height: 1.5; margin-top: 10px; text-align: left;">內容</div>
+            <button class="speaker-btn" onclick="playNews()">🔊</button>
+        </div>
+        <div class="options-container">
+            <button class="option-btn" style="background-color: #87ceeb; color: white;" onclick="nextNews()">睇下一則 ➡️</button>
+        </div>
+        <button class="option-btn" onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer; box-shadow:none;">返回揀其他關卡</button>
+    </div>
+
+    <div id="planetScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
+        <div class="status-bar">
+            <span id="planetNum">第 1/10 個天體</span>
+        </div>
+        <div class="question-box" id="planetBox" style="font-size: 24px;">
+            <div id="planetEmoji" style="font-size: 80px; margin-bottom: 10px;">🌍</div>
+            <div id="planetName" style="color: #4169e1; font-size: 32px; margin-bottom: 5px; font-weight: 900;">Earth (地球)</div>
+            <div id="planetFact" style="color: #555; font-size: 20px; line-height: 1.4; margin-top: 10px;">我哋嘅屋企！有藍色嘅海同綠色嘅地。</div>
+            <button class="speaker-btn" onclick="playPlanetFact()">🔊</button>
+        </div>
+        <div class="options-container">
+            <button class="option-btn" style="background-color: #ffb6c1; color: white;" onclick="prevPlanet()">⬅️ 上一個</button>
+            <button class="option-btn" style="background-color: #87ceeb; color: white;" onclick="nextPlanet()">下一個 ➡️</button>
+        </div>
+        <button class="option-btn" onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer; box-shadow:none;">返回揀其他關卡</button>
+    </div>
+
+    <div id="tamaScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
+        <div class="question-box" style="margin-bottom: 20px;">
+            <div id="tamaEmoji" style="font-size: 100px; margin-bottom: 10px; transition: transform 0.2s;">🐹</div>
+            <div id="tamaMessage" style="font-size: 22px; color: #555;">多謝 Jade 照顧我！</div>
+        </div>
+        <div style="width: 80%; max-width: 300px; font-size: 18px; font-weight: bold; color: #555; margin-bottom: 25px;">
+            <div class="stat-bar"><span>🍖 飽食度</span><div class="bar-bg"><div id="barHunger" class="bar-fill" style="background-color: #ff7f50;"></div></div></div>
+            <div class="stat-bar"><span>🎾 開心度</span><div class="bar-bg"><div id="barHappy" class="bar-fill" style="background-color: #3cb371;"></div></div></div>
+            <div class="stat-bar"><span>🛁 清潔度</span><div class="bar-bg"><div id="barClean" class="bar-fill" style="background-color: #87ceeb;"></div></div></div>
+        </div>
+        <div class="options-container">
+            <button class="option-btn" style="background-color: #ffb6c1; font-size: 22px; color: white;" onclick="feedTama()">餵食 🍖</button>
+            <button class="option-btn" style="background-color: #9370db; font-size: 22px; color: white;" onclick="playTama()">玩耍 🎾</button>
+            <button class="option-btn" style="background-color: #20b2aa; font-size: 22px; color: white;" onclick="cleanTama()">沖涼 🛁</button>
+        </div>
+        <button class="option-btn" onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer; box-shadow:none;">返回揀其他關卡</button>
+    </div>
+
+    <div id="endScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
+        <div class="result-box" id="finalResult"></div>
+        <a id="waSendBtn" class="option-btn wa-btn" href="#">📲 發送成績畀爸爸媽媽</a>
+        <button class="option-btn done-btn" onclick="resetToModeSelection()">返回主目錄</button>
+    </div>
+
+    <div id="violinScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
+        <div class="question-box" id="violinStatusBox" style="font-size: 26px;">
+            準備好開始拉小提琴未呀 Jade？🎻
+        </div>
+        <div class="live-timer" id="violinLiveTimer">00:00</div>
+        <button class="option-btn" id="startViolinBtn" onclick="startViolin()" style="background-color: #32cd32; width: 250px; margin-bottom: 15px; color: white;">開始練習</button>
+        <button class="option-btn" id="endViolinBtn" onclick="endViolin()" style="display: none; background-color: #ff4500; width: 250px; margin-bottom: 15px; color: white;">完結練習</button>
+        <a id="violinWaBtn" class="option-btn wa-btn" style="display: none;" href="#">📲 發送練習記錄</a>
+        <button class="option-btn" onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer; box-shadow:none;">返回揀其他關卡</button>
+    </div>
+
+    <script>
+        // 📚 題庫與資料庫
+        const englishWords = [
+            { word: "ELEPHANT", wrong: ["ELAPHANT", "ELEFANT"], hint: "A very large gray animal with a long trunk.", emoji: "🐘" },
+            { word: "MONKEY", wrong: ["MONKY", "MUNKIE"], hint: "An animal that loves to climb trees and eat bananas.", emoji: "🐒" },
+            { word: "RABBIT", wrong: ["RABIT", "RABBET"], hint: "A small animal with long ears that hops.", emoji: "🐇" },
+            { word: "TIGER", wrong: ["TIGAR", "TYGER"], hint: "A big wild cat with orange and black stripes.", emoji: "🐅" }
+        ];
+        const chineseWords = [
+            { word: "蘋果", wrong: ["橙", "香蕉"], hint: "又紅又甜嘅水果。", emoji: "🍎" },
+            { word: "車", wrong: ["船", "飛機"], hint: "喺馬路上行駛嘅交通工具。", emoji: "🚗" },
+            { word: "太陽", wrong: ["月亮", "星星"], hint: "日頭會發光發熱。", emoji: "☀️" },
+            { word: "魚", wrong: ["狗", "貓"], hint: "喺水入面游水嘅動物。", emoji: "🐟" }
+        ];
+        const logicQuestions = [
+            { q: "🔴 🔵 🔴 🔵 🔴 ❓", ans: "🔵", wrong: ["🔴", "🟢"] },
+            { q: "🐶 🐱 🐭 🐶 🐱 ❓", ans: "🐭", wrong: ["🐶", "🐰"] },
+            { q: "🚗 🚗 🚌 🚗 🚗 ❓", ans: "🚌", wrong: ["🚗", "🚓"] },
+            { q: "☀️ 🌙 ☀️ 🌙 ☀️ ❓", ans: "🌙", wrong: ["☀️", "⭐"] }
+        ];
+        const planetsData = [
+            { emoji: "☀️", name: "Sun", zhName: "太陽", enFact: "The biggest star that gives us light and warm!", zhFact: "畀好多光同溫暖我哋嘅大恆星，無咗佢唔得㗎！" },
+            { emoji: "🌍", name: "Earth", zhName: "地球", enFact: "Our home! It has blue oceans and green land.", zhFact: "我哋嘅屋企！有藍色嘅海水同綠色嘅大自然。" },
+            { emoji: "🌙", name: "Moon", zhName: "月亮", enFact: "It shines at night and orbits the Earth.", zhFact: "夜晚會發光，一直陪住我哋地球轉嘅好朋友！" }
+        ];
+        const kidsNews = [
+            { emoji: "🦒", title: "長頸鹿條脷係藍色㗎！", content: "原來長頸鹿條脷係深藍色或者黑色㗎！因為佢哋成日伸條脷出嚟食樹葉，深色可以防止被猛烈嘅太陽曬傷。" },
+            { emoji: "🦦", title: "海獺會拖住手仔瞓覺！", content: "海獺喺水面瞓覺嗰陣，會同同伴手拖手，咁就唔怕被水流沖散啦！係咪好溫馨呢？" },
+            { emoji: "🐙", title: "章魚有三個心臟呀！", content: "你知唔知章魚有三個心臟同埋藍色嘅血㗎？佢哋仲超級聰明，識得自己扭開玻璃樽蓋添！" }
+        ];
+        
+        // 🍎 生活健康小知識庫 (新增)
+        const healthData = [
+            { emoji: "💧", title: "每日飲多啲水！", content: "水可以幫身體沖走細菌，令皮膚靚靚，仲會無咁容易生病㗎！記住唔好等好口渴先飲呀！" },
+            { emoji: "🧼", title: "洗手洗手洗手！", content: "出街返屋企、去完廁所同食嘢前，都要用番梘洗手最少 20 秒，咁就可以趕走手仔上面嘅細菌啦！" },
+            { emoji: "🥦", title: "食菜菜會變強壯！", content: "蔬菜入面有好多神奇嘅維他命，可以幫 Jade 快啲長高，仲會令到去廁所好暢通添！" },
+            { emoji: "🦷", title: "早晚都要刷牙仔！", content: "食完嘢之後，牙齒上面會有「蛀牙蟲」。早晚勤力刷牙，就可以將佢哋掃走，保持牙齒白雪雪！" },
+            { emoji: "🛌", title: "早啲瞓覺長高高！", content: "瞓覺嗰陣，身體入面會有「長高精靈」出嚟做嘢！早睡早起，身體就會越嚟越健康啦！" },
+            { emoji: "👀", title: "保護精靈大眼睛！", content: "睇電視或者玩平板電腦要保持距離，仲要每睇 20 分鐘就望下遠處嘅綠色植物，俾對眼休息下！" },
+            { emoji: "🏃‍♀️", title: "每日做運動出汗！", content: "跑跑步、跳下繩，出咗一身汗之後，身體嘅抵抗力就會變到好似超級英雄咁勁！" },
+            { emoji: "🤧", title: "打乞嚏要遮住口鼻！", content: "打乞嚏或者咳嗽，記住要用紙巾或者手肘遮住口鼻，咁就唔會將感冒蟲蟲傳染俾人啦！" }
+        ];
+        let currentHealthIndex = 0;
+        
+        let currentMode = ''; let currentAnswer = 0; let score = 0; let currentQuestionNum = 0;
+        const TOTAL_QUESTIONS = 10; let timeLeft = 15; let timerId = null; let isAnswering = false;
+        let currentNum1 = 0, currentNum2 = 0; let isAddition = true; 
+        
+        let availableEnglishWords = []; let availableChineseWords = []; let availableLogicQuestions = [];
+        let currentEnglishWord = null; let currentChineseWord = null; let currentLogicQuestion = null;
+        let wrongWordsList = [];
+        let practiceStartTime = null; let practiceTimerId = null; 
+        const targetWhatsAppNumber = "85292201208";
+        let currentPlanetIndex = 0; let currentNewsIndex = 0;
+
+        let tamaStats = { hunger: 100, happy: 100, clean: 100, lastSeen: Date.now() };
+        let tamaLoopId = null;
+
+        function speakText(text, lang = 'en-US') {
+            try {
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                    let msg = new SpeechSynthesisUtterance(text);
+                    msg.lang = lang; msg.rate = 0.85;
+                    window.speechSynthesis.speak(msg);
+                }
+            } catch(e) {}
+        }
+
+        function resetToModeSelection() {
+            document.getElementById('endScreen').style.display = "none";
+            document.getElementById('startScreen').style.display = "none";
+            document.getElementById('gameScreen').style.display = "none";
+            document.getElementById('violinScreen').style.display = "none";
+            document.getElementById('planetScreen').style.display = "none"; 
+            document.getElementById('tamaScreen').style.display = "none"; 
+            document.getElementById('newsScreen').style.display = "none"; 
+            document.getElementById('healthScreen').style.display = "none"; 
+            document.getElementById('modeScreen').style.display = "flex";
+            
+            clearInterval(timerId);
+            if(practiceTimerId) clearInterval(practiceTimerId);
+            if(tamaLoopId) clearInterval(tamaLoopId); 
+            
+            let vWaBtn = document.getElementById('violinWaBtn');
+            if(vWaBtn) vWaBtn.style.display = "none";
+        }
+
+        function selectMode(mode) {
+            currentMode = mode;
+            document.getElementById('modeScreen').style.display = "none";
+
+            try {
+                if ('speechSynthesis' in window) {
+                    let silentMsg = new SpeechSynthesisUtterance('');
+                    window.speechSynthesis.speak(silentMsg);
+                }
+            } catch(e) {}
+
+            if (mode === 'math' || mode === 'english' || mode === 'chinese' || mode === 'logic') {
+                document.getElementById('startScreen').style.display = "flex";
+                if (mode === 'math') document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 條密碼！<br>每題有 15 秒鐘計數！🎁";
+                else if (mode === 'english') document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 個英文密碼！<br>記得㩒 🔊 聽提示呀！🎁";
+                else if (mode === 'chinese') document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 題看圖認字！<br>幫 Jade 認熟啲中文字啦！🎁";
+                else if (mode === 'logic') document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 題邏輯推理！<br>睇清楚圖案規律，搵出問號係咩！🎁";
+            } else if (mode === 'planet') {
+                document.getElementB        .live-timer { font-size: 48px; font-weight: bold; color: #2e8b57; margin-bottom: 20px; font-family: 'Courier New', Courier, monospace; }
         
         .wa-btn { background-color: #25D366; font-size: 20px; width: 280px; margin-bottom: 15px; text-decoration: none; display: flex; align-items: center; justify-content: center; line-height: 1.4; color: white; }
         .done-btn { background-color: #87ceeb; font-size: 20px; width: 280px; text-decoration: none; display: flex; align-items: center; justify-content: center; line-height: 1.4; color: white;}
