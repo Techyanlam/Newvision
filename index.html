@@ -30,7 +30,8 @@
         .tama-mode { background-color: #ffa500; } 
         .news-mode { background-color: #ff4500; } 
         .health-mode { background-color: #2e8b57; } 
-        .weather-mode { background-color: #00ced1; } /* 🌟 新增：天氣按鈕顏色 */
+        .weather-mode { background-color: #00ced1; } 
+        .reading-mode { background-color: #dda0dd; } /* 🌟 新增：閱讀理解按鈕顏色 */
         
         .feedback { font-size: 20px; font-weight: bold; margin-top: 20px; min-height: 80px; line-height: 1.4; }
         .result-box { background-color: #fffacd; border: 5px solid #ffa500; border-radius: 20px; padding: 30px; font-size: 24px; font-weight: bold; color: #d2691e; width: 80%; max-width: 400px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 30px; box-sizing: border-box; line-height: 1.6; }
@@ -40,7 +41,6 @@
         
         .wa-btn { background-color: #25D366; font-size: 20px; width: 280px; margin-bottom: 15px; text-decoration: none; display: flex; align-items: center; justify-content: center; line-height: 1.4; color: white; }
         
-        /* 統一嘅「返回主頁」按鈕樣式 */
         .home-btn { background-color: #ff7f50; border: none; border-radius: 15px; padding: 12px 20px; font-size: 20px; font-weight: bold; color: white; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2); margin-top: 30px; width: 80%; max-width: 300px; display: flex; justify-content: center; align-items: center; gap: 10px; }
         .home-btn:active { transform: translateY(4px); box-shadow: none; }
 
@@ -48,13 +48,15 @@
         .bar-bg { background-color: #ddd; border-radius: 10px; width: 150px; height: 15px; overflow: hidden; }
         .bar-fill { height: 100%; transition: width 0.3s; }
         
-        /* 天氣預報卡片樣式 */
         .weather-card { background-color: white; border-radius: 15px; padding: 15px; margin-bottom: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; align-items: center; text-align: left; width: 100%; box-sizing: border-box; border-left: 5px solid #00ced1; }
         .weather-icon { font-size: 45px; margin-right: 15px; min-width: 60px; text-align: center; }
         .weather-info { flex: 1; }
         .weather-date { font-size: 18px; font-weight: bold; color: #333; margin-bottom: 4px; }
         .weather-temp { font-size: 18px; color: #ff4500; font-weight: bold; margin-bottom: 4px; }
         .weather-desc { font-size: 15px; color: #666; line-height: 1.3; }
+        
+        /* 閱讀理解文字樣式 */
+        .reading-text p { margin-bottom: 15px; text-indent: 2em; }
     </style>
 </head>
 <body>
@@ -67,6 +69,7 @@
 
     <div id="modeScreen" style="display: flex; flex-direction: column; align-items: center;">
         <h2 style="color: #555;">你想做咩任務先？</h2>
+        <button class="mode-btn reading-mode" onclick="selectMode('reading')">📖 閱讀理解 (耶穌的愛心)</button>
         <button class="mode-btn weather-mode" onclick="selectMode('weather')">🌤️ 未來七天天氣預報</button>
         <button class="mode-btn news-mode" onclick="selectMode('news')">📰 趣味小新聞 (每日放送)</button>
         <button class="mode-btn health-mode" onclick="selectMode('health')">🍎 生活健康小知識</button>
@@ -85,12 +88,29 @@
         <button class="home-btn" onclick="resetToModeSelection()">🏠 返回主頁</button>
     </div>
 
+    <div id="readingScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
+        <div class="status-bar" style="background-color: #dda0dd; color: white; justify-content: center;">
+            <span style="font-weight: bold;">📖 閱讀理解時間</span>
+        </div>
+        <div class="question-box reading-text" style="font-size: 20px; font-weight: normal; text-align: left; line-height: 1.8; color: #333;">
+            <h3 style="text-align: center; color: #ff69b4; margin-top: 0; font-size: 26px;">耶穌的愛心</h3>
+            <p>耶穌在準備受苦前的那天晚上，曾經教導他的門徒說：「你們要相親相愛，像我愛了你們一樣，這樣別人便知道，你們是我的門徒了。我離開你們後，天父會賜給你們聖神，幫助你們的。」</p>
+            <p>後來，耶穌獨自一個人祈禱，求天父賜給他力量。他在受苦的時候，還不斷祈求天父說：「求你寬恕世人，因為他們不知道他們做了甚麼錯事。」</p>
+            <p>我們也要學習耶穌一樣，愛主愛人啊！</p>
+            <div style="text-align: center;">
+                <button class="speaker-btn" onclick="playReadingPassage()">🔊</button>
+            </div>
+        </div>
+        <button class="option-btn" onclick="startReadingQuiz()" style="background-color: #ff69b4; width: 250px; color: white; margin-bottom: 15px;">開始答題 ➡️</button>
+        <button class="home-btn" onclick="resetToModeSelection()" style="margin-top: 10px;">🏠 返回主頁</button>
+    </div>
+
     <div id="gameScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
         <div class="status-bar" id="statusBar">
             <span id="qNum">第 1/10 題</span>
             <span id="timerDisplay">⏳ 15 秒</span>
         </div>
-        <div class="question-box" id="questionBox">
+        <div class="question-box" id="questionBox" style="font-size: 32px;">
             <div id="questionText" style="letter-spacing: 2px;">準備好未？</div>
             <button id="speakBtn" class="speaker-btn" style="display: none;" onclick="playCurrentHint()">🔊</button>
         </div>
@@ -278,52 +298,7 @@
             { emoji: "🐷", title: "豬仔唔識流汗", content: "豬仔係無汗腺嘅，佢哋要靠玩泥沙嚟幫身體降溫㗎！" },
             { emoji: "🐊", title: "鱷魚嘅眼淚", content: "鱷魚食嘢流眼淚，唔係傷心，而係因為身體鹽分太多要排走啲鹽！" },
             { emoji: "🐌", title: "睡神大蝸牛", content: "蝸牛如果覺得太乾燥，可以縮入殼入面，連續瞓足 3 年覺！" },
-            { emoji: "🦉", title: "貓頭鷹擰擰頭", content: "貓頭鷹眼珠轉唔到，但佢哋個頭可以向後轉到去背脊添！" },
-            { emoji: "🐻‍❄️", title: "北極熊嘅秘密", content: "北極熊啲毛其實係透明㗎，而且皮膚原來係黑色嘅！" },
-            { emoji: "🦇", title: "蝙蝠識飛天", content: "蝙蝠係世界上唯一真正識得飛天嘅哺乳類動物（飲媽媽奶大嘅動物）！" },
-            { emoji: "🦘", title: "袋鼠條尾好重要", content: "袋鼠跳得好，全靠大尾巴平衡！如果將佢條尾抬起，佢就跳唔起啦！" },
-            { emoji: "🐈", title: "貓貓嘅指紋", content: "每隻貓貓鼻上面嘅紋路都係獨一無二㗎，就好似人類嘅指紋咁！" },
-            { emoji: "🐢", title: "海龜BB性別", content: "沙嘅溫度會決定海龜BB係男定女！沙熱啲出女仔，涼啲出男仔！" },
-            { emoji: "🦒", title: "長頸鹿條脷", content: "長頸鹿條脷係深藍色㗎！深色可以防止食樹葉時被猛烈嘅太陽曬傷。" },
-            { emoji: "🦦", title: "海獺手拖手", content: "海獺喺水面瞓覺會同同伴手拖手，咁就唔怕被水流沖散啦！" },
-            { emoji: "🐙", title: "章魚三個心臟", content: "章魚有三個心臟同藍色嘅血，佢哋仲聰明到識得自己扭開玻璃樽蓋！" },
-            { emoji: "🐧", title: "企 অবলম্ব", content: "企鵝喺冰面會趴喺度，用個大肚腩當滑板咁滑行，快過行路好多！" },
-            { emoji: "🐘", title: "大象用鼻沖涼", content: "大象會用長鼻吸水，好似花灑咁噴落自己背脊度沖涼。" },
-            { emoji: "🦋", title: "蝴蝶用腳試味", content: "蝴蝶只要將隻腳企喺花上面，就知啲花蜜甜唔甜啦！" },
-            { emoji: "🐨", title: "樹熊愛睡覺", content: "樹熊一日可以瞓成 20 個鐘頭！醒嗰陣就係食尤加利樹葉。" },
-            { emoji: "🐝", title: "蜜蜂跳舞", content: "蜜蜂搵到花蜜，會飛返去跳「8字舞」，話俾朋友知花蜜喺邊！" },
-            { emoji: "🦓", title: "斑馬條紋", content: "每隻斑馬身上嘅黑白條紋都係唔同㗎，無兩隻會完全一樣！" },
-            { emoji: "🐬", title: "海豚半睡半醒", content: "海豚瞓覺嗰陣，只會合埋一隻眼，大腦一半休息一半清醒，隨時準備呼吸！" },
-            { emoji: "🕷️", title: "蜘蛛唔係昆蟲", content: "蜘蛛有8隻腳，但昆蟲只有6隻腳，所以蜘蛛唔算係昆蟲家族！" },
-            { emoji: "🌊", title: "海馬爸爸生BB", content: "喺海馬嘅世界，負責陀BB同生BB嘅其實係海馬爸爸！" },
-            { emoji: "🦴", title: "BB骨頭多過大人", content: "初生BB有300幾嚿骨頭，大個之後啲骨會融合，大人得返206嚿！" },
-            { emoji: "👅", title: "獨一無二嘅脷", content: "就好似指紋咁，每個人條脷嘅紋路都係獨一無二㗎！" },
-            { emoji: "🚀", title: "太空無聲", content: "宇宙太空入面係真空嘅，無空氣傳遞聲音，所以係超級安靜㗎！" },
-            { emoji: "🌎", title: "地球轉得好快", content: "地球其實一路喺度轉，速度仲快過飛機，不過我哋感覺唔到！" },
-            { emoji: "🐫", title: "駱駝嘅駝峰", content: "駱駝背脊個嚿嘢入面唔係裝水，而係裝滿脂肪，用嚟儲備能量！" },
-            { emoji: "🦈", title: "鯊魚狂換牙", content: "鯊魚一生人可以換幾萬隻牙，跌咗一隻好快就會生返出嚟！" },
-            { emoji: "🐸", title: "青蛙用眼吞嘢食", content: "青蛙吞嘢食嗰陣會用力眨眼，用眼球嘅力量將嘢食推落肚！" },
-            { emoji: "🦥", title: "樹懶超級慢", content: "樹懶動作慢到連啲毛上面都會生出綠色嘅海藻！" },
-            { emoji: "🍎", title: "蘋果會浮水", content: "原來蘋果入面有四分之一都係空氣，所以擺落水度會浮起！" },
-            { emoji: "💧", title: "雲超級重", content: "天上一嚿好似棉花糖嘅白雲，其實入面嘅水加埋有幾十隻大象咁重！" },
-            { emoji: "🐦", title: "蜂鳥識倒後飛", content: "蜂鳥係世界上唯一一種識得向後飛嘅雀仔！" },
-            { emoji: "🦒", title: "長頸鹿頸骨", content: "長頸鹿條頸咁長，但原來佢同人類一樣，都係只有7嚿頸椎骨！" },
-            { emoji: "🐟", title: "金魚記憶", content: "成日話金魚只有3秒記憶，其實係錯㗎！金魚可以記住幾個月嘅事！" },
-            { emoji: "🐜", title: "大力士螞蟻", content: "一隻細細隻嘅螞蟻，可以舉起比自己重50倍嘅嘢！" },
-            { emoji: "🌳", title: "樹木會傾偈", content: "森林入面嘅大樹，會透過地底嘅蘑菇網互相傳遞訊息㗎！" },
-            { emoji: "👃", title: "人類個鼻", content: "我哋個鼻可以分辨到超過一萬種唔同嘅氣味！" },
-            { emoji: "🤧", title: "打乞嚏速度", content: "打乞嚏噴出嚟嘅氣流，速度可以快過一架喺高速公路行駛嘅車！" },
-            { emoji: "🦷", title: "琺瑯質最硬", content: "人體入面最堅硬嘅部位唔係骨頭，而係牙齒表面嘅琺瑯質！" },
-            { emoji: "🦔", title: "刺蝟BB", content: "刺蝟BB出世嗰陣，啲刺係軟淋淋㗎，唔會拮親媽媽！" },
-            { emoji: "🐁", title: "老鼠識笑", content: "科學家發現，如果你去痕老鼠仔，佢哋開心嗰陣會發出笑聲！" },
-            { emoji: "🌈", title: "圓形嘅彩虹", content: "我哋平時見到彩虹係半圓，但如果你坐飛機喺高空望，彩虹其實係一個完整嘅圓形！" },
-            { emoji: "🍉", title: "西瓜係蔬菜？", content: "喺植物學嚟講，西瓜其實屬於葫蘆科，同南瓜、青瓜係親戚！" },
-            { emoji: "🧲", title: "地球係大磁鐵", content: "地球內部有好多金屬，成個地球就好似一舊超級大磁鐵咁！" },
-            { emoji: "🌋", title: "海底火山", content: "世界上大部分嘅火山，其實都係隱藏喺深深嘅海底入面！" },
-            { emoji: "🦟", title: "蚊鍾意咩人", content: "蚊最鍾意咬啲出汗多、同埋着深色衫嘅人！" },
-            { emoji: "❄️", title: "雪花形狀", content: "每一粒落落嚟嘅雪花，形狀都係六角形，而且粒粒都唔同！" },
-            { emoji: "🍯", title: "蜂蜜唔會壞", content: "純天然嘅蜂蜜係唔會過期㗎！就算放咗幾千年都仲食得！" },
-            { emoji: "🦉", title: "貓頭鷹無眼珠", content: "貓頭鷹嘅眼睛其實係管狀，唔係圓球形，所以眼珠轉唔到！" }
+            { emoji: "🦉", title: "貓頭鷹擰擰頭", content: "貓頭鷹眼珠轉唔到，但佢哋個頭可以向後轉到去背脊添！" }
         ];
         
         const healthData = [
@@ -331,19 +306,26 @@
             { emoji: "🧼", title: "洗手洗手洗手！", content: "出街返屋企、去完廁所同食嘢前，都要用番梘洗手最少 20 秒！" },
             { emoji: "🥦", title: "食菜菜會變強壯！", content: "蔬菜入面有好多神奇嘅維他命，可以幫 Jade 快啲長高！" },
             { emoji: "🦷", title: "早晚都要刷牙仔！", content: "早晚勤力刷牙，就可以將蛀牙蟲掃走，保持牙齒白雪雪！" },
-            { emoji: "🛌", title: "早啲瞓覺長高高！", content: "瞓覺嗰陣，身體入面會有「長高精靈」出嚟做嘢㗎！" },
-            { emoji: "👀", title: "保護精靈大眼睛！", content: "睇電視或者玩平板電腦要保持距離，仲要俾對眼休息下！" },
-            { emoji: "🏃‍♀️", title: "每日做運動出汗！", content: "跑跑步、跳下繩，出咗一身汗之後，身體嘅抵抗力就會變到好勁！" },
-            { emoji: "🤧", title: "打乞嚏要遮住口鼻！", content: "打乞嚏或者咳嗽，記住要用紙巾或者手肘遮住口鼻！" }
+            { emoji: "🛌", title: "早啲瞓覺長高高！", content: "瞓覺嗰陣，身體入面會有「長高精靈」出嚟做嘢㗎！" }
+        ];
+
+        // 🌟 新增：閱讀理解題庫 🌟
+        const readingQuestionsData = [
+            { q: "耶穌教導門徒要點樣對大家？", ans: "相親相愛", wrong: ["各自玩耍", "互相責罵"] },
+            { q: "耶穌祈禱時，向天父求咩？", ans: "賜畀佢力量", wrong: ["好味嘅食物", "好多金錢"] },
+            { q: "耶穌離開後，天父會賜咩畀門徒？", ans: "聖神", wrong: ["玩具", "書本"] },
+            { q: "耶穌求天父點樣對待世人？", ans: "寬恕世人", wrong: ["懲罰世人", "責罵世人"] },
+            { q: "我哋要學習耶穌一樣，做到咩？", ans: "愛主愛人", wrong: ["唔理人哋", "自私自利"] }
         ];
         
         let currentHealthIndex = 0; let currentPlanetIndex = 0; let currentNewsIndex = 0;
         let currentMode = ''; let currentAnswer = 0; let score = 0; let currentQuestionNum = 0;
-        const TOTAL_QUESTIONS = 10; let timeLeft = 15; let timerId = null; let isAnswering = false;
+        let totalQuestions = 10; // 改為變數，方便閱讀理解變成 5 題
+        let timeLeft = 15; let timerId = null; let isAnswering = false;
         let currentNum1 = 0, currentNum2 = 0; let isAddition = true; 
         
-        let availableEnglishWords = []; let availableChineseWords = []; let availableLogicQuestions = [];
-        let currentEnglishWord = null; let currentChineseWord = null; let currentLogicQuestion = null;
+        let availableEnglishWords = []; let availableChineseWords = []; let availableLogicQuestions = []; let availableReadingQuestions = [];
+        let currentEnglishWord = null; let currentChineseWord = null; let currentLogicQuestion = null; let currentReadingQuestion = null;
         let wrongWordsList = [];
         let practiceStartTime = null; let practiceTimerId = null; 
         const targetWhatsAppNumber = "85292201208";
@@ -363,7 +345,6 @@
         }
 
         function resetToModeSelection() {
-            // 🛑 撳「返回主頁」會自動停止任何發聲
             try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch(e) {}
             
             document.getElementById('endScreen').style.display = "none";
@@ -374,9 +355,11 @@
             document.getElementById('tamaScreen').style.display = "none"; 
             document.getElementById('newsScreen').style.display = "none"; 
             document.getElementById('healthScreen').style.display = "none"; 
-            document.getElementById('weatherScreen').style.display = "none"; // 隱藏天氣畫面
+            document.getElementById('weatherScreen').style.display = "none"; 
+            document.getElementById('readingScreen').style.display = "none"; 
             document.getElementById('modeScreen').style.display = "flex";
             
+            totalQuestions = 10; // 重置題數為 10 題
             clearInterval(timerId);
             if(practiceTimerId) clearInterval(practiceTimerId);
             if(tamaLoopId) clearInterval(tamaLoopId); 
@@ -389,7 +372,6 @@
             currentMode = mode;
             document.getElementById('modeScreen').style.display = "none";
 
-            // 啟動 Safari 語音權限
             try { if ('speechSynthesis' in window) { window.speechSynthesis.speak(new SpeechSynthesisUtterance('')); } } catch(e) {}
 
             if (mode === 'math' || mode === 'english' || mode === 'chinese' || mode === 'logic') {
@@ -398,6 +380,8 @@
                 else if (mode === 'english') document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 個英文密碼！<br>記得聽提示呀！🎁";
                 else if (mode === 'chinese') document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 題看圖認字！<br>幫 Jade 認熟啲中文字啦！🎁";
                 else if (mode === 'logic') document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 題邏輯推理！<br>睇清楚圖案規律，搵出問號係咩！🎁";
+            } else if (mode === 'reading') {
+                document.getElementById('readingScreen').style.display = "flex"; // 打開閱讀畫面
             } else if (mode === 'planet') {
                 document.getElementById('planetScreen').style.display = "flex";
                 currentPlanetIndex = 0; renderPlanet();
@@ -422,11 +406,26 @@
                 renderHealth();
             } else if (mode === 'weather') {
                 document.getElementById('weatherScreen').style.display = "flex";
-                loadWeather(); // 🌟 啟動連線攞天氣
+                loadWeather(); 
             }
         }
 
-        // 🌟 新增：讀取香港天文台真實天氣資料 🌟
+        // 🌟 新增：閱讀理解專用播放功能 🌟
+        function playReadingPassage() {
+            speakText("耶穌的愛心。耶穌在準備受苦前的那天晚上，曾經教導他的門徒說：你們要相親相愛，像我愛了你們一樣，這樣別人便知道，你們是我的門徒了。我離開你們後，天父會賜給你們聖神，幫助你們的。後來，耶穌獨自一個人祈禱，求天父賜給他力量。他在受苦的時候，還不斷祈求天父說：求你寬恕世人，因為他們不知道他們做了甚麼錯事。我們也要學習耶穌一樣，愛主愛人啊！", 'zh-HK');
+        }
+
+        // 🌟 新增：開始閱讀理解問答 🌟
+        function startReadingQuiz() {
+            document.getElementById('readingScreen').style.display = "none";
+            document.getElementById('gameScreen').style.display = "flex";
+            totalQuestions = 5; // 閱讀理解固定 5 題
+            score = 0; currentQuestionNum = 0; wrongWordsList = []; 
+            // 倒轉陣列，等陣 pop() 出嚟就會係順序 1-5 題
+            availableReadingQuestions = [...readingQuestionsData].reverse();
+            nextQuestion();
+        }
+
         function loadWeather() {
             const container = document.getElementById('weatherContainer');
             container.innerHTML = '<div class="question-box" style="font-size: 22px;">正在為 Jade 查詢天文台天氣... ⏳</div>';
@@ -434,7 +433,6 @@
             fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=tc')
                 .then(response => response.json())
                 .then(data => {
-                    // 攞頭 7 日嘅天氣
                     const forecasts = data.weatherForecast.slice(0, 7);
                     let html = '';
                     let firstDayText = '';
@@ -446,14 +444,12 @@
                         const temp = `${day.forecastMintemp.value}°C - ${day.forecastMaxtemp.value}°C`;
                         const desc = day.forecastWeather;
                         
-                        // 簡單將天氣文字轉做 Emoji
                         let icon = '☁️';
                         if (desc.includes('晴')) icon = '☀️';
                         if (desc.includes('雨') || desc.includes('驟雨')) icon = '🌧️';
                         if (desc.includes('雲') || desc.includes('陰')) icon = '☁️';
                         if (desc.includes('雷')) icon = '⛈️';
                         
-                        // 準備讀出今日嘅天氣
                         if(index === 0) {
                             firstDayText = `Jade你好！今日天氣係${desc}，氣溫大約 ${temp}。`;
                         }
@@ -469,7 +465,7 @@
                         </div>`;
                     });
                     container.innerHTML = html;
-                    speakText(firstDayText, 'zh-HK'); // 自動讀出今日天氣
+                    speakText(firstDayText, 'zh-HK');
                 })
                 .catch(err => {
                     container.innerHTML = '<div class="question-box" style="font-size: 22px; color: red;">哎呀！連線失敗，睇唔到天氣呀！📶</div>';
@@ -587,6 +583,7 @@
             if (currentMode === 'english' && currentEnglishWord) speakText(`Find the word... ${currentEnglishWord.word}. ${currentEnglishWord.hint}`, 'en-US');
             else if (currentMode === 'chinese' && currentChineseWord) speakText(`搵下邊個詞語係... ${currentChineseWord.word}。${currentChineseWord.hint}`, 'zh-HK');
             else if (currentMode === 'logic') speakText(`估吓問號應該填咩圖案呀？`, 'zh-HK');
+            else if (currentMode === 'reading' && currentReadingQuestion) speakText(currentReadingQuestion.q, 'zh-HK'); // 🌟 閱讀理解發聲
         }
 
         function startGame() {
@@ -600,9 +597,9 @@
         }
 
         function nextQuestion() {
-            if (currentQuestionNum >= TOTAL_QUESTIONS) { showEndScreen(); return; }
+            if (currentQuestionNum >= totalQuestions) { showEndScreen(); return; }
             currentQuestionNum++;
-            document.getElementById('qNum').innerText = `第 ${currentQuestionNum}/${TOTAL_QUESTIONS} 題`;
+            document.getElementById('qNum').innerText = `第 ${currentQuestionNum}/${totalQuestions} 題`;
             document.getElementById('feedback').innerHTML = "";
             document.getElementById('speakBtn').style.display = "none";
             isAnswering = true;
@@ -610,6 +607,7 @@
             else if (currentMode === 'english') { generateEnglishQuestion(); playCurrentHint(); } 
             else if (currentMode === 'chinese') { generateChineseQuestion(); playCurrentHint(); } 
             else if (currentMode === 'logic') { generateLogicQuestion(); playCurrentHint(); } 
+            else if (currentMode === 'reading') { generateReadingQuestion(); playCurrentHint(); } // 🌟 生成閱讀題目
             startTimer();
         }
 
@@ -668,6 +666,18 @@
             options.sort(() => Math.random() - 0.5); renderOptions(options, true);
         }
 
+        // 🌟 新增：生成閱讀理解題目 🌟
+        function generateReadingQuestion() {
+            currentReadingQuestion = availableReadingQuestions.pop(); 
+            currentAnswer = currentReadingQuestion.ans;
+            // 將字體稍微縮細啲，等條題目可以完整顯示
+            document.getElementById('questionText').innerText = currentReadingQuestion.q;
+            document.getElementById('questionText').style.fontSize = "26px"; 
+            document.getElementById('speakBtn').style.display = "inline-block"; 
+            let options = [currentReadingQuestion.ans, currentReadingQuestion.wrong[0], currentReadingQuestion.wrong[1]];
+            options.sort(() => Math.random() - 0.5); renderOptions(options, true);
+        }
+
         function renderOptions(options, isText = false) {
             let optionsHtml = "";
             for (let i = 0; i < options.length; i++) {
@@ -675,6 +685,8 @@
                 optionsHtml += `<button class="option-btn" onclick="checkAnswer(${val})">${options[i]}</button>`;
             }
             document.getElementById('options').innerHTML = optionsHtml;
+            // 重置字體大細
+            if(currentMode !== 'reading') document.getElementById('questionText').style.fontSize = "40px";
         }
 
         function disableAllButtons() {
@@ -690,7 +702,9 @@
             isAnswering = false; disableAllButtons();
             
             if (currentMode !== 'math') {
-                let recordWord = currentMode === 'logic' ? currentLogicQuestion.q : currentAnswer;
+                let recordWord = currentAnswer;
+                if (currentMode === 'logic') recordWord = currentLogicQuestion.q;
+                else if (currentMode === 'reading') recordWord = currentReadingQuestion.q; // 記錄錯咗嘅閱讀題目
                 if (!wrongWordsList.includes(recordWord)) { wrongWordsList.push(recordWord); }
             }
             let feedbackEl = document.getElementById('feedback');
@@ -698,7 +712,7 @@
             feedbackEl.style.color = "red";
             
             if (currentMode === 'english') { speakText(`Time's up! The word is ${currentAnswer}.`, 'en-US'); }
-            else if (currentMode === 'chinese' || currentMode === 'logic') { speakText(`時間到！正確答案係 ${currentAnswer}。`, 'zh-HK'); }
+            else if (currentMode === 'chinese' || currentMode === 'logic' || currentMode === 'reading') { speakText(`時間到！正確答案係 ${currentAnswer}。`, 'zh-HK'); }
             
             setTimeout(nextQuestion, 4000);
         }
@@ -712,12 +726,14 @@
                 feedbackEl.innerHTML = "🎉 答啱啦！Jade 好叻呀！加 1 分！"; feedbackEl.style.color = "#32cd32"; score++;
                 
                 if (currentMode === 'english') speakText("Good job Jade!", 'en-US');
-                if (currentMode === 'chinese' || currentMode === 'logic') speakText("好叻女呀！", 'zh-HK');
+                if (currentMode === 'chinese' || currentMode === 'logic' || currentMode === 'reading') speakText("好叻女呀！", 'zh-HK');
                 
                 setTimeout(nextQuestion, 1500);
             } else {
                 if (currentMode !== 'math') {
-                    let recordWord = currentMode === 'logic' ? currentLogicQuestion.q : currentAnswer;
+                    let recordWord = currentAnswer;
+                    if (currentMode === 'logic') recordWord = currentLogicQuestion.q;
+                    else if (currentMode === 'reading') recordWord = currentReadingQuestion.q; // 記錄錯咗嘅閱讀題目
                     if (!wrongWordsList.includes(recordWord)) { wrongWordsList.push(recordWord); }
                 }
                 let explanation = "";
@@ -733,6 +749,9 @@
                     speakText(`唔係呢個呀。正確答案係：${currentAnswer}。`, 'zh-HK');
                 } else if (currentMode === 'logic') {
                     explanation = `❌ 答錯咗。<br>睇清楚規律，下一個應該係：<strong>${currentAnswer}</strong> 呀！`;
+                    speakText(`唔係呢個呀。正確答案係：${currentAnswer}。`, 'zh-HK');
+                } else if (currentMode === 'reading') { // 🌟 閱讀理解答錯提示 🌟
+                    explanation = `❌ 答錯咗。<br>正確答案係：<strong>${currentAnswer}</strong> 呀！`;
                     speakText(`唔係呢個呀。正確答案係：${currentAnswer}。`, 'zh-HK');
                 }
                 feedbackEl.innerHTML = explanation; feedbackEl.style.color = "#ff4500";
@@ -750,10 +769,11 @@
             if (currentMode === 'english') modeName = '🔤 英文尋寶';
             if (currentMode === 'chinese') modeName = '🀄 中文識字';
             if (currentMode === 'logic') modeName = '🧠 邏輯小神童';
+            if (currentMode === 'reading') modeName = '📖 閱讀理解'; // 🌟 更新 WhatsApp 匯報名稱
             
-            let prizeStr = score === TOTAL_QUESTIONS ? '🎁 特別禮物一份！' : `${score} 個印仔 💮`;
+            let prizeStr = score === totalQuestions ? '🎁 特別禮物一份！' : `${score} 個印仔 💮`;
             
-            let message = `🌟 *Jade 嘅尋寶大冒險成績* 🌟\n挑戰任務：${modeName}\n成績：*${score} / ${TOTAL_QUESTIONS} 分*\n獲得獎勵：${prizeStr}\n`;
+            let message = `🌟 *Jade 嘅尋寶大冒險成績* 🌟\n挑戰任務：${modeName}\n成績：*${score} / ${totalQuestions} 分*\n獲得獎勵：${prizeStr}\n`;
             
             if (currentMode !== 'math') {
                 if (wrongWordsList.length > 0) message += `\n📖 *今次需要多啲練習嘅題目：*\n${wrongWordsList.join(', ')}\n`;
@@ -766,7 +786,7 @@
             waBtn.href = waUrl; waBtn.target = "_top"; 
 
             endScreen.style.display = "flex";
-            if (score === TOTAL_QUESTIONS) {
+            if (score === totalQuestions) {
                 if (currentMode === 'english') speakText("Amazing! You got a perfect score!", 'en-US');
                 else speakText("太犀利啦！滿分！", 'zh-HK');
                 resultBox.innerHTML = `🎊 任務完成！🎊<br>太犀利啦，你攞到滿分 ${score} 分！<br><span class="big-prize">🎁 獲得特別禮物一份！🎁</span><br>快啲叫爸爸/媽媽俾禮物你啦！`;
