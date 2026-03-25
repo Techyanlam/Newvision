@@ -15,15 +15,34 @@
         .question-box { background-color: white; border: 5px solid #ffd700; border-radius: 20px; padding: 20px; font-size: 40px; font-weight: bold; color: #333; width: 80%; max-width: 400px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 30px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 150px; }
         .speaker-btn { background-color: #ffeb3b; border: 2px solid #fbc02d; border-radius: 50%; width: 50px; height: 50px; font-size: 24px; cursor: pointer; margin-top: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
         .options-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; width: 100%; max-width: 400px; }
-        .option-btn { background-color: #87ceeb; border: none; border-radius: 15px; padding: 15px 25px; font-size: 26px; font-weight: bold; color: white; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2); transition: transform 0.1s; flex: 1; min-width: 80px; box-sizing: border-box; }
+        
+        /* 🌟 更新：按鈕文字改細、轉深灰色、防出界 */
+        .option-btn { 
+            background-color: #87ceeb; 
+            border: none; 
+            border-radius: 15px; 
+            padding: 12px 15px; 
+            font-size: 20px; /* 字體縮細 */
+            font-weight: bold; 
+            color: #333; /* 轉深灰色(接近黑)，睇得清楚啲 */
+            cursor: pointer; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2); 
+            transition: transform 0.1s; 
+            flex: 1; 
+            min-width: 80px; 
+            box-sizing: border-box; 
+            word-wrap: break-word; /* 長字自動換行 */
+            line-height: 1.2;
+        }
         .option-btn:active { transform: translateY(4px); box-shadow: 0 0px 0px rgba(0,0,0,0.2); }
         .option-btn:disabled { background-color: #ccc; cursor: not-allowed; box-shadow: none; transform: none; }
         
-        .mode-btn { padding: 15px 30px; font-size: 24px; margin: 10px; border-radius: 20px; border: none; color: white; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2); width: 280px; }
+        .mode-btn { padding: 15px 30px; font-size: 22px; margin: 8px; border-radius: 20px; border: none; color: white; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2); width: 280px; }
         .math-mode { background-color: #ff7f50; }
         .eng-mode { background-color: #9370db; }
+        .zh-mode { background-color: #ff69b4; } /* 中文模式專用顏色 */
+        .planet-mode { background-color: #4169e1; }
         .violin-mode { background-color: #3cb371; }
-        .planet-mode { background-color: #4169e1; } /* 星球模式專用顏色 */
         
         .feedback { font-size: 20px; font-weight: bold; margin-top: 20px; min-height: 80px; line-height: 1.4; }
         .result-box { background-color: #fffacd; border: 5px solid #ffa500; border-radius: 20px; padding: 30px; font-size: 24px; font-weight: bold; color: #d2691e; width: 80%; max-width: 400px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 30px; box-sizing: border-box; line-height: 1.6; }
@@ -31,8 +50,8 @@
         .stamps { font-size: 30px; color: #ff4500; margin-top: 10px; display: block; }
         .live-timer { font-size: 48px; font-weight: bold; color: #2e8b57; margin-bottom: 20px; font-family: 'Courier New', Courier, monospace; }
         
-        .wa-btn { background-color: #25D366; font-size: 20px; width: 280px; margin-bottom: 15px; text-decoration: none; display: flex; align-items: center; justify-content: center; line-height: 1.4; }
-        .done-btn { background-color: #87ceeb; font-size: 20px; width: 280px; text-decoration: none; display: flex; align-items: center; justify-content: center; line-height: 1.4; }
+        .wa-btn { background-color: #25D366; font-size: 20px; width: 280px; margin-bottom: 15px; text-decoration: none; display: flex; align-items: center; justify-content: center; line-height: 1.4; color: white; }
+        .done-btn { background-color: #87ceeb; font-size: 20px; width: 280px; text-decoration: none; display: flex; align-items: center; justify-content: center; line-height: 1.4; color: white;}
     </style>
 </head>
 <body>
@@ -46,14 +65,15 @@
     <div id="modeScreen" style="display: flex; flex-direction: column; align-items: center;">
         <h2 style="color: #555;">你想做咩任務先？</h2>
         <button class="mode-btn math-mode" onclick="selectMode('math')">🧮 數學尋寶</button>
-        <button class="mode-btn eng-mode" onclick="selectMode('english')">🔤 英文尋寶 (進階)</button>
-        <button class="mode-btn planet-mode" onclick="selectMode('planet')">🪐 星球小知識<br><span style="font-size: 14px;">(聽故事學常識)</span></button>
-        <button class="mode-btn violin-mode" onclick="selectMode('violin')">🎻 小提琴練習<br><span style="font-size: 14px;">(記錄時間發送WhatsApp)</span></button>
+        <button class="mode-btn eng-mode" onclick="selectMode('english')">🔤 英文尋寶</button>
+        <button class="mode-btn zh-mode" onclick="selectMode('chinese')">🀄 中文識字 (看圖認字)</button>
+        <button class="mode-btn planet-mode" onclick="selectMode('planet')">🪐 星球小知識</button>
+        <button class="mode-btn violin-mode" onclick="selectMode('violin')">🎻 小提琴練習</button>
     </div>
 
     <div id="startScreen" style="display: none; flex-direction: column; align-items: center;">
         <p id="modeIntro" style="font-size: 20px; color: #666; font-weight: bold;"></p>
-        <button class="option-btn" onclick="startGame()" style="background-color: #ff69b4; width: 200px; margin-top: 20px;">開始遊戲</button>
+        <button class="option-btn" onclick="startGame()" style="background-color: #ff69b4; width: 200px; margin-top: 20px; color: white;">開始遊戲</button>
         <button class="option-btn" onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer; box-shadow:none;">返回揀其他關卡</button>
     </div>
 
@@ -64,7 +84,7 @@
         </div>
         <div class="question-box" id="questionBox">
             <div id="questionText">準備好未？</div>
-            <button id="speakBtn" class="speaker-btn" style="display: none;" onclick="playCurrentEnglishHint()">🔊</button>
+            <button id="speakBtn" class="speaker-btn" style="display: none;" onclick="playCurrentHint()">🔊</button>
         </div>
         <div class="options-container" id="options"></div>
         <div class="feedback" id="feedback"></div>
@@ -81,8 +101,8 @@
             <button class="speaker-btn" onclick="playPlanetFact()">🔊</button>
         </div>
         <div class="options-container">
-            <button class="option-btn" style="background-color: #ffb6c1;" onclick="prevPlanet()">⬅️ 上一個</button>
-            <button class="option-btn" style="background-color: #87ceeb;" onclick="nextPlanet()">下一個 ➡️</button>
+            <button class="option-btn" style="background-color: #ffb6c1; color: white;" onclick="prevPlanet()">⬅️ 上一個</button>
+            <button class="option-btn" style="background-color: #87ceeb; color: white;" onclick="nextPlanet()">下一個 ➡️</button>
         </div>
         <button class="option-btn" onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer; box-shadow:none;">返回揀其他關卡</button>
     </div>
@@ -98,14 +118,14 @@
             準備好開始拉小提琴未呀 Jade？🎻
         </div>
         <div class="live-timer" id="violinLiveTimer">00:00</div>
-        <button class="option-btn" id="startViolinBtn" onclick="startViolin()" style="background-color: #32cd32; width: 250px; margin-bottom: 15px;">開始練習</button>
-        <button class="option-btn" id="endViolinBtn" onclick="endViolin()" style="display: none; background-color: #ff4500; width: 250px; margin-bottom: 15px;">完結練習</button>
+        <button class="option-btn" id="startViolinBtn" onclick="startViolin()" style="background-color: #32cd32; width: 250px; margin-bottom: 15px; color: white;">開始練習</button>
+        <button class="option-btn" id="endViolinBtn" onclick="endViolin()" style="display: none; background-color: #ff4500; width: 250px; margin-bottom: 15px; color: white;">完結練習</button>
         <a id="violinWaBtn" class="option-btn wa-btn" style="display: none;" href="#">📲 發送練習記錄</a>
         <button class="option-btn" onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer; box-shadow:none;">返回揀其他關卡</button>
     </div>
 
     <script>
-        // 📚 英文字庫
+        // 📚 英文深造字庫
         const englishWords = [
             { word: "ELEPHANT", wrong: ["ELAPHANT", "ELEFANT"], hint: "A very large gray animal with a long trunk.", emoji: "🐘" },
             { word: "MONKEY", wrong: ["MONKY", "MUNKIE"], hint: "An animal that loves to climb trees and eat bananas.", emoji: "🐒" },
@@ -129,7 +149,21 @@
             { word: "UMBRELLA", wrong: ["UMBRELA", "UMBERELLA"], hint: "You use this to stay dry when it rains.", emoji: "☂️" }
         ];
 
-        // 🪐 星球知識庫 (雙語)
+        // 🀄 中文識字庫 (新增)
+        const chineseWords = [
+            { word: "蘋果", wrong: ["橙", "香蕉"], hint: "又紅又甜嘅水果。", emoji: "🍎" },
+            { word: "車", wrong: ["船", "飛機"], hint: "喺馬路上行駛嘅交通工具。", emoji: "🚗" },
+            { word: "太陽", wrong: ["月亮", "星星"], hint: "日頭會發光發熱。", emoji: "☀️" },
+            { word: "魚", wrong: ["狗", "貓"], hint: "喺水入面游水嘅動物。", emoji: "🐟" },
+            { word: "樹", wrong: ["花", "草"], hint: "有綠色樹葉同樹幹嘅植物。", emoji: "🌳" },
+            { word: "屋", wrong: ["門", "窗"], hint: "我哋住嘅地方。", emoji: "🏠" },
+            { word: "雨", wrong: ["雲", "風"], hint: "天上面跌落嚟嘅水滴。", emoji: "🌧️" },
+            { word: "飯", wrong: ["麵", "湯"], hint: "我哋日日食嘅白色主食。", emoji: "🍚" },
+            { word: "書", wrong: ["筆", "紙"], hint: "用嚟閱讀，入面有好多字同圖畫。", emoji: "📖" },
+            { word: "牛", wrong: ["羊", "豬"], hint: "會比牛奶我哋飲嘅動物。", emoji: "🐮" }
+        ];
+
+        // 🪐 星球知識庫
         const planetsData = [
             { emoji: "☀️", name: "Sun", zhName: "太陽", enFact: "The biggest star that gives us light and warm!", zhFact: "畀好多光同溫暖我哋嘅大恆星，無咗佢唔得㗎！" },
             { emoji: "🪨", name: "Mercury", zhName: "水星", enFact: "The closest planet to the sun. Very hot!", zhFact: "最接近太陽嘅星球，超級熱呀！" },
@@ -144,49 +178,45 @@
         ];
         let currentPlanetIndex = 0;
         
-        // 全局變數
         let currentMode = ''; let currentAnswer = 0; let score = 0; let currentQuestionNum = 0;
         const TOTAL_QUESTIONS = 10; let timeLeft = 15; let timerId = null; let isAnswering = false;
         let currentNum1 = 0, currentNum2 = 0; let isAddition = true; 
         let currentEnglishWord = null; let availableEnglishWords = [];
-        let wrongEnglishWords = [];
+        let currentChineseWord = null; let availableChineseWords = [];
+        let wrongWordsList = [];
         let practiceStartTime = null; let practiceTimerId = null; 
         const targetWhatsAppNumber = "85292201208";
 
-        // 語音功能
-        function speakText(text) {
+        // 語音功能 (支援廣東話同英文)
+        function speakText(text, lang = 'en-US') {
             try {
                 if ('speechSynthesis' in window) {
                     window.speechSynthesis.cancel();
                     let msg = new SpeechSynthesisUtterance(text);
-                    msg.lang = 'en-US'; msg.rate = 0.85;
+                    msg.lang = lang; // 根據需要切換語言
+                    msg.rate = 0.85;
                     window.speechSynthesis.speak(msg);
                 }
             } catch(e) {}
         }
 
-        // 返回主目錄
         function resetToModeSelection() {
             document.getElementById('endScreen').style.display = "none";
             document.getElementById('startScreen').style.display = "none";
             document.getElementById('gameScreen').style.display = "none";
             document.getElementById('violinScreen').style.display = "none";
-            document.getElementById('planetScreen').style.display = "none"; // 隱藏星球畫面
+            document.getElementById('planetScreen').style.display = "none"; 
             document.getElementById('modeScreen').style.display = "flex";
-            
             clearInterval(timerId);
             if(practiceTimerId) clearInterval(practiceTimerId);
-            
             let vWaBtn = document.getElementById('violinWaBtn');
             if(vWaBtn) vWaBtn.style.display = "none";
         }
 
-        // 選擇模式
         function selectMode(mode) {
             currentMode = mode;
             document.getElementById('modeScreen').style.display = "none";
 
-            // 預先啟動語音引擎
             try {
                 if ('speechSynthesis' in window) {
                     let silentMsg = new SpeechSynthesisUtterance('');
@@ -194,15 +224,16 @@
                 }
             } catch(e) {}
 
-            if (mode === 'math' || mode === 'english') {
+            if (mode === 'math' || mode === 'english' || mode === 'chinese') {
                 document.getElementById('startScreen').style.display = "flex";
                 if (mode === 'math') {
                     document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 條密碼！<br>每題有 15 秒鐘計數，滿分有特別禮物㗎！🎁";
-                } else {
+                } else if (mode === 'english') {
                     document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 個<span style='color:red;'>深造版</span>英文密碼！<br>記得㩒 🔊 聽提示呀！🎁";
+                } else if (mode === 'chinese') {
+                    document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 題看圖認字！<br>幫 Jade 認熟啲中文字啦！🎁";
                 }
             } else if (mode === 'planet') {
-                // 直接進入星球畫面
                 document.getElementById('planetScreen').style.display = "flex";
                 currentPlanetIndex = 0;
                 renderPlanet();
@@ -217,51 +248,29 @@
             }
         }
 
-        // --- 🪐 星球探險專用功能 ---
+        // --- 🪐 星球 ---
         function renderPlanet() {
             let p = planetsData[currentPlanetIndex];
             document.getElementById('planetNum').innerText = `第 ${currentPlanetIndex + 1}/${planetsData.length} 個天體`;
             document.getElementById('planetEmoji').innerText = p.emoji;
             document.getElementById('planetName').innerText = `${p.name} (${p.zhName})`;
             document.getElementById('planetFact').innerText = p.zhFact;
-            
-            // 自動讀出英文
             playPlanetFact();
         }
-
         function playPlanetFact() {
             let p = planetsData[currentPlanetIndex];
-            speakText(`${p.name}. ${p.enFact}`);
+            speakText(`${p.name}. ${p.enFact}`, 'en-US');
         }
+        function nextPlanet() { currentPlanetIndex = (currentPlanetIndex < planetsData.length - 1) ? currentPlanetIndex + 1 : 0; renderPlanet(); }
+        function prevPlanet() { currentPlanetIndex = (currentPlanetIndex > 0) ? currentPlanetIndex - 1 : planetsData.length - 1; renderPlanet(); }
 
-        function nextPlanet() {
-            if (currentPlanetIndex < planetsData.length - 1) {
-                currentPlanetIndex++;
-                renderPlanet();
-            } else {
-                currentPlanetIndex = 0; // 循環返去第一個
-                renderPlanet();
-            }
-        }
-
-        function prevPlanet() {
-            if (currentPlanetIndex > 0) {
-                currentPlanetIndex--;
-                renderPlanet();
-            } else {
-                currentPlanetIndex = planetsData.length - 1; // 循環去最後一個
-                renderPlanet();
-            }
-        }
-
-        // --- 🎻 小提琴功能 ---
+        // --- 🎻 小提琴 ---
         function startViolin() {
             practiceStartTime = new Date();
             document.getElementById('violinStatusBox').innerHTML = "練習中... 🎶<br>Jade 俾心機拉呀！";
             document.getElementById('startViolinBtn').style.display = "none";
             document.getElementById('endViolinBtn').style.display = "block";
             document.getElementById('violinLiveTimer').style.color = "#ff4500"; 
-
             practiceTimerId = setInterval(() => {
                 let now = new Date();
                 let diffSecs = Math.floor((now - practiceStartTime) / 1000);
@@ -270,36 +279,31 @@
                 document.getElementById('violinLiveTimer').innerText = `${mins}:${secs}`;
             }, 1000);
         }
-
         function endViolin() {
             clearInterval(practiceTimerId);
             let endTime = new Date();
             let diffSecs = Math.floor((endTime - practiceStartTime) / 1000);
-            let mins = Math.floor(diffSecs / 60);
-            let secs = diffSecs % 60;
-
+            let mins = Math.floor(diffSecs / 60); let secs = diffSecs % 60;
             document.getElementById('violinStatusBox').innerHTML = `🎊 練習完畢！🎊<br>叻女！今日練咗 ${mins} 分鐘 ${secs} 秒 👏`;
             document.getElementById('endViolinBtn').style.display = "none";
             document.getElementById('startViolinBtn').style.display = "block";
             document.getElementById('startViolinBtn').innerText = "重新開始練習";
             document.getElementById('violinLiveTimer').style.color = "#2e8b57";
-
             let startStr = practiceStartTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
             let endStr = endTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            
             let message = `🎻 *Jade 小提琴練習記錄* 🎻\n開始時間：${startStr}\n完結時間：${endStr}\n總共練習咗：*${mins} 分鐘 ${secs} 秒*\nJade 真係好叻女呀！👏`;
-
             let waUrl = `https://wa.me/${targetWhatsAppNumber}?text=${encodeURIComponent(message)}`;
             let vWaBtn = document.getElementById('violinWaBtn');
-            vWaBtn.href = waUrl;
-            vWaBtn.target = "_top";
-            vWaBtn.style.display = "flex";
+            vWaBtn.href = waUrl; vWaBtn.target = "_top"; vWaBtn.style.display = "flex";
         }
 
-        // --- 🧮 數學 & 🔤 英文功能 ---
-        function playCurrentEnglishHint() {
+        // --- 🧮 數學 & 🔤 英文 & 🀄 中文 ---
+        function playCurrentHint() {
             if (currentMode === 'english' && currentEnglishWord) {
-                speakText(`Find the word... ${currentEnglishWord.word}. ${currentEnglishWord.hint}`);
+                speakText(`Find the word... ${currentEnglishWord.word}. ${currentEnglishWord.hint}`, 'en-US');
+            } else if (currentMode === 'chinese' && currentChineseWord) {
+                // 用廣東話讀提示
+                speakText(`搵下邊個字係... ${currentChineseWord.word}。${currentChineseWord.hint}`, 'zh-HK');
             }
         }
 
@@ -307,9 +311,11 @@
             document.getElementById('startScreen').style.display = "none";
             document.getElementById('gameScreen').style.display = "flex";
             score = 0; currentQuestionNum = 0;
-            wrongEnglishWords = []; 
+            wrongWordsList = []; 
             
             if (currentMode === 'english') { availableEnglishWords = [...englishWords].sort(() => Math.random() - 0.5); }
+            if (currentMode === 'chinese') { availableChineseWords = [...chineseWords].sort(() => Math.random() - 0.5); }
+            
             nextQuestion();
         }
 
@@ -320,7 +326,11 @@
             document.getElementById('feedback').innerHTML = "";
             document.getElementById('speakBtn').style.display = "none";
             isAnswering = true;
-            if (currentMode === 'math') { generateMathQuestion(); } else { generateEnglishQuestion(); }
+            
+            if (currentMode === 'math') { generateMathQuestion(); } 
+            else if (currentMode === 'english') { generateEnglishQuestion(); }
+            else if (currentMode === 'chinese') { generateChineseQuestion(); }
+            
             startTimer();
         }
 
@@ -359,8 +369,17 @@
             currentEnglishWord = availableEnglishWords.pop(); currentAnswer = currentEnglishWord.word;
             document.getElementById('questionText').innerText = currentEnglishWord.emoji;
             document.getElementById('speakBtn').style.display = "inline-block";
-            playCurrentEnglishHint();
+            playCurrentHint();
             let options = [currentEnglishWord.word, currentEnglishWord.wrong[0], currentEnglishWord.wrong[1]];
+            options.sort(() => Math.random() - 0.5); renderOptions(options, true);
+        }
+
+        function generateChineseQuestion() {
+            currentChineseWord = availableChineseWords.pop(); currentAnswer = currentChineseWord.word;
+            document.getElementById('questionText').innerText = currentChineseWord.emoji;
+            document.getElementById('speakBtn').style.display = "inline-block";
+            playCurrentHint();
+            let options = [currentChineseWord.word, currentChineseWord.wrong[0], currentChineseWord.wrong[1]];
             options.sort(() => Math.random() - 0.5); renderOptions(options, true);
         }
 
@@ -368,8 +387,7 @@
             let optionsHtml = "";
             for (let i = 0; i < options.length; i++) {
                 let val = isText ? `'${options[i]}'` : options[i];
-                let fontSize = isText && options[i].length > 6 ? "20px" : "26px";
-                optionsHtml += `<button class="option-btn" style="font-size: ${fontSize};" onclick="checkAnswer(${val})">${options[i]}</button>`;
+                optionsHtml += `<button class="option-btn" onclick="checkAnswer(${val})">${options[i]}</button>`;
             }
             document.getElementById('options').innerHTML = optionsHtml;
         }
@@ -386,14 +404,17 @@
             if (!isAnswering) return;
             isAnswering = false; disableAllButtons();
             
-            if (currentMode === 'english' && !wrongEnglishWords.includes(currentAnswer)) {
-                wrongEnglishWords.push(currentAnswer);
+            if ((currentMode === 'english' || currentMode === 'chinese') && !wrongWordsList.includes(currentAnswer)) {
+                wrongWordsList.push(currentAnswer);
             }
 
             let feedbackEl = document.getElementById('feedback');
             feedbackEl.innerHTML = `⏰ 哎呀！時間到！<br>答案應該係 <strong>${currentAnswer}</strong> 呀！`;
             feedbackEl.style.color = "red";
-            if (currentMode === 'english') { speakText(`Time's up! The word is ${currentAnswer}. ${currentAnswer.split('').join(' ')}.`); }
+            
+            if (currentMode === 'english') { speakText(`Time's up! The word is ${currentAnswer}.`, 'en-US'); }
+            if (currentMode === 'chinese') { speakText(`時間到！正確答案係 ${currentAnswer}。`, 'zh-HK'); }
+            
             setTimeout(nextQuestion, 4000);
         }
 
@@ -403,21 +424,25 @@
             let feedbackEl = document.getElementById('feedback');
             if (selected === currentAnswer) {
                 feedbackEl.innerHTML = "🎉 答啱啦！Jade 好叻呀！加 1 分！"; feedbackEl.style.color = "#32cd32"; score++;
-                if (currentMode === 'english') speakText("Good job Jade!");
+                if (currentMode === 'english') speakText("Good job Jade!", 'en-US');
+                if (currentMode === 'chinese') speakText("好叻女呀！", 'zh-HK');
                 setTimeout(nextQuestion, 1500);
             } else {
-                if (currentMode === 'english' && !wrongEnglishWords.includes(currentAnswer)) {
-                    wrongEnglishWords.push(currentAnswer);
+                if ((currentMode === 'english' || currentMode === 'chinese') && !wrongWordsList.includes(currentAnswer)) {
+                    wrongWordsList.push(currentAnswer);
                 }
 
                 let explanation = "";
                 if (currentMode === 'math') {
                     if (isAddition) explanation = `❌ 答錯咗。<br>諗吓：有 ${currentNum1} 個 🍎，加埋 ${currentNum2} 個 🍎<br>總共應該係 <strong>${currentAnswer}</strong> 呀！`;
                     else explanation = `❌ 答錯咗。<br>諗吓：本來有 ${currentNum1} 個 🍎，食咗 ${currentNum2} 個<br>仲淨低 <strong>${currentAnswer}</strong> 呀！`;
-                } else {
+                } else if (currentMode === 'english') {
                     explanation = `❌ 答錯咗。<br>正確串法係：<strong>${currentAnswer}</strong> 呀！`;
                     let spelledOut = currentAnswer.split('').join(' ');
-                    speakText(`Oops! The correct word is ${currentAnswer}. Spelled: ${spelledOut}. ${currentEnglishWord.hint}`);
+                    speakText(`Oops! The correct word is ${currentAnswer}. Spelled: ${spelledOut}.`, 'en-US');
+                } else if (currentMode === 'chinese') {
+                    explanation = `❌ 答錯咗。<br>正確答案係：<strong>${currentAnswer}</strong> 呀！`;
+                    speakText(`唔係呢個呀。正確答案係：${currentAnswer}。`, 'zh-HK');
                 }
                 feedbackEl.innerHTML = explanation; feedbackEl.style.color = "#ff4500";
                 setTimeout(nextQuestion, 4500); 
@@ -429,7 +454,11 @@
             let endScreen = document.getElementById('endScreen');
             let resultBox = document.getElementById('finalResult');
             
-            let modeName = currentMode === 'math' ? '🧮 數學尋寶' : '🔤 英文尋寶 (進階版)';
+            let modeName = "尋寶任務";
+            if (currentMode === 'math') modeName = '🧮 數學尋寶';
+            if (currentMode === 'english') modeName = '🔤 英文尋寶 (進階版)';
+            if (currentMode === 'chinese') modeName = '🀄 中文識字';
+            
             let prizeStr = score === TOTAL_QUESTIONS ? '🎁 特別禮物一份！' : `${score} 個印仔 💮`;
             
             let message = `🌟 *Jade 嘅尋寶大冒險成績* 🌟\n` +
@@ -437,11 +466,11 @@
                           `成績：*${score} / ${TOTAL_QUESTIONS} 分*\n` +
                           `獲得獎勵：${prizeStr}\n`;
             
-            if (currentMode === 'english') {
-                if (wrongEnglishWords.length > 0) {
-                    message += `\n📖 *今次需要多啲練習嘅生字：*\n${wrongEnglishWords.join(', ')}\n`;
+            if (currentMode === 'english' || currentMode === 'chinese') {
+                if (wrongWordsList.length > 0) {
+                    message += `\n📖 *今次需要多啲練習嘅生字：*\n${wrongWordsList.join(', ')}\n`;
                 } else {
-                    message += `\n📖 *今次所有生字都串啱晒！太犀利啦！*\n`;
+                    message += `\n📖 *今次所有生字都答啱晒！太犀利啦！*\n`;
                 }
             }
             message += `\nJade 真係好叻女呀！繼續加油！👏`;
@@ -453,11 +482,13 @@
 
             endScreen.style.display = "flex";
             if (score === TOTAL_QUESTIONS) {
-                if (currentMode === 'english') speakText("Amazing! You got a perfect score!");
+                if (currentMode === 'english') speakText("Amazing! You got a perfect score!", 'en-US');
+                if (currentMode === 'chinese') speakText("太犀利啦！滿分！", 'zh-HK');
                 resultBox.innerHTML = `🎊 任務完成！🎊<br>太犀利啦，你攞到滿分 ${score} 分！<br><span class="big-prize">🎁 獲得特別禮物一份！🎁</span><br>快啲叫爸爸/媽媽俾禮物你啦！`;
             } else {
                 let stampsHtml = ""; for(let i=0; i<score; i++){ stampsHtml += "💮 "; } if(score === 0) stampsHtml = "下次再努力！💪";
-                if (currentMode === 'english') speakText(`Great try! You got ${score} points.`);
+                if (currentMode === 'english') speakText(`Great try! You got ${score} points.`, 'en-US');
+                if (currentMode === 'chinese') speakText(`好叻女，你攞到 ${score} 分。`, 'zh-HK');
                 resultBox.innerHTML = `👏 任務完成！👏<br>你今次攞到 ${score} 分！<br>可以換成：<br><span class="stamps">${stampsHtml}</span><br>(${score} 個印仔)<br>繼續加油，下次挑戰滿分攞禮物啦！`;
             }
         }
