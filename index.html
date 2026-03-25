@@ -38,7 +38,10 @@
         .live-timer { font-size: 48px; font-weight: bold; color: #2e8b57; margin-bottom: 20px; font-family: 'Courier New', Courier, monospace; }
         
         .wa-btn { background-color: #25D366; font-size: 20px; width: 280px; margin-bottom: 15px; text-decoration: none; display: flex; align-items: center; justify-content: center; line-height: 1.4; color: white; }
-        .done-btn { background-color: #87ceeb; font-size: 20px; width: 280px; text-decoration: none; display: flex; align-items: center; justify-content: center; line-height: 1.4; color: white;}
+        
+        /* 🌟 新增：統一嘅「返回主頁」按鈕樣式 🌟 */
+        .home-btn { background-color: #ff7f50; border: none; border-radius: 15px; padding: 12px 20px; font-size: 20px; font-weight: bold; color: white; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2); margin-top: 30px; width: 80%; max-width: 300px; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .home-btn:active { transform: translateY(4px); box-shadow: none; }
 
         .stat-bar { margin: 5px 0; display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .bar-bg { background-color: #ddd; border-radius: 10px; width: 150px; height: 15px; overflow: hidden; }
@@ -69,7 +72,7 @@
     <div id="startScreen" style="display: none; flex-direction: column; align-items: center;">
         <p id="modeIntro" style="font-size: 20px; color: #666; font-weight: bold;"></p>
         <button class="option-btn" onclick="startGame()" style="background-color: #ff69b4; width: 200px; margin-top: 20px; color: white;">開始遊戲</button>
-        <button class="option-btn" onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer; box-shadow:none;">返回揀其他關卡</button>
+        <button class="home-btn" onclick="resetToModeSelection()">🏠 返回主頁</button>
     </div>
 
     <div id="gameScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
@@ -83,6 +86,7 @@
         </div>
         <div class="options-container" id="options"></div>
         <div class="feedback" id="feedback"></div>
+        <button class="home-btn" onclick="resetToModeSelection()">🏠 返回主頁</button>
     </div>
 
     <div id="healthScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
@@ -98,7 +102,7 @@
         <div class="options-container">
             <button class="option-btn" style="background-color: #87ceeb; color: white;" onclick="nextHealth()">睇下一個 ➡️</button>
         </div>
-        <button class="option-btn" onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer; box-shadow:none;">返回揀其他關卡</button>
+        <button class="home-btn" onclick="resetToModeSelection()">🏠 返回主頁</button>
     </div>
 
     <div id="newsScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
@@ -114,7 +118,7 @@
         <div class="options-container">
             <button class="option-btn" style="background-color: #87ceeb; color: white;" onclick="nextNews()">睇下一則 ➡️</button>
         </div>
-        <button class="option-btn" onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer; box-shadow:none;">返回揀其他關卡</button>
+        <button class="home-btn" onclick="resetToModeSelection()">🏠 返回主頁</button>
     </div>
 
     <div id="planetScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
@@ -131,7 +135,7 @@
             <button class="option-btn" style="background-color: #ffb6c1; color: white;" onclick="prevPlanet()">⬅️ 上一個</button>
             <button class="option-btn" style="background-color: #87ceeb; color: white;" onclick="nextPlanet()">下一個 ➡️</button>
         </div>
-        <button class="option-btn" onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer; box-shadow:none;">返回揀其他關卡</button>
+        <button class="home-btn" onclick="resetToModeSelection()">🏠 返回主頁</button>
     </div>
 
     <div id="tamaScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
@@ -149,13 +153,13 @@
             <button class="option-btn" style="background-color: #9370db; font-size: 22px; color: white;" onclick="playTama()">玩耍 🎾</button>
             <button class="option-btn" style="background-color: #20b2aa; font-size: 22px; color: white;" onclick="cleanTama()">沖涼 🛁</button>
         </div>
-        <button class="option-btn" onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer; box-shadow:none;">返回揀其他關卡</button>
+        <button class="home-btn" onclick="resetToModeSelection()">🏠 返回主頁</button>
     </div>
 
     <div id="endScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
         <div class="result-box" id="finalResult"></div>
         <a id="waSendBtn" class="option-btn wa-btn" href="#">📲 發送成績畀爸爸媽媽</a>
-        <button class="option-btn done-btn" onclick="resetToModeSelection()">返回主目錄</button>
+        <button class="home-btn" onclick="resetToModeSelection()">🏠 返回主頁</button>
     </div>
 
     <div id="violinScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
@@ -166,7 +170,7 @@
         <button class="option-btn" id="startViolinBtn" onclick="startViolin()" style="background-color: #32cd32; width: 250px; margin-bottom: 15px; color: white;">開始練習</button>
         <button class="option-btn" id="endViolinBtn" onclick="endViolin()" style="display: none; background-color: #ff4500; width: 250px; margin-bottom: 15px; color: white;">完結練習</button>
         <a id="violinWaBtn" class="option-btn wa-btn" style="display: none;" href="#">📲 發送練習記錄</a>
-        <button class="option-btn" onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer; box-shadow:none;">返回揀其他關卡</button>
+        <button class="home-btn" onclick="resetToModeSelection()">🏠 返回主頁</button>
     </div>
 
     <script>
@@ -181,7 +185,6 @@
             { word: "WATER", wrong: ["WOTER", "WATAR"], hint: "You drink this when you are thirsty.", emoji: "💧" }
         ];
         
-        // 🌟 50 題 7歲程度 中文兩字詞語 🌟
         const chineseWords = [
             { word: "學校", wrong: ["公園", "醫院"], hint: "小朋友星期一至五要去學習同見老師嘅地方。", emoji: "🏫" },
             { word: "老師", wrong: ["醫生", "警察"], hint: "喺課室入面教大家讀書寫字嘅人。", emoji: "👩‍🏫" },
@@ -250,7 +253,6 @@
             { emoji: "🌙", name: "Moon", zhName: "月亮", enFact: "It shines at night and orbits the Earth.", zhFact: "夜晚會發光，一直陪住我哋地球轉嘅好朋友！" }
         ];
 
-        // 🌟 50 則 全新兒童趣味新聞 / 冷知識 🌟
         const kidsNews = [
             { emoji: "🦩", title: "紅鶴變色之謎", content: "紅鶴BB出世嗰陣其實係灰色㗎！因為佢哋食咗好多蝦，大個先會變成粉紅色！" },
             { emoji: "🐷", title: "豬仔唔識流汗", content: "豬仔係無汗腺嘅，佢哋要靠玩泥沙嚟幫身體降溫㗎！" },
@@ -341,6 +343,9 @@
         }
 
         function resetToModeSelection() {
+            // 🛑 新增：撳「返回主頁」會自動停止任何發聲
+            try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch(e) {}
+            
             document.getElementById('endScreen').style.display = "none";
             document.getElementById('startScreen').style.display = "none";
             document.getElementById('gameScreen').style.display = "none";
@@ -363,10 +368,13 @@
             currentMode = mode;
             document.getElementById('modeScreen').style.display = "none";
 
+            // 啟動 Safari 語音權限
+            try { if ('speechSynthesis' in window) { window.speechSynthesis.speak(new SpeechSynthesisUtterance('')); } } catch(e) {}
+
             if (mode === 'math' || mode === 'english' || mode === 'chinese' || mode === 'logic') {
                 document.getElementById('startScreen').style.display = "flex";
                 if (mode === 'math') document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 條密碼！<br>每題有 15 秒鐘計數！🎁";
-                else if (mode === 'english') document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 個英文密碼！<br>記得㩒 🔊 聽提示呀！🎁";
+                else if (mode === 'english') document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 個英文密碼！<br>記得聽提示呀！🎁";
                 else if (mode === 'chinese') document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 題看圖認字！<br>幫 Jade 認熟啲中文字啦！🎁";
                 else if (mode === 'logic') document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 題邏輯推理！<br>睇清楚圖案規律，搵出問號係咩！🎁";
             } else if (mode === 'planet') {
@@ -385,7 +393,6 @@
                 initTama();
             } else if (mode === 'news') {
                 document.getElementById('newsScreen').style.display = "flex";
-                // 每次點入隨機抽一則新聞
                 currentNewsIndex = Math.floor(Math.random() * kidsNews.length); 
                 renderNews();
             } else if (mode === 'health') {
@@ -400,6 +407,7 @@
             document.getElementById('healthEmoji').innerText = item.emoji;
             document.getElementById('healthTitle').innerText = item.title;
             document.getElementById('healthContent').innerText = item.content;
+            playHealth(); // 自動播放
         }
         function playHealth() { let item = healthData[currentHealthIndex]; speakText(`健康小知識：${item.title}。${item.content}`, 'zh-HK'); }
         function nextHealth() { currentHealthIndex = Math.floor(Math.random() * healthData.length); renderHealth(); }
@@ -409,6 +417,7 @@
             document.getElementById('newsEmoji').innerText = news.emoji;
             document.getElementById('newsTitle').innerText = news.title;
             document.getElementById('newsContent').innerText = news.content;
+            playNews(); // 自動播放
         }
         function playNews() { let news = kidsNews[currentNewsIndex]; speakText(`今日新聞：${news.title}。${news.content}`, 'zh-HK'); }
         function nextNews() { currentNewsIndex = Math.floor(Math.random() * kidsNews.length); renderNews(); }
@@ -465,6 +474,7 @@
             document.getElementById('planetEmoji').innerText = p.emoji;
             document.getElementById('planetName').innerText = `${p.name} (${p.zhName})`;
             document.getElementById('planetFact').innerText = p.zhFact;
+            playPlanetFact(); // 自動播放
         }
         function playPlanetFact() { let p = planetsData[currentPlanetIndex]; speakText(`${p.name}. ${p.enFact}`, 'en-US'); }
         function nextPlanet() { currentPlanetIndex = (currentPlanetIndex < planetsData.length - 1) ? currentPlanetIndex + 1 : 0; renderPlanet(); }
@@ -523,9 +533,9 @@
             document.getElementById('speakBtn').style.display = "none";
             isAnswering = true;
             if (currentMode === 'math') generateMathQuestion();
-            else if (currentMode === 'english') generateEnglishQuestion();
-            else if (currentMode === 'chinese') generateChineseQuestion();
-            else if (currentMode === 'logic') generateLogicQuestion();
+            else if (currentMode === 'english') { generateEnglishQuestion(); playCurrentHint(); } // 自動播放
+            else if (currentMode === 'chinese') { generateChineseQuestion(); playCurrentHint(); } // 自動播放
+            else if (currentMode === 'logic') { generateLogicQuestion(); playCurrentHint(); } // 自動播放
             startTimer();
         }
 
@@ -612,6 +622,11 @@
             let feedbackEl = document.getElementById('feedback');
             feedbackEl.innerHTML = `⏰ 哎呀！時間到！<br>答案應該係 <strong>${currentAnswer}</strong> 呀！`;
             feedbackEl.style.color = "red";
+            
+            // 🌟 恢復時間到自動發聲 🌟
+            if (currentMode === 'english') { speakText(`Time's up! The word is ${currentAnswer}.`, 'en-US'); }
+            else if (currentMode === 'chinese' || currentMode === 'logic') { speakText(`時間到！正確答案係 ${currentAnswer}。`, 'zh-HK'); }
+            
             setTimeout(nextQuestion, 4000);
         }
 
@@ -622,6 +637,11 @@
             
             if (selected === currentAnswer) {
                 feedbackEl.innerHTML = "🎉 答啱啦！Jade 好叻呀！加 1 分！"; feedbackEl.style.color = "#32cd32"; score++;
+                
+                // 🌟 恢復答啱自動發聲 🌟
+                if (currentMode === 'english') speakText("Good job Jade!", 'en-US');
+                if (currentMode === 'chinese' || currentMode === 'logic') speakText("好叻女呀！", 'zh-HK');
+                
                 setTimeout(nextQuestion, 1500);
             } else {
                 if (currentMode !== 'math') {
@@ -634,10 +654,17 @@
                     else explanation = `❌ 答錯咗。<br>諗吓：本來有 ${currentNum1} 個 🍎，食咗 ${currentNum2} 個<br>仲淨低 <strong>${currentAnswer}</strong> 呀！`;
                 } else if (currentMode === 'english') {
                     explanation = `❌ 答錯咗。<br>正確串法係：<strong>${currentAnswer}</strong> 呀！`;
+                    // 🌟 恢復英文錯自動發聲 🌟
+                    let spelledOut = currentAnswer.split('').join(' ');
+                    speakText(`Oops! The correct word is ${currentAnswer}. Spelled: ${spelledOut}.`, 'en-US');
                 } else if (currentMode === 'chinese') {
                     explanation = `❌ 答錯咗。<br>正確答案係：<strong>${currentAnswer}</strong> 呀！`;
+                    // 🌟 恢復中文錯自動發聲 🌟
+                    speakText(`唔係呢個呀。正確答案係：${currentAnswer}。`, 'zh-HK');
                 } else if (currentMode === 'logic') {
                     explanation = `❌ 答錯咗。<br>睇清楚規律，下一個應該係：<strong>${currentAnswer}</strong> 呀！`;
+                    // 🌟 恢復邏輯錯自動發聲 🌟
+                    speakText(`唔係呢個呀。正確答案係：${currentAnswer}。`, 'zh-HK');
                 }
                 feedbackEl.innerHTML = explanation; feedbackEl.style.color = "#ff4500";
                 setTimeout(nextQuestion, 4500); 
@@ -671,9 +698,15 @@
 
             endScreen.style.display = "flex";
             if (score === TOTAL_QUESTIONS) {
+                // 🌟 恢復滿分自動發聲 🌟
+                if (currentMode === 'english') speakText("Amazing! You got a perfect score!", 'en-US');
+                else speakText("太犀利啦！滿分！", 'zh-HK');
                 resultBox.innerHTML = `🎊 任務完成！🎊<br>太犀利啦，你攞到滿分 ${score} 分！<br><span class="big-prize">🎁 獲得特別禮物一份！🎁</span><br>快啲叫爸爸/媽媽俾禮物你啦！`;
             } else {
                 let stampsHtml = ""; for(let i=0; i<score; i++){ stampsHtml += "💮 "; } if(score === 0) stampsHtml = "下次再努力！💪";
+                // 🌟 恢復普通分自動發聲 🌟
+                if (currentMode === 'english') speakText(`Great try! You got ${score} points.`, 'en-US');
+                else speakText(`好叻女，你攞到 ${score} 分。`, 'zh-HK');
                 resultBox.innerHTML = `👏 任務完成！👏<br>你今次攞到 ${score} 分！<br>可以換成：<br><span class="stamps">${stampsHtml}</span><br>(${score} 個印仔)<br>繼續加油，下次挑戰滿分攞禮物啦！`;
             }
         }
