@@ -16,22 +16,21 @@
         .speaker-btn { background-color: #ffeb3b; border: 2px solid #fbc02d; border-radius: 50%; width: 50px; height: 50px; font-size: 24px; cursor: pointer; margin-top: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
         .options-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; width: 100%; max-width: 400px; }
         
-        /* 🌟 更新：按鈕文字改細、轉深灰色、防出界 */
         .option-btn { 
             background-color: #87ceeb; 
             border: none; 
             border-radius: 15px; 
             padding: 12px 15px; 
-            font-size: 20px; /* 字體縮細 */
+            font-size: 22px; 
             font-weight: bold; 
-            color: #333; /* 轉深灰色(接近黑)，睇得清楚啲 */
+            color: #333; 
             cursor: pointer; 
             box-shadow: 0 4px 6px rgba(0,0,0,0.2); 
             transition: transform 0.1s; 
             flex: 1; 
             min-width: 80px; 
             box-sizing: border-box; 
-            word-wrap: break-word; /* 長字自動換行 */
+            word-wrap: break-word; 
             line-height: 1.2;
         }
         .option-btn:active { transform: translateY(4px); box-shadow: 0 0px 0px rgba(0,0,0,0.2); }
@@ -40,7 +39,8 @@
         .mode-btn { padding: 15px 30px; font-size: 22px; margin: 8px; border-radius: 20px; border: none; color: white; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2); width: 280px; }
         .math-mode { background-color: #ff7f50; }
         .eng-mode { background-color: #9370db; }
-        .zh-mode { background-color: #ff69b4; } /* 中文模式專用顏色 */
+        .zh-mode { background-color: #ff69b4; } 
+        .logic-mode { background-color: #20b2aa; } /* 邏輯模式專用顏色：海洋綠 */
         .planet-mode { background-color: #4169e1; }
         .violin-mode { background-color: #3cb371; }
         
@@ -66,7 +66,8 @@
         <h2 style="color: #555;">你想做咩任務先？</h2>
         <button class="mode-btn math-mode" onclick="selectMode('math')">🧮 數學尋寶</button>
         <button class="mode-btn eng-mode" onclick="selectMode('english')">🔤 英文尋寶</button>
-        <button class="mode-btn zh-mode" onclick="selectMode('chinese')">🀄 中文識字 (看圖認字)</button>
+        <button class="mode-btn zh-mode" onclick="selectMode('chinese')">🀄 中文識字</button>
+        <button class="mode-btn logic-mode" onclick="selectMode('logic')">🧠 邏輯小神童 (找規律)</button>
         <button class="mode-btn planet-mode" onclick="selectMode('planet')">🪐 星球小知識</button>
         <button class="mode-btn violin-mode" onclick="selectMode('violin')">🎻 小提琴練習</button>
     </div>
@@ -83,7 +84,7 @@
             <span id="timerDisplay">⏳ 15 秒</span>
         </div>
         <div class="question-box" id="questionBox">
-            <div id="questionText">準備好未？</div>
+            <div id="questionText" style="letter-spacing: 2px;">準備好未？</div>
             <button id="speakBtn" class="speaker-btn" style="display: none;" onclick="playCurrentHint()">🔊</button>
         </div>
         <div class="options-container" id="options"></div>
@@ -138,18 +139,10 @@
             { word: "ROCKET", wrong: ["ROKET", "ROCKIT"], hint: "A vehicle that flies up into space.", emoji: "🚀" },
             { word: "CAMERA", wrong: ["CAMRA", "KAMERA"], hint: "You use this to take photos.", emoji: "📷" },
             { word: "PIZZA", wrong: ["PIZA", "PEEZA"], hint: "A round flat bread with cheese and tomato sauce.", emoji: "🍕" },
-            { word: "FLOWER", wrong: ["FLOWAR", "FLOUR"], hint: "A beautiful plant with colorful petals.", emoji: "🌸" },
-            { word: "PLANET", wrong: ["PLANIT", "PLANT"], hint: "A large round object in space, like Earth.", emoji: "🌍" },
-            { word: "JACKET", wrong: ["JAKET", "JACKIT"], hint: "A piece of clothing you wear when it is cold.", emoji: "🧥" },
-            { word: "GLASSES", wrong: ["GLASES", "GLASESS"], hint: "You wear these on your eyes to see better.", emoji: "👓" },
-            { word: "GUITAR", wrong: ["GITAR", "GUITER"], hint: "A musical instrument with strings.", emoji: "🎸" },
-            { word: "ZEBRA", wrong: ["ZEBRAA", "ZEBERA"], hint: "A wild animal that looks like a horse with black and white stripes.", emoji: "🦓" },
-            { word: "BUTTERFLY", wrong: ["BUTTERFLI", "BUTERFLY"], hint: "A beautiful flying insect with colorful wings.", emoji: "🦋" },
-            { word: "DINOSAUR", wrong: ["DINOSOR", "DINOSAURE"], hint: "A giant reptile that lived millions of years ago.", emoji: "🦖" },
-            { word: "UMBRELLA", wrong: ["UMBRELA", "UMBERELLA"], hint: "You use this to stay dry when it rains.", emoji: "☂️" }
+            { word: "FLOWER", wrong: ["FLOWAR", "FLOUR"], hint: "A beautiful plant with colorful petals.", emoji: "🌸" }
         ];
 
-        // 🀄 中文識字庫 (新增)
+        // 🀄 中文識字庫
         const chineseWords = [
             { word: "蘋果", wrong: ["橙", "香蕉"], hint: "又紅又甜嘅水果。", emoji: "🍎" },
             { word: "車", wrong: ["船", "飛機"], hint: "喺馬路上行駛嘅交通工具。", emoji: "🚗" },
@@ -158,22 +151,27 @@
             { word: "樹", wrong: ["花", "草"], hint: "有綠色樹葉同樹幹嘅植物。", emoji: "🌳" },
             { word: "屋", wrong: ["門", "窗"], hint: "我哋住嘅地方。", emoji: "🏠" },
             { word: "雨", wrong: ["雲", "風"], hint: "天上面跌落嚟嘅水滴。", emoji: "🌧️" },
-            { word: "飯", wrong: ["麵", "湯"], hint: "我哋日日食嘅白色主食。", emoji: "🍚" },
-            { word: "書", wrong: ["筆", "紙"], hint: "用嚟閱讀，入面有好多字同圖畫。", emoji: "📖" },
-            { word: "牛", wrong: ["羊", "豬"], hint: "會比牛奶我哋飲嘅動物。", emoji: "🐮" }
+            { word: "飯", wrong: ["麵", "湯"], hint: "我哋日日食嘅白色主食。", emoji: "🍚" }
+        ];
+
+        // 🧠 邏輯找規律庫 (新增)
+        const logicQuestions = [
+            { q: "🔴 🔵 🔴 🔵 🔴 ❓", ans: "🔵", wrong: ["🔴", "🟢"] },
+            { q: "🐶 🐱 🐭 🐶 🐱 ❓", ans: "🐭", wrong: ["🐶", "🐰"] },
+            { q: "🚗 🚗 🚌 🚗 🚗 ❓", ans: "🚌", wrong: ["🚗", "🚓"] },
+            { q: "☀️ 🌙 ☀️ 🌙 ☀️ ❓", ans: "🌙", wrong: ["☀️", "⭐"] },
+            { q: "🍎 🍏 🍏 🍎 🍏 ❓", ans: "🍏", wrong: ["🍎", "🍊"] },
+            { q: "🔼 🔽 🔼 🔽 🔼 ❓", ans: "🔽", wrong: ["🔼", "▶️"] },
+            { q: "🌸 🌼 🌺 🌸 🌼 ❓", ans: "🌺", wrong: ["🌸", "🌹"] },
+            { q: "🦋 🐛 🦋 🐛 🦋 ❓", ans: "🐛", wrong: ["🦋", "🐝"] },
+            { q: "🍔 🍟 🍔 🍟 🍔 ❓", ans: "🍟", wrong: ["🍔", "🌭"] },
+            { q: "⭐ 🌟 ✨ ⭐ 🌟 ❓", ans: "✨", wrong: ["⭐", "🌙"] }
         ];
 
         // 🪐 星球知識庫
         const planetsData = [
             { emoji: "☀️", name: "Sun", zhName: "太陽", enFact: "The biggest star that gives us light and warm!", zhFact: "畀好多光同溫暖我哋嘅大恆星，無咗佢唔得㗎！" },
-            { emoji: "🪨", name: "Mercury", zhName: "水星", enFact: "The closest planet to the sun. Very hot!", zhFact: "最接近太陽嘅星球，超級熱呀！" },
-            { emoji: "✨", name: "Venus", zhName: "金星", enFact: "The brightest planet in the night sky.", zhFact: "夜空入面最光亮嘅星球。" },
             { emoji: "🌍", name: "Earth", zhName: "地球", enFact: "Our home! It has blue oceans and green land.", zhFact: "我哋嘅屋企！有藍色嘅海水同綠色嘅大自然。" },
-            { emoji: "🔴", name: "Mars", zhName: "火星", enFact: "The red planet. It has big volcanoes!", zhFact: "紅色嘅星球，上面有好多高高嘅火山㗎！" },
-            { emoji: "🟠", name: "Jupiter", zhName: "木星", enFact: "The biggest planet! It is a giant gas ball.", zhFact: "八大行星入面最大嘅！佢係一個巨大嘅氣體球。" },
-            { emoji: "🪐", name: "Saturn", zhName: "土星", enFact: "It has beautiful rings around it!", zhFact: "佢出面有好多靚靚嘅光環圍住佢轉㗎！" },
-            { emoji: "🧊", name: "Uranus", zhName: "天王星", enFact: "A cold, blue ice giant.", zhFact: "一個好凍好凍嘅藍色冰雪巨人星球。" },
-            { emoji: "🌊", name: "Neptune", zhName: "海王星", enFact: "The furthest planet. Very windy and blue.", zhFact: "離太陽最遠嘅星球，好大風而且係深藍色嘅。" },
             { emoji: "🌙", name: "Moon", zhName: "月亮", enFact: "It shines at night and orbits the Earth.", zhFact: "夜晚會發光，一直陪住我哋地球轉嘅好朋友！" }
         ];
         let currentPlanetIndex = 0;
@@ -181,19 +179,25 @@
         let currentMode = ''; let currentAnswer = 0; let score = 0; let currentQuestionNum = 0;
         const TOTAL_QUESTIONS = 10; let timeLeft = 15; let timerId = null; let isAnswering = false;
         let currentNum1 = 0, currentNum2 = 0; let isAddition = true; 
-        let currentEnglishWord = null; let availableEnglishWords = [];
-        let currentChineseWord = null; let availableChineseWords = [];
+        
+        let availableEnglishWords = [];
+        let availableChineseWords = [];
+        let availableLogicQuestions = [];
+        
+        let currentEnglishWord = null; 
+        let currentChineseWord = null; 
+        let currentLogicQuestion = null;
+        
         let wrongWordsList = [];
         let practiceStartTime = null; let practiceTimerId = null; 
         const targetWhatsAppNumber = "85292201208";
 
-        // 語音功能 (支援廣東話同英文)
         function speakText(text, lang = 'en-US') {
             try {
                 if ('speechSynthesis' in window) {
                     window.speechSynthesis.cancel();
                     let msg = new SpeechSynthesisUtterance(text);
-                    msg.lang = lang; // 根據需要切換語言
+                    msg.lang = lang; 
                     msg.rate = 0.85;
                     window.speechSynthesis.speak(msg);
                 }
@@ -224,14 +228,16 @@
                 }
             } catch(e) {}
 
-            if (mode === 'math' || mode === 'english' || mode === 'chinese') {
+            if (mode === 'math' || mode === 'english' || mode === 'chinese' || mode === 'logic') {
                 document.getElementById('startScreen').style.display = "flex";
                 if (mode === 'math') {
                     document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 條密碼！<br>每題有 15 秒鐘計數，滿分有特別禮物㗎！🎁";
                 } else if (mode === 'english') {
-                    document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 個<span style='color:red;'>深造版</span>英文密碼！<br>記得㩒 🔊 聽提示呀！🎁";
+                    document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 個英文密碼！<br>記得㩒 🔊 聽提示呀！🎁";
                 } else if (mode === 'chinese') {
                     document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 題看圖認字！<br>幫 Jade 認熟啲中文字啦！🎁";
+                } else if (mode === 'logic') {
+                    document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 題邏輯推理！<br>睇清楚圖案規律，搵出問號係咩！🎁";
                 }
             } else if (mode === 'planet') {
                 document.getElementById('planetScreen').style.display = "flex";
@@ -248,7 +254,6 @@
             }
         }
 
-        // --- 🪐 星球 ---
         function renderPlanet() {
             let p = planetsData[currentPlanetIndex];
             document.getElementById('planetNum').innerText = `第 ${currentPlanetIndex + 1}/${planetsData.length} 個天體`;
@@ -257,14 +262,10 @@
             document.getElementById('planetFact').innerText = p.zhFact;
             playPlanetFact();
         }
-        function playPlanetFact() {
-            let p = planetsData[currentPlanetIndex];
-            speakText(`${p.name}. ${p.enFact}`, 'en-US');
-        }
+        function playPlanetFact() { let p = planetsData[currentPlanetIndex]; speakText(`${p.name}. ${p.enFact}`, 'en-US'); }
         function nextPlanet() { currentPlanetIndex = (currentPlanetIndex < planetsData.length - 1) ? currentPlanetIndex + 1 : 0; renderPlanet(); }
         function prevPlanet() { currentPlanetIndex = (currentPlanetIndex > 0) ? currentPlanetIndex - 1 : planetsData.length - 1; renderPlanet(); }
 
-        // --- 🎻 小提琴 ---
         function startViolin() {
             practiceStartTime = new Date();
             document.getElementById('violinStatusBox').innerHTML = "練習中... 🎶<br>Jade 俾心機拉呀！";
@@ -297,13 +298,13 @@
             vWaBtn.href = waUrl; vWaBtn.target = "_top"; vWaBtn.style.display = "flex";
         }
 
-        // --- 🧮 數學 & 🔤 英文 & 🀄 中文 ---
         function playCurrentHint() {
             if (currentMode === 'english' && currentEnglishWord) {
                 speakText(`Find the word... ${currentEnglishWord.word}. ${currentEnglishWord.hint}`, 'en-US');
             } else if (currentMode === 'chinese' && currentChineseWord) {
-                // 用廣東話讀提示
                 speakText(`搵下邊個字係... ${currentChineseWord.word}。${currentChineseWord.hint}`, 'zh-HK');
+            } else if (currentMode === 'logic') {
+                speakText(`估吓問號應該填咩圖案呀？`, 'zh-HK');
             }
         }
 
@@ -315,6 +316,7 @@
             
             if (currentMode === 'english') { availableEnglishWords = [...englishWords].sort(() => Math.random() - 0.5); }
             if (currentMode === 'chinese') { availableChineseWords = [...chineseWords].sort(() => Math.random() - 0.5); }
+            if (currentMode === 'logic') { availableLogicQuestions = [...logicQuestions].sort(() => Math.random() - 0.5); }
             
             nextQuestion();
         }
@@ -330,6 +332,7 @@
             if (currentMode === 'math') { generateMathQuestion(); } 
             else if (currentMode === 'english') { generateEnglishQuestion(); }
             else if (currentMode === 'chinese') { generateChineseQuestion(); }
+            else if (currentMode === 'logic') { generateLogicQuestion(); }
             
             startTimer();
         }
@@ -383,6 +386,21 @@
             options.sort(() => Math.random() - 0.5); renderOptions(options, true);
         }
 
+        // 新增：邏輯推理題目生成
+        function generateLogicQuestion() {
+            // 如果題庫唔夠，重新洗牌
+            if (availableLogicQuestions.length === 0) {
+                 availableLogicQuestions = [...logicQuestions].sort(() => Math.random() - 0.5);
+            }
+            currentLogicQuestion = availableLogicQuestions.pop(); 
+            currentAnswer = currentLogicQuestion.ans;
+            document.getElementById('questionText').innerText = currentLogicQuestion.q;
+            document.getElementById('speakBtn').style.display = "inline-block";
+            playCurrentHint();
+            let options = [currentLogicQuestion.ans, currentLogicQuestion.wrong[0], currentLogicQuestion.wrong[1]];
+            options.sort(() => Math.random() - 0.5); renderOptions(options, true);
+        }
+
         function renderOptions(options, isText = false) {
             let optionsHtml = "";
             for (let i = 0; i < options.length; i++) {
@@ -404,8 +422,9 @@
             if (!isAnswering) return;
             isAnswering = false; disableAllButtons();
             
-            if ((currentMode === 'english' || currentMode === 'chinese') && !wrongWordsList.includes(currentAnswer)) {
-                wrongWordsList.push(currentAnswer);
+            if (currentMode !== 'math') {
+                let recordWord = currentMode === 'logic' ? currentLogicQuestion.q : currentAnswer;
+                if (!wrongWordsList.includes(recordWord)) { wrongWordsList.push(recordWord); }
             }
 
             let feedbackEl = document.getElementById('feedback');
@@ -413,7 +432,7 @@
             feedbackEl.style.color = "red";
             
             if (currentMode === 'english') { speakText(`Time's up! The word is ${currentAnswer}.`, 'en-US'); }
-            if (currentMode === 'chinese') { speakText(`時間到！正確答案係 ${currentAnswer}。`, 'zh-HK'); }
+            if (currentMode === 'chinese' || currentMode === 'logic') { speakText(`時間到！正確答案係 ${currentAnswer}。`, 'zh-HK'); }
             
             setTimeout(nextQuestion, 4000);
         }
@@ -422,14 +441,16 @@
             if (!isAnswering) return;
             isAnswering = false; clearInterval(timerId); disableAllButtons();
             let feedbackEl = document.getElementById('feedback');
+            
             if (selected === currentAnswer) {
                 feedbackEl.innerHTML = "🎉 答啱啦！Jade 好叻呀！加 1 分！"; feedbackEl.style.color = "#32cd32"; score++;
                 if (currentMode === 'english') speakText("Good job Jade!", 'en-US');
-                if (currentMode === 'chinese') speakText("好叻女呀！", 'zh-HK');
+                if (currentMode === 'chinese' || currentMode === 'logic') speakText("好叻女呀！", 'zh-HK');
                 setTimeout(nextQuestion, 1500);
             } else {
-                if ((currentMode === 'english' || currentMode === 'chinese') && !wrongWordsList.includes(currentAnswer)) {
-                    wrongWordsList.push(currentAnswer);
+                if (currentMode !== 'math') {
+                    let recordWord = currentMode === 'logic' ? currentLogicQuestion.q : currentAnswer;
+                    if (!wrongWordsList.includes(recordWord)) { wrongWordsList.push(recordWord); }
                 }
 
                 let explanation = "";
@@ -442,6 +463,9 @@
                     speakText(`Oops! The correct word is ${currentAnswer}. Spelled: ${spelledOut}.`, 'en-US');
                 } else if (currentMode === 'chinese') {
                     explanation = `❌ 答錯咗。<br>正確答案係：<strong>${currentAnswer}</strong> 呀！`;
+                    speakText(`唔係呢個呀。正確答案係：${currentAnswer}。`, 'zh-HK');
+                } else if (currentMode === 'logic') {
+                    explanation = `❌ 答錯咗。<br>睇清楚規律，下一個應該係：<strong>${currentAnswer}</strong> 呀！`;
                     speakText(`唔係呢個呀。正確答案係：${currentAnswer}。`, 'zh-HK');
                 }
                 feedbackEl.innerHTML = explanation; feedbackEl.style.color = "#ff4500";
@@ -456,8 +480,9 @@
             
             let modeName = "尋寶任務";
             if (currentMode === 'math') modeName = '🧮 數學尋寶';
-            if (currentMode === 'english') modeName = '🔤 英文尋寶 (進階版)';
+            if (currentMode === 'english') modeName = '🔤 英文尋寶';
             if (currentMode === 'chinese') modeName = '🀄 中文識字';
+            if (currentMode === 'logic') modeName = '🧠 邏輯小神童';
             
             let prizeStr = score === TOTAL_QUESTIONS ? '🎁 特別禮物一份！' : `${score} 個印仔 💮`;
             
@@ -466,11 +491,11 @@
                           `成績：*${score} / ${TOTAL_QUESTIONS} 分*\n` +
                           `獲得獎勵：${prizeStr}\n`;
             
-            if (currentMode === 'english' || currentMode === 'chinese') {
+            if (currentMode !== 'math') {
                 if (wrongWordsList.length > 0) {
-                    message += `\n📖 *今次需要多啲練習嘅生字：*\n${wrongWordsList.join(', ')}\n`;
+                    message += `\n📖 *今次需要多啲練習嘅題目：*\n${wrongWordsList.join(', ')}\n`;
                 } else {
-                    message += `\n📖 *今次所有生字都答啱晒！太犀利啦！*\n`;
+                    message += `\n📖 *今次全部答啱晒！太犀利啦！*\n`;
                 }
             }
             message += `\nJade 真係好叻女呀！繼續加油！👏`;
@@ -483,12 +508,12 @@
             endScreen.style.display = "flex";
             if (score === TOTAL_QUESTIONS) {
                 if (currentMode === 'english') speakText("Amazing! You got a perfect score!", 'en-US');
-                if (currentMode === 'chinese') speakText("太犀利啦！滿分！", 'zh-HK');
+                else speakText("太犀利啦！滿分！", 'zh-HK');
                 resultBox.innerHTML = `🎊 任務完成！🎊<br>太犀利啦，你攞到滿分 ${score} 分！<br><span class="big-prize">🎁 獲得特別禮物一份！🎁</span><br>快啲叫爸爸/媽媽俾禮物你啦！`;
             } else {
                 let stampsHtml = ""; for(let i=0; i<score; i++){ stampsHtml += "💮 "; } if(score === 0) stampsHtml = "下次再努力！💪";
                 if (currentMode === 'english') speakText(`Great try! You got ${score} points.`, 'en-US');
-                if (currentMode === 'chinese') speakText(`好叻女，你攞到 ${score} 分。`, 'zh-HK');
+                else speakText(`好叻女，你攞到 ${score} 分。`, 'zh-HK');
                 resultBox.innerHTML = `👏 任務完成！👏<br>你今次攞到 ${score} 分！<br>可以換成：<br><span class="stamps">${stampsHtml}</span><br>(${score} 個印仔)<br>繼續加油，下次挑戰滿分攞禮物啦！`;
             }
         }
