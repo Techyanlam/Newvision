@@ -27,7 +27,8 @@
         .logic-mode { background-color: #20b2aa; } 
         .planet-mode { background-color: #4169e1; }
         .violin-mode { background-color: #3cb371; }
-        .tama-mode { background-color: #ffa500; } /* 寵物模式專用顏色：橙色 */
+        .tama-mode { background-color: #ffa500; } 
+        .news-mode { background-color: #ff4500; } /* 新聞模式專用顏色：火紅色 */
         
         .feedback { font-size: 20px; font-weight: bold; margin-top: 20px; min-height: 80px; line-height: 1.4; }
         .result-box { background-color: #fffacd; border: 5px solid #ffa500; border-radius: 20px; padding: 30px; font-size: 24px; font-weight: bold; color: #d2691e; width: 80%; max-width: 400px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 30px; box-sizing: border-box; line-height: 1.6; }
@@ -38,7 +39,6 @@
         .wa-btn { background-color: #25D366; font-size: 20px; width: 280px; margin-bottom: 15px; text-decoration: none; display: flex; align-items: center; justify-content: center; line-height: 1.4; color: white; }
         .done-btn { background-color: #87ceeb; font-size: 20px; width: 280px; text-decoration: none; display: flex; align-items: center; justify-content: center; line-height: 1.4; color: white;}
 
-        /* 他媽哥池進度條專用 */
         .stat-bar { margin: 5px 0; display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .bar-bg { background-color: #ddd; border-radius: 10px; width: 150px; height: 15px; overflow: hidden; }
         .bar-fill { height: 100%; transition: width 0.3s; }
@@ -54,6 +54,7 @@
 
     <div id="modeScreen" style="display: flex; flex-direction: column; align-items: center;">
         <h2 style="color: #555;">你想做咩任務先？</h2>
+        <button class="mode-btn news-mode" onclick="selectMode('news')">📰 趣味小新聞 (每日放送)</button>
         <button class="mode-btn tama-mode" onclick="selectMode('tama')">🐣 寵物育成 (照顧小倉鼠)</button>
         <button class="mode-btn math-mode" onclick="selectMode('math')">🧮 數學尋寶</button>
         <button class="mode-btn eng-mode" onclick="selectMode('english')">🔤 英文尋寶</button>
@@ -82,6 +83,22 @@
         <div class="feedback" id="feedback"></div>
     </div>
 
+    <div id="newsScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
+        <div class="status-bar">
+            <span id="newsDate" style="color: #ff4500;">📅 今日焦點新聞</span>
+        </div>
+        <div class="question-box" style="font-size: 24px;">
+            <div id="newsEmoji" style="font-size: 80px; margin-bottom: 10px;">🦒</div>
+            <div id="newsTitle" style="color: #ff4500; font-size: 28px; margin-bottom: 10px; font-weight: 900;">標題</div>
+            <div id="newsContent" style="color: #555; font-size: 22px; line-height: 1.5; margin-top: 10px; text-align: left;">內容</div>
+            <button class="speaker-btn" onclick="playNews()">🔊</button>
+        </div>
+        <div class="options-container">
+            <button class="option-btn" style="background-color: #87ceeb; color: white;" onclick="nextNews()">睇下一則 ➡️</button>
+        </div>
+        <button class="option-btn" onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer; box-shadow:none;">返回揀其他關卡</button>
+    </div>
+
     <div id="planetScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
         <div class="status-bar">
             <span id="planetNum">第 1/10 個天體</span>
@@ -104,28 +121,16 @@
             <div id="tamaEmoji" style="font-size: 100px; margin-bottom: 10px; transition: transform 0.2s;">🐹</div>
             <div id="tamaMessage" style="font-size: 22px; color: #555;">多謝 Jade 照顧我！</div>
         </div>
-        
         <div style="width: 80%; max-width: 300px; font-size: 18px; font-weight: bold; color: #555; margin-bottom: 25px;">
-            <div class="stat-bar">
-                <span>🍖 飽食度</span>
-                <div class="bar-bg"><div id="barHunger" class="bar-fill" style="background-color: #ff7f50;"></div></div>
-            </div>
-            <div class="stat-bar">
-                <span>🎾 開心度</span>
-                <div class="bar-bg"><div id="barHappy" class="bar-fill" style="background-color: #3cb371;"></div></div>
-            </div>
-            <div class="stat-bar">
-                <span>🛁 清潔度</span>
-                <div class="bar-bg"><div id="barClean" class="bar-fill" style="background-color: #87ceeb;"></div></div>
-            </div>
+            <div class="stat-bar"><span>🍖 飽食度</span><div class="bar-bg"><div id="barHunger" class="bar-fill" style="background-color: #ff7f50;"></div></div></div>
+            <div class="stat-bar"><span>🎾 開心度</span><div class="bar-bg"><div id="barHappy" class="bar-fill" style="background-color: #3cb371;"></div></div></div>
+            <div class="stat-bar"><span>🛁 清潔度</span><div class="bar-bg"><div id="barClean" class="bar-fill" style="background-color: #87ceeb;"></div></div></div>
         </div>
-
         <div class="options-container">
             <button class="option-btn" style="background-color: #ffb6c1; font-size: 22px; color: white;" onclick="feedTama()">餵食 🍖</button>
             <button class="option-btn" style="background-color: #9370db; font-size: 22px; color: white;" onclick="playTama()">玩耍 🎾</button>
             <button class="option-btn" style="background-color: #20b2aa; font-size: 22px; color: white;" onclick="cleanTama()">沖涼 🛁</button>
         </div>
-        
         <button class="option-btn" onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer; box-shadow:none;">返回揀其他關卡</button>
     </div>
 
@@ -147,7 +152,7 @@
     </div>
 
     <script>
-        // 📚 各大題庫
+        // 📚 題庫與資料庫
         const englishWords = [
             { word: "ELEPHANT", wrong: ["ELAPHANT", "ELEFANT"], hint: "A very large gray animal with a long trunk.", emoji: "🐘" },
             { word: "MONKEY", wrong: ["MONKY", "MUNKIE"], hint: "An animal that loves to climb trees and eat bananas.", emoji: "🐒" },
@@ -171,6 +176,21 @@
             { emoji: "🌍", name: "Earth", zhName: "地球", enFact: "Our home! It has blue oceans and green land.", zhFact: "我哋嘅屋企！有藍色嘅海水同綠色嘅大自然。" },
             { emoji: "🌙", name: "Moon", zhName: "月亮", enFact: "It shines at night and orbits the Earth.", zhFact: "夜晚會發光，一直陪住我哋地球轉嘅好朋友！" }
         ];
+
+        // 📰 趣味兒童新聞庫 (專為 6 歲設計)
+        const kidsNews = [
+            { emoji: "🦒", title: "長頸鹿條脷係藍色㗎！", content: "原來長頸鹿條脷係深藍色或者黑色㗎！因為佢哋成日伸條脷出嚟食樹葉，深色可以防止被猛烈嘅太陽曬傷。" },
+            { emoji: "🦦", title: "海獺會拖住手仔瞓覺！", content: "海獺喺水面瞓覺嗰陣，會同同伴手拖手，咁就唔怕被水流沖散啦！係咪好溫馨呢？" },
+            { emoji: "🐙", title: "章魚有三個心臟呀！", content: "你知唔知章魚有三個心臟同埋藍色嘅血㗎？佢哋仲超級聰明，識得自己扭開玻璃樽蓋添！" },
+            { emoji: "🐧", title: "企鵝原來識得滑雪！", content: "企鵝喺冰雪上面行得好慢，但佢哋會趴喺度，用個大肚腩當滑板咁滑行，游水仲快過快艇㗎！" },
+            { emoji: "🐘", title: "大象識得用鼻吸水沖涼！", content: "大象條長鼻可以吸好多水，然後好似花灑咁噴喺自己背脊度沖涼，仲會噴泥沙落身體度防蚊咬！" },
+            { emoji: "🦋", title: "蝴蝶用腳嚟試味道㗎！", content: "我哋用條脷試味道，但蝴蝶係用腳㗎！佢哋只要企喺朵花上面，就知啲花蜜甜唔甜。" },
+            { emoji: "🐨", title: "樹熊一日瞓 20 個鐘！", content: "樹熊超級鍾意瞓覺，一日可以瞓成 20 個鐘頭！淨低醒咗嘅時間，就係用嚟食尤加利樹葉。" },
+            { emoji: "🐝", title: "蜜蜂識得跳舞同朋友傾偈！", content: "蜜蜂搵到花蜜之後，會飛返去用跳「8字舞」嘅方式，話俾朋友知花蜜喺邊個方向！" },
+            { emoji: "🐿️", title: "松鼠會唔記得自己啲嘢食！", content: "松鼠好鍾意將堅果埋喺泥土入面，但佢哋成日唔記得埋咗喺邊，結果啲堅果就生咗做大樹啦！" },
+            { emoji: "🦓", title: "斑馬啲紋隻隻都唔同！", content: "就好似我哋人類嘅指紋咁，每一隻斑馬身上嘅黑白條紋都係獨一無二㗎，無兩隻會完全一樣！" }
+        ];
+        let currentNewsIndex = 0;
         
         let currentMode = ''; let currentAnswer = 0; let score = 0; let currentQuestionNum = 0;
         const TOTAL_QUESTIONS = 10; let timeLeft = 15; let timerId = null; let isAnswering = false;
@@ -183,7 +203,6 @@
         const targetWhatsAppNumber = "85292201208";
         let currentPlanetIndex = 0;
 
-        // 🐹 他媽哥池變數
         let tamaStats = { hunger: 100, happy: 100, clean: 100, lastSeen: Date.now() };
         let tamaLoopId = null;
 
@@ -192,8 +211,7 @@
                 if ('speechSynthesis' in window) {
                     window.speechSynthesis.cancel();
                     let msg = new SpeechSynthesisUtterance(text);
-                    msg.lang = lang; 
-                    msg.rate = 0.85;
+                    msg.lang = lang; msg.rate = 0.85;
                     window.speechSynthesis.speak(msg);
                 }
             } catch(e) {}
@@ -206,11 +224,12 @@
             document.getElementById('violinScreen').style.display = "none";
             document.getElementById('planetScreen').style.display = "none"; 
             document.getElementById('tamaScreen').style.display = "none"; 
+            document.getElementById('newsScreen').style.display = "none"; 
             document.getElementById('modeScreen').style.display = "flex";
             
             clearInterval(timerId);
             if(practiceTimerId) clearInterval(practiceTimerId);
-            if(tamaLoopId) clearInterval(tamaLoopId); // 離開寵物畫面停止扣減
+            if(tamaLoopId) clearInterval(tamaLoopId); 
             
             let vWaBtn = document.getElementById('violinWaBtn');
             if(vWaBtn) vWaBtn.style.display = "none";
@@ -247,15 +266,39 @@
             } else if (mode === 'tama') {
                 document.getElementById('tamaScreen').style.display = "flex";
                 initTama();
+            } else if (mode === 'news') {
+                document.getElementById('newsScreen').style.display = "flex";
+                // 每日根據日子或者隨機顯示一篇新聞
+                currentNewsIndex = new Date().getDate() % kidsNews.length; 
+                renderNews();
             }
         }
 
-        // --- 🐣 寵物育成 (他媽哥池) 邏輯 ---
+        // --- 📰 趣味新聞邏輯 ---
+        function renderNews() {
+            let news = kidsNews[currentNewsIndex];
+            document.getElementById('newsEmoji').innerText = news.emoji;
+            document.getElementById('newsTitle').innerText = news.title;
+            document.getElementById('newsContent').innerText = news.content;
+            playNews();
+        }
+
+        function playNews() {
+            let news = kidsNews[currentNewsIndex];
+            speakText(`今日新聞：${news.title}。${news.content}`, 'zh-HK');
+        }
+
+        function nextNews() {
+            // 隨機抽下一則新聞俾佢睇
+            currentNewsIndex = Math.floor(Math.random() * kidsNews.length);
+            renderNews();
+        }
+
+        // --- 🐣 寵物育成邏輯 ---
         function initTama() {
             let saved = localStorage.getItem('jadeTamaStats');
             if (saved) {
                 tamaStats = JSON.parse(saved);
-                // 計算離開咗幾耐 (每分鐘扣 1 點)
                 let minsPassed = Math.floor((Date.now() - tamaStats.lastSeen) / 60000);
                 if (minsPassed > 0) {
                     tamaStats.hunger = Math.max(0, tamaStats.hunger - minsPassed);
@@ -266,7 +309,6 @@
             tamaStats.lastSeen = Date.now();
             updateTamaUI();
             
-            // 開啟畫面後，每 5 秒扣少少，營造真實感
             tamaLoopId = setInterval(() => {
                 if (tamaStats.hunger > 0) tamaStats.hunger -= 2;
                 if (tamaStats.happy > 0) tamaStats.happy -= 1;
@@ -284,17 +326,11 @@
             let emoji = document.getElementById('tamaEmoji');
             let msg = document.getElementById('tamaMessage');
 
-            if (tamaStats.hunger < 30) {
-                emoji.innerText = "😫"; msg.innerText = "Jade, 我好肚餓呀... 🍖";
-            } else if (tamaStats.clean < 30) {
-                emoji.innerText = "🤢"; msg.innerText = "好污糟呀，我想沖涼！🛁";
-            } else if (tamaStats.happy < 30) {
-                emoji.innerText = "😭"; msg.innerText = "好悶呀，陪我玩啦！🎾";
-            } else if (tamaStats.hunger > 80 && tamaStats.happy > 80 && tamaStats.clean > 80) {
-                emoji.innerText = "🥰"; msg.innerText = "我依家超級開心！✨";
-            } else {
-                emoji.innerText = "🐹"; msg.innerText = "多謝 Jade 照顧我！";
-            }
+            if (tamaStats.hunger < 30) { emoji.innerText = "😫"; msg.innerText = "Jade, 我好肚餓呀... 🍖"; } 
+            else if (tamaStats.clean < 30) { emoji.innerText = "🤢"; msg.innerText = "好污糟呀，我想沖涼！🛁"; } 
+            else if (tamaStats.happy < 30) { emoji.innerText = "😭"; msg.innerText = "好悶呀，陪我玩啦！🎾"; } 
+            else if (tamaStats.hunger > 80 && tamaStats.happy > 80 && tamaStats.clean > 80) { emoji.innerText = "🥰"; msg.innerText = "我依家超級開心！✨"; } 
+            else { emoji.innerText = "🐹"; msg.innerText = "多謝 Jade 照顧我！"; }
         }
 
         function animateTama() {
@@ -305,7 +341,7 @@
 
         function feedTama() {
             tamaStats.hunger = Math.min(100, tamaStats.hunger + 25);
-            tamaStats.clean = Math.max(0, tamaStats.clean - 5); // 食嘢會整污糟
+            tamaStats.clean = Math.max(0, tamaStats.clean - 5); 
             animateTama(); updateTamaUI();
             localStorage.setItem('jadeTamaStats', JSON.stringify(tamaStats));
             speakText("好味好味！", 'zh-HK');
@@ -313,7 +349,7 @@
 
         function playTama() {
             tamaStats.happy = Math.min(100, tamaStats.happy + 25);
-            tamaStats.hunger = Math.max(0, tamaStats.hunger - 10); // 玩會肚餓
+            tamaStats.hunger = Math.max(0, tamaStats.hunger - 10); 
             animateTama(); updateTamaUI();
             localStorage.setItem('jadeTamaStats', JSON.stringify(tamaStats));
             speakText("好好玩呀！", 'zh-HK');
@@ -326,7 +362,7 @@
             speakText("好乾淨呀！", 'zh-HK');
         }
 
-        // --- 🪐 星球 ---
+        // --- 🪐 星球邏輯 ---
         function renderPlanet() {
             let p = planetsData[currentPlanetIndex];
             document.getElementById('planetNum').innerText = `第 ${currentPlanetIndex + 1}/${planetsData.length} 個天體`;
@@ -339,7 +375,7 @@
         function nextPlanet() { currentPlanetIndex = (currentPlanetIndex < planetsData.length - 1) ? currentPlanetIndex + 1 : 0; renderPlanet(); }
         function prevPlanet() { currentPlanetIndex = (currentPlanetIndex > 0) ? currentPlanetIndex - 1 : planetsData.length - 1; renderPlanet(); }
 
-        // --- 🎻 小提琴 ---
+        // --- 🎻 小提琴邏輯 ---
         function startViolin() {
             practiceStartTime = new Date();
             document.getElementById('violinStatusBox').innerHTML = "練習中... 🎶<br>Jade 俾心機拉呀！";
@@ -372,7 +408,7 @@
             vWaBtn.href = waUrl; vWaBtn.target = "_top"; vWaBtn.style.display = "flex";
         }
 
-        // --- 尋寶遊戲邏輯 ---
+        // --- 遊戲邏輯 ---
         function playCurrentHint() {
             if (currentMode === 'english' && currentEnglishWord) speakText(`Find the word... ${currentEnglishWord.word}. ${currentEnglishWord.hint}`, 'en-US');
             else if (currentMode === 'chinese' && currentChineseWord) speakText(`搵下邊個字係... ${currentChineseWord.word}。${currentChineseWord.hint}`, 'zh-HK');
