@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="referrer" content="no-referrer">
     <title>Jade 嘅尋寶大冒險</title>
     <style>
         body { font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', sans-serif; background-color: #f0f8ff; text-align: center; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; -webkit-tap-highlight-color: transparent; }
@@ -12,22 +13,26 @@
         .status-bar { width: 80%; max-width: 400px; display: flex; justify-content: space-between; font-size: 22px; font-weight: bold; color: #555; margin-bottom: 10px; background-color: #ffe4e1; padding: 10px 20px; border-radius: 15px; box-sizing: border-box; }
         .timer-warning { color: red; }
         .question-box { background-color: white; border: 5px solid #ffd700; border-radius: 20px; padding: 20px; font-size: 40px; font-weight: bold; color: #333; width: 80%; max-width: 400px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 30px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 150px; }
-        .speaker-btn { background-color: #ffeb3b; border: 2px solid #fbc02d; border-radius: 50%; width: 50px; height: 50px; font-size: 24px; cursor: pointer; margin-top: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .speaker-btn { background-color: #ffeb3b; border: 2px solid #fbc02d; border-radius: 50%; width: 50px; height: 50px; font-size: 24px; cursor: pointer; margin-top: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
         .options-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; width: 100%; max-width: 400px; }
-        .option-btn { background-color: #87ceeb; border: none; border-radius: 15px; padding: 15px 25px; font-size: 26px; font-weight: bold; color: white; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2); transition: transform 0.1s; flex: 1; min-width: 80px; }
+        .option-btn { background-color: #87ceeb; border: none; border-radius: 15px; padding: 15px 25px; font-size: 26px; font-weight: bold; color: white; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2); transition: transform 0.1s; flex: 1; min-width: 80px; box-sizing: border-box; }
         .option-btn:active { transform: translateY(4px); box-shadow: 0 0px 0px rgba(0,0,0,0.2); }
         .option-btn:disabled { background-color: #ccc; cursor: not-allowed; box-shadow: none; transform: none; }
-        .mode-btn { padding: 15px 30px; font-size: 24px; margin: 10px; border-radius: 20px; border: none; color: white; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2); width: 250px; }
+        
+        .mode-btn { padding: 15px 30px; font-size: 24px; margin: 10px; border-radius: 20px; border: none; color: white; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2); width: 280px; }
         .math-mode { background-color: #ff7f50; }
         .eng-mode { background-color: #9370db; }
         .violin-mode { background-color: #3cb371; }
+        .planet-mode { background-color: #4169e1; } /* 星球模式專用顏色 */
+        
         .feedback { font-size: 20px; font-weight: bold; margin-top: 20px; min-height: 80px; line-height: 1.4; }
         .result-box { background-color: #fffacd; border: 5px solid #ffa500; border-radius: 20px; padding: 30px; font-size: 24px; font-weight: bold; color: #d2691e; width: 80%; max-width: 400px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 30px; box-sizing: border-box; line-height: 1.6; }
         .big-prize { font-size: 32px; color: #ff1493; margin-top: 15px; display: block; }
         .stamps { font-size: 30px; color: #ff4500; margin-top: 10px; display: block; }
         .live-timer { font-size: 48px; font-weight: bold; color: #2e8b57; margin-bottom: 20px; font-family: 'Courier New', Courier, monospace; }
-        .wa-btn { background-color: #25D366; font-size: 20px; width: 280px; margin-bottom: 15px; }
-        .done-btn { background-color: #87ceeb; font-size: 20px; width: 280px; }
+        
+        .wa-btn { background-color: #25D366; font-size: 20px; width: 280px; margin-bottom: 15px; text-decoration: none; display: flex; align-items: center; justify-content: center; line-height: 1.4; }
+        .done-btn { background-color: #87ceeb; font-size: 20px; width: 280px; text-decoration: none; display: flex; align-items: center; justify-content: center; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -41,14 +46,15 @@
     <div id="modeScreen" style="display: flex; flex-direction: column; align-items: center;">
         <h2 style="color: #555;">你想做咩任務先？</h2>
         <button class="mode-btn math-mode" onclick="selectMode('math')">🧮 數學尋寶</button>
-        <button class="mode-btn eng-mode" onclick="selectMode('english')">🔤 英文尋寶</button>
+        <button class="mode-btn eng-mode" onclick="selectMode('english')">🔤 英文尋寶 (進階)</button>
+        <button class="mode-btn planet-mode" onclick="selectMode('planet')">🪐 星球小知識<br><span style="font-size: 14px;">(聽故事學常識)</span></button>
         <button class="mode-btn violin-mode" onclick="selectMode('violin')">🎻 小提琴練習<br><span style="font-size: 14px;">(記錄時間發送WhatsApp)</span></button>
     </div>
 
     <div id="startScreen" style="display: none; flex-direction: column; align-items: center;">
         <p id="modeIntro" style="font-size: 20px; color: #666; font-weight: bold;"></p>
         <button class="option-btn" onclick="startGame()" style="background-color: #ff69b4; width: 200px; margin-top: 20px;">開始遊戲</button>
-        <button onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer;">返回揀其他關卡</button>
+        <button class="option-btn" onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer; box-shadow:none;">返回揀其他關卡</button>
     </div>
 
     <div id="gameScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
@@ -64,26 +70,42 @@
         <div class="feedback" id="feedback"></div>
     </div>
 
+    <div id="planetScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
+        <div class="status-bar">
+            <span id="planetNum">第 1/10 個天體</span>
+        </div>
+        <div class="question-box" id="planetBox" style="font-size: 24px;">
+            <div id="planetEmoji" style="font-size: 80px; margin-bottom: 10px;">🌍</div>
+            <div id="planetName" style="color: #4169e1; font-size: 32px; margin-bottom: 5px; font-weight: 900;">Earth (地球)</div>
+            <div id="planetFact" style="color: #555; font-size: 20px; line-height: 1.4; margin-top: 10px;">我哋嘅屋企！有藍色嘅海同綠色嘅地。</div>
+            <button class="speaker-btn" onclick="playPlanetFact()">🔊</button>
+        </div>
+        <div class="options-container">
+            <button class="option-btn" style="background-color: #ffb6c1;" onclick="prevPlanet()">⬅️ 上一個</button>
+            <button class="option-btn" style="background-color: #87ceeb;" onclick="nextPlanet()">下一個 ➡️</button>
+        </div>
+        <button class="option-btn" onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer; box-shadow:none;">返回揀其他關卡</button>
+    </div>
+
     <div id="endScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
         <div class="result-box" id="finalResult"></div>
-        <button class="option-btn wa-btn" id="waSendBtn" onclick="sendScoreWhatsApp()">📲 發送成績畀爸爸媽媽</button>
-        <button class="option-btn done-btn" id="doneBackBtn" onclick="resetToModeSelection()">返回主目錄</button>
+        <a id="waSendBtn" class="option-btn wa-btn" href="#">📲 發送成績畀爸爸媽媽</a>
+        <button class="option-btn done-btn" onclick="resetToModeSelection()">返回主目錄</button>
     </div>
 
     <div id="violinScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
         <div class="question-box" id="violinStatusBox" style="font-size: 26px;">
             準備好開始拉小提琴未呀 Jade？🎻
         </div>
-        
         <div class="live-timer" id="violinLiveTimer">00:00</div>
-        
         <button class="option-btn" id="startViolinBtn" onclick="startViolin()" style="background-color: #32cd32; width: 250px; margin-bottom: 15px;">開始練習</button>
         <button class="option-btn" id="endViolinBtn" onclick="endViolin()" style="display: none; background-color: #ff4500; width: 250px; margin-bottom: 15px;">完結練習</button>
-        
-        <button onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer;">返回揀其他關卡</button>
+        <a id="violinWaBtn" class="option-btn wa-btn" style="display: none;" href="#">📲 發送練習記錄</a>
+        <button class="option-btn" onclick="resetToModeSelection()" style="margin-top:20px; background:none; border:none; color:#888; text-decoration:underline; font-size:16px; cursor:pointer; box-shadow:none;">返回揀其他關卡</button>
     </div>
 
     <script>
+        // 📚 英文字庫
         const englishWords = [
             { word: "ELEPHANT", wrong: ["ELAPHANT", "ELEFANT"], hint: "A very large gray animal with a long trunk.", emoji: "🐘" },
             { word: "MONKEY", wrong: ["MONKY", "MUNKIE"], hint: "An animal that loves to climb trees and eat bananas.", emoji: "🐒" },
@@ -106,7 +128,23 @@
             { word: "DINOSAUR", wrong: ["DINOSOR", "DINOSAURE"], hint: "A giant reptile that lived millions of years ago.", emoji: "🦖" },
             { word: "UMBRELLA", wrong: ["UMBRELA", "UMBERELLA"], hint: "You use this to stay dry when it rains.", emoji: "☂️" }
         ];
+
+        // 🪐 星球知識庫 (雙語)
+        const planetsData = [
+            { emoji: "☀️", name: "Sun", zhName: "太陽", enFact: "The biggest star that gives us light and warm!", zhFact: "畀好多光同溫暖我哋嘅大恆星，無咗佢唔得㗎！" },
+            { emoji: "🪨", name: "Mercury", zhName: "水星", enFact: "The closest planet to the sun. Very hot!", zhFact: "最接近太陽嘅星球，超級熱呀！" },
+            { emoji: "✨", name: "Venus", zhName: "金星", enFact: "The brightest planet in the night sky.", zhFact: "夜空入面最光亮嘅星球。" },
+            { emoji: "🌍", name: "Earth", zhName: "地球", enFact: "Our home! It has blue oceans and green land.", zhFact: "我哋嘅屋企！有藍色嘅海水同綠色嘅大自然。" },
+            { emoji: "🔴", name: "Mars", zhName: "火星", enFact: "The red planet. It has big volcanoes!", zhFact: "紅色嘅星球，上面有好多高高嘅火山㗎！" },
+            { emoji: "🟠", name: "Jupiter", zhName: "木星", enFact: "The biggest planet! It is a giant gas ball.", zhFact: "八大行星入面最大嘅！佢係一個巨大嘅氣體球。" },
+            { emoji: "🪐", name: "Saturn", zhName: "土星", enFact: "It has beautiful rings around it!", zhFact: "佢出面有好多靚靚嘅光環圍住佢轉㗎！" },
+            { emoji: "🧊", name: "Uranus", zhName: "天王星", enFact: "A cold, blue ice giant.", zhFact: "一個好凍好凍嘅藍色冰雪巨人星球。" },
+            { emoji: "🌊", name: "Neptune", zhName: "海王星", enFact: "The furthest planet. Very windy and blue.", zhFact: "離太陽最遠嘅星球，好大風而且係深藍色嘅。" },
+            { emoji: "🌙", name: "Moon", zhName: "月亮", enFact: "It shines at night and orbits the Earth.", zhFact: "夜晚會發光，一直陪住我哋地球轉嘅好朋友！" }
+        ];
+        let currentPlanetIndex = 0;
         
+        // 全局變數
         let currentMode = ''; let currentAnswer = 0; let score = 0; let currentQuestionNum = 0;
         const TOTAL_QUESTIONS = 10; let timeLeft = 15; let timerId = null; let isAnswering = false;
         let currentNum1 = 0, currentNum2 = 0; let isAddition = true; 
@@ -115,21 +153,7 @@
         let practiceStartTime = null; let practiceTimerId = null; 
         const targetWhatsAppNumber = "85292201208";
 
-        // 🌟 破解封鎖嘅核心：模擬超連結點擊，強制跳出框架
-        function safeOpenWhatsApp(message) {
-            let waUrl = `https://wa.me/${targetWhatsAppNumber}?text=${encodeURIComponent(message)}`;
-            
-            // 建立一個隱藏嘅 <a> 標籤
-            let link = document.createElement('a');
-            link.href = waUrl;
-            link.target = "_top"; // 呢個 _top 係破解 ERR_BLOCKED 嘅關鍵！
-            
-            // 放入網頁並模擬點擊
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
+        // 語音功能
         function speakText(text) {
             try {
                 if ('speechSynthesis' in window) {
@@ -141,26 +165,34 @@
             } catch(e) {}
         }
 
-        function playCurrentEnglishHint() {
-            if (currentMode === 'english' && currentEnglishWord) {
-                speakText(`Find the word... ${currentEnglishWord.word}. ${currentEnglishWord.hint}`);
-            }
-        }
-
+        // 返回主目錄
         function resetToModeSelection() {
-            try { window.speechSynthesis.cancel(); } catch(e) {}
             document.getElementById('endScreen').style.display = "none";
             document.getElementById('startScreen').style.display = "none";
             document.getElementById('gameScreen').style.display = "none";
             document.getElementById('violinScreen').style.display = "none";
+            document.getElementById('planetScreen').style.display = "none"; // 隱藏星球畫面
             document.getElementById('modeScreen').style.display = "flex";
+            
             clearInterval(timerId);
             if(practiceTimerId) clearInterval(practiceTimerId);
+            
+            let vWaBtn = document.getElementById('violinWaBtn');
+            if(vWaBtn) vWaBtn.style.display = "none";
         }
 
+        // 選擇模式
         function selectMode(mode) {
             currentMode = mode;
             document.getElementById('modeScreen').style.display = "none";
+
+            // 預先啟動語音引擎
+            try {
+                if ('speechSynthesis' in window) {
+                    let silentMsg = new SpeechSynthesisUtterance('');
+                    window.speechSynthesis.speak(silentMsg);
+                }
+            } catch(e) {}
 
             if (mode === 'math' || mode === 'english') {
                 document.getElementById('startScreen').style.display = "flex";
@@ -169,6 +201,11 @@
                 } else {
                     document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 個<span style='color:red;'>深造版</span>英文密碼！<br>記得㩒 🔊 聽提示呀！🎁";
                 }
+            } else if (mode === 'planet') {
+                // 直接進入星球畫面
+                document.getElementById('planetScreen').style.display = "flex";
+                currentPlanetIndex = 0;
+                renderPlanet();
             } else if (mode === 'violin') {
                 document.getElementById('violinScreen').style.display = "flex";
                 document.getElementById('violinLiveTimer').innerText = "00:00";
@@ -180,6 +217,44 @@
             }
         }
 
+        // --- 🪐 星球探險專用功能 ---
+        function renderPlanet() {
+            let p = planetsData[currentPlanetIndex];
+            document.getElementById('planetNum').innerText = `第 ${currentPlanetIndex + 1}/${planetsData.length} 個天體`;
+            document.getElementById('planetEmoji').innerText = p.emoji;
+            document.getElementById('planetName').innerText = `${p.name} (${p.zhName})`;
+            document.getElementById('planetFact').innerText = p.zhFact;
+            
+            // 自動讀出英文
+            playPlanetFact();
+        }
+
+        function playPlanetFact() {
+            let p = planetsData[currentPlanetIndex];
+            speakText(`${p.name}. ${p.enFact}`);
+        }
+
+        function nextPlanet() {
+            if (currentPlanetIndex < planetsData.length - 1) {
+                currentPlanetIndex++;
+                renderPlanet();
+            } else {
+                currentPlanetIndex = 0; // 循環返去第一個
+                renderPlanet();
+            }
+        }
+
+        function prevPlanet() {
+            if (currentPlanetIndex > 0) {
+                currentPlanetIndex--;
+                renderPlanet();
+            } else {
+                currentPlanetIndex = planetsData.length - 1; // 循環去最後一個
+                renderPlanet();
+            }
+        }
+
+        // --- 🎻 小提琴功能 ---
         function startViolin() {
             practiceStartTime = new Date();
             document.getElementById('violinStatusBox').innerHTML = "練習中... 🎶<br>Jade 俾心機拉呀！";
@@ -214,41 +289,21 @@
             
             let message = `🎻 *Jade 小提琴練習記錄* 🎻\n開始時間：${startStr}\n完結時間：${endStr}\n總共練習咗：*${mins} 分鐘 ${secs} 秒*\nJade 真係好叻女呀！👏`;
 
-            // 用新方法呼叫 WhatsApp
-            safeOpenWhatsApp(message);
+            let waUrl = `https://wa.me/${targetWhatsAppNumber}?text=${encodeURIComponent(message)}`;
+            let vWaBtn = document.getElementById('violinWaBtn');
+            vWaBtn.href = waUrl;
+            vWaBtn.target = "_top";
+            vWaBtn.style.display = "flex";
         }
 
-        function sendScoreWhatsApp() {
-            let modeName = currentMode === 'math' ? '🧮 數學尋寶' : '🔤 英文尋寶 (進階版)';
-            let prizeStr = score === TOTAL_QUESTIONS ? '🎁 特別禮物一份！' : `${score} 個印仔 💮`;
-            
-            let message = `🌟 *Jade 嘅尋寶大冒險成績* 🌟\n` +
-                          `挑戰任務：${modeName}\n` +
-                          `成績：*${score} / ${TOTAL_QUESTIONS} 分*\n` +
-                          `獲得獎勵：${prizeStr}\n`;
-            
-            if (currentMode === 'english') {
-                if (wrongEnglishWords.length > 0) {
-                    message += `\n📖 *今次需要多啲練習嘅生字：*\n${wrongEnglishWords.join(', ')}\n`;
-                } else {
-                    message += `\n📖 *今次所有生字都串啱晒！太犀利啦！*\n`;
-                }
+        // --- 🧮 數學 & 🔤 英文功能 ---
+        function playCurrentEnglishHint() {
+            if (currentMode === 'english' && currentEnglishWord) {
+                speakText(`Find the word... ${currentEnglishWord.word}. ${currentEnglishWord.hint}`);
             }
-
-            message += `\nJade 真係好叻女呀！繼續加油！👏`;
-
-            // 用新方法呼叫 WhatsApp
-            safeOpenWhatsApp(message);
         }
 
         function startGame() {
-            try {
-                if ('speechSynthesis' in window) {
-                    let silentMsg = new SpeechSynthesisUtterance('');
-                    window.speechSynthesis.speak(silentMsg);
-                }
-            } catch(e) {}
-            
             document.getElementById('startScreen').style.display = "none";
             document.getElementById('gameScreen').style.display = "flex";
             score = 0; currentQuestionNum = 0;
@@ -374,9 +429,28 @@
             let endScreen = document.getElementById('endScreen');
             let resultBox = document.getElementById('finalResult');
             
-            document.getElementById('waSendBtn').disabled = false;
-            document.getElementById('doneBackBtn').disabled = false;
+            let modeName = currentMode === 'math' ? '🧮 數學尋寶' : '🔤 英文尋寶 (進階版)';
+            let prizeStr = score === TOTAL_QUESTIONS ? '🎁 特別禮物一份！' : `${score} 個印仔 💮`;
             
+            let message = `🌟 *Jade 嘅尋寶大冒險成績* 🌟\n` +
+                          `挑戰任務：${modeName}\n` +
+                          `成績：*${score} / ${TOTAL_QUESTIONS} 分*\n` +
+                          `獲得獎勵：${prizeStr}\n`;
+            
+            if (currentMode === 'english') {
+                if (wrongEnglishWords.length > 0) {
+                    message += `\n📖 *今次需要多啲練習嘅生字：*\n${wrongEnglishWords.join(', ')}\n`;
+                } else {
+                    message += `\n📖 *今次所有生字都串啱晒！太犀利啦！*\n`;
+                }
+            }
+            message += `\nJade 真係好叻女呀！繼續加油！👏`;
+
+            let waUrl = `https://wa.me/${targetWhatsAppNumber}?text=${encodeURIComponent(message)}`;
+            let waBtn = document.getElementById('waSendBtn');
+            waBtn.href = waUrl;
+            waBtn.target = "_top"; 
+
             endScreen.style.display = "flex";
             if (score === TOTAL_QUESTIONS) {
                 if (currentMode === 'english') speakText("Amazing! You got a perfect score!");
