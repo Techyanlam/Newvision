@@ -31,7 +31,7 @@
         .news-mode { background-color: #ff4500; } 
         .health-mode { background-color: #2e8b57; } 
         .weather-mode { background-color: #00ced1; } 
-        .reading-mode { background-color: #dda0dd; } /* 🌟 新增：閱讀理解按鈕顏色 */
+        .reading-mode { background-color: #dda0dd; } 
         
         .feedback { font-size: 20px; font-weight: bold; margin-top: 20px; min-height: 80px; line-height: 1.4; }
         .result-box { background-color: #fffacd; border: 5px solid #ffa500; border-radius: 20px; padding: 30px; font-size: 24px; font-weight: bold; color: #d2691e; width: 80%; max-width: 400px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 30px; box-sizing: border-box; line-height: 1.6; }
@@ -55,7 +55,6 @@
         .weather-temp { font-size: 18px; color: #ff4500; font-weight: bold; margin-bottom: 4px; }
         .weather-desc { font-size: 15px; color: #666; line-height: 1.3; }
         
-        /* 閱讀理解文字樣式 */
         .reading-text p { margin-bottom: 15px; text-indent: 2em; }
     </style>
 </head>
@@ -153,7 +152,7 @@
 
     <div id="planetScreen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
         <div class="status-bar">
-            <span id="planetNum">第 1/10 個天體</span>
+            <span id="planetNum">第 1/20 個天體</span>
         </div>
         <div class="question-box" id="planetBox" style="font-size: 24px;">
             <div id="planetEmoji" style="font-size: 80px; margin-bottom: 10px;">🌍</div>
@@ -287,18 +286,82 @@
             { q: "🍎 🍌 🍎 🍌 🍎 ❓", ans: "🍌", wrong: ["🍎", "🍇"] }
         ];
 
+        // 🌟 更新：20 則全新星球/太空知識 🌟
         const planetsData = [
             { emoji: "☀️", name: "Sun", zhName: "太陽", enFact: "The biggest star that gives us light and warm!", zhFact: "畀好多光同溫暖我哋嘅大恆星，無咗佢唔得㗎！" },
             { emoji: "🌍", name: "Earth", zhName: "地球", enFact: "Our home! It has blue oceans and green land.", zhFact: "我哋嘅屋企！有藍色嘅海水同綠色嘅大自然。" },
-            { emoji: "🌙", name: "Moon", zhName: "月亮", enFact: "It shines at night and orbits the Earth.", zhFact: "夜晚會發光，一直陪住我哋地球轉嘅好朋友！" }
+            { emoji: "🌙", name: "Moon", zhName: "月亮", enFact: "It shines at night and orbits the Earth.", zhFact: "夜晚會發光，一直陪住我哋地球轉嘅好朋友！" },
+            { emoji: "🪐", name: "Jupiter", zhName: "木星", enFact: "The largest planet in our solar system.", zhFact: "太陽系入面最大嘅霸王行星，身上仲有個大紅斑風暴！" },
+            { emoji: "🪐", name: "Saturn", zhName: "土星", enFact: "A beautiful planet with big, bright rings.", zhFact: "太陽系最靚嘅星球！佢周圍有一圈好大好靚嘅冰環。" },
+            { emoji: "🔴", name: "Mars", zhName: "火星", enFact: "Known as the Red Planet.", zhFact: "望落去紅卜卜，好似一粒紅色嘅大寶石，人類成日派車去探索！" },
+            { emoji: "✨", name: "Venus", zhName: "金星", enFact: "The hottest planet and brightest in the sky.", zhFact: "夜空入面最光嘅星星，不過佢超級熱，可以將鉛都熱溶！" },
+            { emoji: "🌑", name: "Mercury", zhName: "水星", enFact: "The closest planet to the Sun.", zhFact: "距離太陽最近嘅星球，日頭熱到爆，夜晚又凍到結冰！" },
+            { emoji: "🔵", name: "Uranus", zhName: "天王星", enFact: "An ice giant that spins on its side.", zhFact: "呢個星球好懶，係打橫瞓喺度圍住太陽轉㗎，仲要好凍添！" },
+            { emoji: "🌊", name: "Neptune", zhName: "海王星", enFact: "The farthest planet, very dark and cold.", zhFact: "深藍色嘅星球，風力係全太陽系最強，吹得超勁！" },
+            { emoji: "🪨", name: "Pluto", zhName: "冥王星", enFact: "A dwarf planet with a heart-shaped glacier.", zhFact: "離太陽好遠好遠嘅矮行星，表面仲有一個好大嘅心形圖案！" },
+            { emoji: "🌌", name: "Milky Way", zhName: "銀河系", enFact: "Our home galaxy with billions of stars.", zhFact: "我哋太陽同埋幾千億粒星星嘅大屋企，似一條發光嘅牛奶河。" },
+            { emoji: "☄️", name: "Comet", zhName: "彗星", enFact: "A cosmic snowball of frozen gases and rock.", zhFact: "太空入面嘅污糟雪球，飛近太陽嗰陣會拖住一條長長嘅發光尾巴！" },
+            { emoji: "🕳️", name: "Black Hole", zhName: "黑洞", enFact: "A place in space where gravity pulls so much.", zhFact: "宇宙嘅超級吸塵機！引力大到連光都走唔甩，甚麼都會吸入去。" },
+            { emoji: "⭐", name: "Sirius", zhName: "天狼星", enFact: "The brightest star in the night sky.", zhFact: "夜晚個天入面最光亮嘅星星，好似一粒閃閃發光嘅大鑽石。" },
+            { emoji: "🚀", name: "ISS", zhName: "國際太空站", enFact: "A large spacecraft in orbit around Earth.", zhFact: "太空人住同做實驗嘅大屋，喺地球上空一直兜圈飛！" },
+            { emoji: "🧑‍🚀", name: "Astronaut", zhName: "太空人", enFact: "A person trained to travel in a spacecraft.", zhFact: "著住厚厚嘅太空衣，坐火箭上太空探險嘅超級英雄！" },
+            { emoji: "🛰️", name: "Satellite", zhName: "人造衛星", enFact: "A machine placed in orbit around earth.", zhFact: "人類射上太空嘅機器，幫我哋睇電視同用 GPS 搵路！" },
+            { emoji: "🌕", name: "Crater", zhName: "隕石坑", enFact: "A bowl-shaped hole found on moons and planets.", zhFact: "月亮表面一個個凹入去嘅坑洞，係被太空石頭撞出嚟㗎！" },
+            { emoji: "🌞", name: "Solar Eclipse", zhName: "日食", enFact: "When the Moon passes between Sun and Earth.", zhFact: "當月亮啱啱好遮住咗太陽，日頭都會突然變成夜晚！" }
         ];
 
+        // 🌟 更新：50 則全新趣味新聞冷知識 🌟
         const kidsNews = [
-            { emoji: "🦩", title: "紅鶴變色之謎", content: "紅鶴BB出世嗰陣其實係灰色㗎！因為佢哋食咗好多蝦，大個先會變成粉紅色！" },
-            { emoji: "🐷", title: "豬仔唔識流汗", content: "豬仔係無汗腺嘅，佢哋要靠玩泥沙嚟幫身體降溫㗎！" },
-            { emoji: "🐊", title: "鱷魚嘅眼淚", content: "鱷魚食嘢流眼淚，唔係傷心，而係因為身體鹽分太多要排走啲鹽！" },
-            { emoji: "🐌", title: "睡神大蝸牛", content: "蝸牛如果覺得太乾燥，可以縮入殼入面，連續瞓足 3 年覺！" },
-            { emoji: "🦉", title: "貓頭鷹擰擰頭", content: "貓頭鷹眼珠轉唔到，但佢哋個頭可以向後轉到去背脊添！" }
+            { emoji: "🐧", title: "企鵝唔怕凍", content: "企鵝對腳有特別嘅血管結構，所以企喺冰上面都唔會覺得凍！" },
+            { emoji: "🐘", title: "大象會喊", content: "大象係好重感情嘅動物，遇到傷心事真係會流眼淚㗎。" },
+            { emoji: "🦒", title: "長頸鹿睡眠", content: "長頸鹿一日只係瞓大約 30 分鐘，仲要係企喺度瞓！" },
+            { emoji: "🐝", title: "蜜蜂有 5 隻眼", content: "除咗前面兩隻大眼，蜜蜂頭頂仲有三隻感光嘅小眼睛！" },
+            { emoji: "🐌", title: "蝸牛牙齒", content: "蝸牛條脷上面有超過兩萬隻微型牙齒，係世界上最多牙嘅動物！" },
+            { emoji: "🐳", title: "藍鯨嘅心臟", content: "藍鯨嘅心臟有一架私家車咁大，血管粗到可以俾一個小朋友游水！" },
+            { emoji: "🦋", title: "蝴蝶嘅壽命", content: "有啲蝴蝶嘅壽命得短短幾日，所以佢哋一生出嚟就要快啲搵伴侶。" },
+            { emoji: "🐫", title: "駱駝有三層眼睫毛", content: "為咗阻擋沙漠嘅風沙，駱駝有三層長長嘅眼睫毛保護眼睛！" },
+            { emoji: "🐬", title: "海豚會改名", content: "海豚會有專屬嘅口哨聲代表自己，就好似我哋人類有名字咁！" },
+            { emoji: "🐙", title: "章魚會變色", content: "章魚開心或者嬲嗰陣，身體嘅顏色會瞬間改變，仲會發光添！" },
+            { emoji: "🦘", title: "袋鼠唔識後退", content: "袋鼠因為後腿同條尾嘅結構，只可以向前跳，永遠唔識向後行。" },
+            { emoji: "🐊", title: "鱷魚食石頭", content: "鱷魚有時會吞啲大石頭落肚，用嚟幫手磨碎胃入面嘅食物！" },
+            { emoji: "🦜", title: "鸚鵡識起名", content: "鸚鵡父母會幫自己嘅BB改名，BB大個咗都會記得自己個名！" },
+            { emoji: "🦓", title: "斑馬係黑底白紋", content: "斑馬剃晒毛之後，皮膚其實係黑色㗎！白紋係生出嚟嘅毛。" },
+            { emoji: "🦦", title: "海獺個袋", content: "海獺身上有個隱形小口袋，專門用嚟裝住佢最鍾意用嚟敲碎貝殼嘅石頭。" },
+            { emoji: "🐸", title: "毒箭蛙超毒", content: "顏色越鮮艷嘅青蛙越毒！一隻金黃色毒箭蛙嘅毒液，可以毒死十個大人。" },
+            { emoji: "🦥", title: "樹懶消化好慢", content: "樹懶食一餐飯，要用成個月先消化得完，真係慢到極點！" },
+            { emoji: "🐦", title: "鴕鳥眼大過腦", content: "鴕鳥嘅眼珠係陸地動物入面最大嘅，甚至大過佢自己個腦袋！" },
+            { emoji: "🐟", title: "飛魚識飛", content: "飛魚遇到危險嗰陣，會躍出水面張開胸鰭，喺空中滑翔幾十米！" },
+            { emoji: "🐢", title: "龜殼係骨頭", content: "龜殼其實係海龜肋骨同脊椎骨嘅一部分，所以龜係唔可以離開個殼㗎！" },
+            { emoji: "🐜", title: "螞蟻唔使瞓覺", content: "螞蟻一生人都唔會真正瞓覺，只會每日打幾百次短暫嘅「瞌眼瞓」。" },
+            { emoji: "🕷️", title: "蜘蛛絲超堅韌", content: "蜘蛛絲雖然好幼，但其實比同樣粗幼嘅鋼絲仲要堅固好幾倍！" },
+            { emoji: "🐍", title: "蛇無耳仔", content: "蛇雖然無外耳，但佢哋可以透過下巴骨感覺到地面嘅震動嚟聽聲音。" },
+            { emoji: "🦇", title: "蝙蝠掛住瞓", content: "蝙蝠倒吊住瞓覺，係因為佢哋對腳無力起飛，要靠跌落嚟嘅衝力展開翅膀！" },
+            { emoji: "🦩", title: "紅鶴單腳企", content: "紅鶴單腳企其實係為咗保暖，將另一隻腳收埋喺羽毛入面唔怕凍。" },
+            { emoji: "🐒", title: "猴子識照鏡", content: "大猩猩同黑猩猩好聰明，佢哋照鏡嗰陣知道入面嗰個就係自己！" },
+            { emoji: "🐿️", title: "松鼠會種樹", content: "松鼠成日將松果埋喺泥土但又唔記得攞返，結果幫大自然種咗好多樹。" },
+            { emoji: "🦉", title: "貓頭鷹超靜", content: "貓頭鷹啲羽毛好特別，飛嗰陣完全無聲，老鼠仔根本聽唔到佢飛過嚟！" },
+            { emoji: "🐋", title: "虎鯨識傾偈", content: "唔同地區嘅虎鯨會有自己嘅「方言」，佢哋溝通嗰陣好似講唔同語言咁。" },
+            { emoji: "🦈", title: "鯊魚無骨", content: "鯊魚成條魚都無硬骨，佢哋嘅骨架全部都係由軟骨組成！" },
+            { emoji: "🍉", title: "西瓜係超級水袋", content: "西瓜入面有超過 90% 都係水，所以夏天食西瓜特別解渴！" },
+            { emoji: "🍌", title: "香蕉會彎曲", content: "香蕉生長嗰陣為咗吸收多啲陽光，會向上翹起，所以先會變彎！" },
+            { emoji: "🍅", title: "番茄係水果", content: "雖然我哋成日當番茄係煮餸嘅菜，但科學上番茄其實係水果！" },
+            { emoji: "🌲", title: "樹木年輪", content: "樹幹入面嘅一圈圈年輪，唔單止代表樹嘅歲數，仲可以話畀我哋知當年嘅天氣。" },
+            { emoji: "🍄", title: "蘑菇唔係植物", content: "蘑菇其實屬於真菌界，佢哋無葉綠素，唔識自己進行光合作用。" },
+            { emoji: "🌈", title: "月亮都有彩虹", content: "喺夜晚如果月光夠光又落微微雨，天空會出現淡淡嘅「月亮彩虹」！" },
+            { emoji: "⚡", title: "閃電好熱", content: "閃電劈落嚟嗰一瞬間，溫度比太陽表面仲要熱 5 倍！" },
+            { emoji: "🌧️", title: "雨滴形狀", content: "雨滴落低嗰陣唔係水滴形㗎！其實佢哋似一粒漢堡包或者扁扁地嘅豆。" },
+            { emoji: "🌍", title: "地球係大水球", content: "地球表面有七成都被海洋覆蓋，從太空望落去係藍色嘅水球。" },
+            { emoji: "☄️", title: "流星係石頭", content: "我哋見到嘅流星，其實只係太空入面嘅小碎石跌入大氣層燃燒發出嘅光！" },
+            { emoji: "👃", title: "狗仔嗅覺", content: "狗仔嘅嗅覺比人類強幾萬倍，連埋喺地底好深嘅骨頭都聞得到！" },
+            { emoji: "🐾", title: "貓貓跌唔親", content: "貓貓喺半空中識得自動轉身，所以每次跌落嚟都可以四腳著地。" },
+            { emoji: "🐰", title: "兔仔牙會一直生", content: "兔仔嘅牙齒一生都會不斷變長，所以佢哋要不停咬嘢嚟磨短啲牙。" },
+            { emoji: "🐹", title: "倉鼠面頰", content: "倉鼠個嘴兩邊有彈性好好嘅「頰囊」，可以塞滿食物留返慢慢食。" },
+            { emoji: "🐔", title: "雞蛋顏色", content: "雞蛋有白色同啡色，其實係取決於母雞嘅品種同耳垂嘅顏色！" },
+            { emoji: "🐴", title: "馬企喺度瞓", content: "為了防避猛獸，馬匹就算企喺度都可以進入熟睡狀態。" },
+            { emoji: "🐑", title: "羊嘅瞳孔", content: "羊嘅眼睛瞳孔係長方形㗎！咁樣可以幫佢哋睇得更闊，容易發現敵人。" },
+            { emoji: "🐼", title: "熊貓扮飽", content: "熊貓每日要食十幾個鐘竹葉，因為竹葉營養少，佢哋要不停食先夠力氣。" },
+            { emoji: "🐧", title: "企鵝爸爸孵蛋", content: "皇帝企鵝係由企鵝爸爸企喺冰天雪地幾個月，負責將隻蛋孵出嚟！" },
+            { emoji: "🐝", title: "蜜蜂會認人", content: "蜜蜂其實好聰明，可以認得人類嘅面孔，知道邊個係主人！" }
         ];
         
         const healthData = [
@@ -309,7 +372,6 @@
             { emoji: "🛌", title: "早啲瞓覺長高高！", content: "瞓覺嗰陣，身體入面會有「長高精靈」出嚟做嘢㗎！" }
         ];
 
-        // 🌟 新增：閱讀理解題庫 🌟
         const readingQuestionsData = [
             { q: "耶穌教導門徒要點樣對大家？", ans: "相親相愛", wrong: ["各自玩耍", "互相責罵"] },
             { q: "耶穌祈禱時，向天父求咩？", ans: "賜畀佢力量", wrong: ["好味嘅食物", "好多金錢"] },
@@ -320,7 +382,7 @@
         
         let currentHealthIndex = 0; let currentPlanetIndex = 0; let currentNewsIndex = 0;
         let currentMode = ''; let currentAnswer = 0; let score = 0; let currentQuestionNum = 0;
-        let totalQuestions = 10; // 改為變數，方便閱讀理解變成 5 題
+        let totalQuestions = 10;
         let timeLeft = 15; let timerId = null; let isAnswering = false;
         let currentNum1 = 0, currentNum2 = 0; let isAddition = true; 
         
@@ -359,7 +421,7 @@
             document.getElementById('readingScreen').style.display = "none"; 
             document.getElementById('modeScreen').style.display = "flex";
             
-            totalQuestions = 10; // 重置題數為 10 題
+            totalQuestions = 10; 
             clearInterval(timerId);
             if(practiceTimerId) clearInterval(practiceTimerId);
             if(tamaLoopId) clearInterval(tamaLoopId); 
@@ -381,7 +443,7 @@
                 else if (mode === 'chinese') document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 題看圖認字！<br>幫 Jade 認熟啲中文字啦！🎁";
                 else if (mode === 'logic') document.getElementById('modeIntro').innerHTML = "任務：挑戰 10 題邏輯推理！<br>睇清楚圖案規律，搵出問號係咩！🎁";
             } else if (mode === 'reading') {
-                document.getElementById('readingScreen').style.display = "flex"; // 打開閱讀畫面
+                document.getElementById('readingScreen').style.display = "flex"; 
             } else if (mode === 'planet') {
                 document.getElementById('planetScreen').style.display = "flex";
                 currentPlanetIndex = 0; renderPlanet();
@@ -410,18 +472,15 @@
             }
         }
 
-        // 🌟 新增：閱讀理解專用播放功能 🌟
         function playReadingPassage() {
             speakText("耶穌的愛心。耶穌在準備受苦前的那天晚上，曾經教導他的門徒說：你們要相親相愛，像我愛了你們一樣，這樣別人便知道，你們是我的門徒了。我離開你們後，天父會賜給你們聖神，幫助你們的。後來，耶穌獨自一個人祈禱，求天父賜給他力量。他在受苦的時候，還不斷祈求天父說：求你寬恕世人，因為他們不知道他們做了甚麼錯事。我們也要學習耶穌一樣，愛主愛人啊！", 'zh-HK');
         }
 
-        // 🌟 新增：開始閱讀理解問答 🌟
         function startReadingQuiz() {
             document.getElementById('readingScreen').style.display = "none";
             document.getElementById('gameScreen').style.display = "flex";
-            totalQuestions = 5; // 閱讀理解固定 5 題
+            totalQuestions = 5; 
             score = 0; currentQuestionNum = 0; wrongWordsList = []; 
-            // 倒轉陣列，等陣 pop() 出嚟就會係順序 1-5 題
             availableReadingQuestions = [...readingQuestionsData].reverse();
             nextQuestion();
         }
@@ -583,7 +642,7 @@
             if (currentMode === 'english' && currentEnglishWord) speakText(`Find the word... ${currentEnglishWord.word}. ${currentEnglishWord.hint}`, 'en-US');
             else if (currentMode === 'chinese' && currentChineseWord) speakText(`搵下邊個詞語係... ${currentChineseWord.word}。${currentChineseWord.hint}`, 'zh-HK');
             else if (currentMode === 'logic') speakText(`估吓問號應該填咩圖案呀？`, 'zh-HK');
-            else if (currentMode === 'reading' && currentReadingQuestion) speakText(currentReadingQuestion.q, 'zh-HK'); // 🌟 閱讀理解發聲
+            else if (currentMode === 'reading' && currentReadingQuestion) speakText(currentReadingQuestion.q, 'zh-HK'); 
         }
 
         function startGame() {
@@ -607,7 +666,7 @@
             else if (currentMode === 'english') { generateEnglishQuestion(); playCurrentHint(); } 
             else if (currentMode === 'chinese') { generateChineseQuestion(); playCurrentHint(); } 
             else if (currentMode === 'logic') { generateLogicQuestion(); playCurrentHint(); } 
-            else if (currentMode === 'reading') { generateReadingQuestion(); playCurrentHint(); } // 🌟 生成閱讀題目
+            else if (currentMode === 'reading') { generateReadingQuestion(); playCurrentHint(); } 
             startTimer();
         }
 
@@ -666,11 +725,9 @@
             options.sort(() => Math.random() - 0.5); renderOptions(options, true);
         }
 
-        // 🌟 新增：生成閱讀理解題目 🌟
         function generateReadingQuestion() {
             currentReadingQuestion = availableReadingQuestions.pop(); 
             currentAnswer = currentReadingQuestion.ans;
-            // 將字體稍微縮細啲，等條題目可以完整顯示
             document.getElementById('questionText').innerText = currentReadingQuestion.q;
             document.getElementById('questionText').style.fontSize = "26px"; 
             document.getElementById('speakBtn').style.display = "inline-block"; 
@@ -685,7 +742,6 @@
                 optionsHtml += `<button class="option-btn" onclick="checkAnswer(${val})">${options[i]}</button>`;
             }
             document.getElementById('options').innerHTML = optionsHtml;
-            // 重置字體大細
             if(currentMode !== 'reading') document.getElementById('questionText').style.fontSize = "40px";
         }
 
@@ -704,7 +760,7 @@
             if (currentMode !== 'math') {
                 let recordWord = currentAnswer;
                 if (currentMode === 'logic') recordWord = currentLogicQuestion.q;
-                else if (currentMode === 'reading') recordWord = currentReadingQuestion.q; // 記錄錯咗嘅閱讀題目
+                else if (currentMode === 'reading') recordWord = currentReadingQuestion.q; 
                 if (!wrongWordsList.includes(recordWord)) { wrongWordsList.push(recordWord); }
             }
             let feedbackEl = document.getElementById('feedback');
@@ -733,7 +789,7 @@
                 if (currentMode !== 'math') {
                     let recordWord = currentAnswer;
                     if (currentMode === 'logic') recordWord = currentLogicQuestion.q;
-                    else if (currentMode === 'reading') recordWord = currentReadingQuestion.q; // 記錄錯咗嘅閱讀題目
+                    else if (currentMode === 'reading') recordWord = currentReadingQuestion.q; 
                     if (!wrongWordsList.includes(recordWord)) { wrongWordsList.push(recordWord); }
                 }
                 let explanation = "";
@@ -750,7 +806,7 @@
                 } else if (currentMode === 'logic') {
                     explanation = `❌ 答錯咗。<br>睇清楚規律，下一個應該係：<strong>${currentAnswer}</strong> 呀！`;
                     speakText(`唔係呢個呀。正確答案係：${currentAnswer}。`, 'zh-HK');
-                } else if (currentMode === 'reading') { // 🌟 閱讀理解答錯提示 🌟
+                } else if (currentMode === 'reading') { 
                     explanation = `❌ 答錯咗。<br>正確答案係：<strong>${currentAnswer}</strong> 呀！`;
                     speakText(`唔係呢個呀。正確答案係：${currentAnswer}。`, 'zh-HK');
                 }
@@ -769,7 +825,7 @@
             if (currentMode === 'english') modeName = '🔤 英文尋寶';
             if (currentMode === 'chinese') modeName = '🀄 中文識字';
             if (currentMode === 'logic') modeName = '🧠 邏輯小神童';
-            if (currentMode === 'reading') modeName = '📖 閱讀理解'; // 🌟 更新 WhatsApp 匯報名稱
+            if (currentMode === 'reading') modeName = '📖 閱讀理解'; 
             
             let prizeStr = score === totalQuestions ? '🎁 特別禮物一份！' : `${score} 個印仔 💮`;
             
